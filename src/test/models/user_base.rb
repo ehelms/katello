@@ -15,8 +15,10 @@ require 'minitest_helper'
 module TestUserBase
   def self.included(base)
     base.class_eval do
-      use_instantiated_fixtures = false
-      fixtures :roles, :permissions, :resource_types, :roles_users, :users
+      include FactoryGirl::Syntax::Methods
+
+      #use_instantiated_fixtures = false
+      #fixtures :roles, :permissions, :resource_types, :roles_users, :users
 
       def self.before_suite
         services  = ['Candlepin', 'Pulp', 'ElasticSearch']
@@ -27,9 +29,10 @@ module TestUserBase
   end
 
   def setup
-    @alfred         = User.find(users(:alfred))
-    @admin          = User.find(users(:admin))
-    @disabled_user  = User.find(users(:disabled_user))
+    @user           = FactoryGirl.build(:batman)
+    @alfred         = Factory.create(:alfred)
+    @admin          = Factory.create(:admin)
+    @disabled_user  = FactoryGirl.create(:disabled_user)
   end
 
 end

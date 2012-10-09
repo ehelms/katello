@@ -391,6 +391,7 @@ module Glue::Pulp::Repo
     def cancel_sync
       Rails.logger.info "Cancelling synchronization of repository #{self.pulp_id}"
       history = self.sync_status
+      debugger
       return if history.nil? || history.state == ::PulpSyncStatus::Status::NOT_SYNCED
       Runcible::Resources::Task.cancel(history.uuid)
     end

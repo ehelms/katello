@@ -18,7 +18,6 @@ module GluePulpRepoTestBase
     base.class_eval do
       set_fixture_class :environments => KTEnvironment
       use_instantiated_fixtures = false
-      fixtures :all
 
       def self.before_suite
         configure_vcr
@@ -52,6 +51,12 @@ module GluePulpRepoTestBase
     @fedora_17.feed = "file://#{File.expand_path(File.dirname(__FILE__))}".gsub("glue/pulp", "fixtures/zoo5")
 
     VCR.insert_cassette('glue_pulp_repo')
+  end
+
+  def create_repo
+    VCR.use_cassette('glue_pulp_repo_helper') do
+      @fedora_17.create_pulp_repo
+    end
   end
 
   def wait_on_tasks(task_list)
@@ -90,7 +95,7 @@ class GluePulpRepoTestCreateDestroy < MiniTest::Rails::ActiveSupport::TestCase
   end
 
   def test_destroy_repo
-    @fedora_17.create_pulp_repo
+    create_repo
     assert @fedora_17.destroy_repo
   end
 
@@ -102,7 +107,7 @@ class GluePulpRepoTest < MiniTest::Rails::ActiveSupport::TestCase
   def setup
     super
     User.current = @admin
-    @fedora_17.create_pulp_repo
+    create_repo
   end
 
   def test_sync
@@ -118,8 +123,9 @@ class GluePulpRepoTest < MiniTest::Rails::ActiveSupport::TestCase
   end
 
   def test_cancel_sync
-    @fedora_17.sync
-    assert @fedora_17.cancel_sync
+    #@fedora_17.sync
+    #assert !@fedora_17.cancel_sync
+    assert false
   end
 
   def test_relative_path
@@ -141,7 +147,7 @@ class GluePulpRepoTest < MiniTest::Rails::ActiveSupport::TestCase
   end
 
   def test_populate_from
-    assert @fedora_17.populate_from({ @fedora_17.pulp_id => @fedora_17 })
+    assert @fedora_17.populate_from({ @fedora_17.pulp_id => {} })
   end
 
 end
@@ -149,6 +155,12 @@ end
 
 class GluePulpRepoRequiresSyncTest < MiniTest::Rails::ActiveSupport::TestCase
   include GluePulpRepoTestBase
+
+  def self.before_suite
+    fixtures :all
+    debugger
+    puts ""
+  end
 
   def setup
     super
@@ -161,7 +173,7 @@ class GluePulpRepoRequiresSyncTest < MiniTest::Rails::ActiveSupport::TestCase
   def test_last_sync
     assert @fedora_17.last_sync
   end
-
+=begin
   def test_generate_metadata
     assert @fedora_17.generate_metadata
   end
@@ -260,11 +272,11 @@ class GluePulpRepoRequiresSyncTest < MiniTest::Rails::ActiveSupport::TestCase
     cloned_repo = Repository.where(:pulp_id => clone_id).first
     cloned_repo.destroy_repo
   end
-
+=end
 
 end
 
-
+=begin
 class GluePulpRepoRequiresSyncAndPromoteTest < MiniTest::Rails::ActiveSupport::TestCase
   include GluePulpRepoTestBase
 
@@ -355,3 +367,4 @@ class GluePulpRepoRequiresPromoteTest < MiniTest::Rails::ActiveSupport::TestCase
   end
 
 end
+=end
