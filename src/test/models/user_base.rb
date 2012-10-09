@@ -29,10 +29,10 @@ module TestUserBase
   end
 
   def setup
-    @user           = FactoryGirl.build(:batman)
-    @alfred         = Factory.create(:alfred)
-    @admin          = Factory.create(:admin)
-    @disabled_user  = FactoryGirl.create(:disabled_user)
+    #@user           = FactoryGirl.build(:batman)
+    #@alfred         = Factory.create(:alfred)
+    #@admin          = Factory.create(:admin)
+    #@disabled_user  = FactoryGirl.create(:disabled_user)
   end
 
 end
