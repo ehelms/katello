@@ -17,8 +17,13 @@ class RepositoryAuthorizationTest < MiniTest::Rails::ActiveSupport::TestCase
   include RepositoryTestBase
 
   def setup
-    super
-    User.current = users(:admin)
+    @acme_corporation   = create(:organization, :acme_corporation)
+    @library              = @acme_corporation.library
+    @fedora_hosted      = create(:provider, :fedora_hosted, :organization => @acme_corporation)
+    @fedora             = create(:product, :fedora, :provider => @fedora_hosted, :environments => [@acme_corporation.library])
+    environment_product = EnvironmentProduct.where(:environment_id => @acme_corporation.library.id, :product_id => @fedora.id).first
+    @fedora_17_86_64    = create(:repository, :fedora_17_x86_64, :environment_product => environment_product)
+    User.current        = create(:admin)
   end
 
   def test_readable

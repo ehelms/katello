@@ -15,18 +15,17 @@ require 'minitest_helper'
 module RepositoryTestBase
   def self.included(base)
     base.class_eval do
-      set_fixture_class :environments => KTEnvironment
-      use_instantiated_fixtures = false
-      fixtures :all
+      include FactoryGirl::Syntax::Methods
 
       def self.before_suite
         services  = ['Candlepin', 'Pulp', 'ElasticSearch']
-        models    = ['Repository', 'Package']
+        models    = ['Repository', 'Package', 'Organization', 'User', 'KTEnvironment', 'Product']
         disable_glue_layers(services, models)
       end
     end
   end
 
+=begin
   def setup
     @fedora_17          = Repository.find(repositories(:fedora_17).id)
     @fedora_17_dev      = Repository.find(repositories(:fedora_17_dev).id)
@@ -37,5 +36,6 @@ module RepositoryTestBase
     @unassigned_gpg_key = GpgKey.find(gpg_keys(:unassigned_gpg_key).id)
     @fedora_filter      = Filter.find(filters(:fedora_filter).id)
   end
+=end
 
 end

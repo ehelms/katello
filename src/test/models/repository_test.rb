@@ -18,10 +18,11 @@ class RepositoryCreateTest < MiniTest::Rails::ActiveSupport::TestCase
   include RepositoryTestBase
 
   def setup
-    super
-    @repo = Repository.new(:name => 'repository_test_name', :pulp_id => 'This is not a feal pulp ID', 
-                          :environment_product_id => environment_products(:library_fedora).id, :content_id => 'FakeContentID',
-                          :label => "repository_test_name_label")
+    @acme_corporation   = create(:organization, :acme_corporation)
+    @fedora_hosted      = create(:provider, :fedora_hosted, :organization => @acme_corporation)
+    @fedora             = create(:product, :fedora, :provider => @fedora_hosted, :environments => [@acme_corporation.library])
+    environment_product = EnvironmentProduct.where(:environment_id => @acme_corporation.library.id, :product_id => @fedora.id).first
+    @repo               = build(:repository, :fedora_17_x86_64, :environment_product => environment_product)
   end
 
   def teardown
@@ -38,86 +39,126 @@ end
 class RepositoryInstanceTest < MiniTest::Rails::ActiveSupport::TestCase
   include RepositoryTestBase
 
+  def generate_library_repository
+    @acme_corporation     = create(:organization, :acme_corporation)
+    @library              = @acme_corporation.library
+    @fedora_hosted        = create(:provider, :fedora_hosted, :organization => @acme_corporation)
+    @fedora               = create(:product, :fedora, :provider => @fedora_hosted, :environments => [@acme_corporation.library])
+    library_fedora        = EnvironmentProduct.where(:environment_id => @acme_corporation.library.id, :product_id => @fedora.id).first
+    @fedora_17_x86_64     = create(:repository, :fedora_17_x86_64, :environment_product => library_fedora)
+  end
+
+  def generate_dev_repository
+    generate_library_repository
+    @dev                  = create(:k_t_environment, :dev, :organization => @acme_corporation, :priors => [@acme_corporation.library])
+    @fedora.environments << @dev
+    @fedora.save
+    dev_fedora            = EnvironmentProduct.where(:environment_id => @dev.id, :product_id => @fedora.id).first
+    @fedora_17_x86_64_dev = create(:repository, :fedora_17_x86_64_dev, :environment_product => dev_fedora, :library_instance => @fedora_17_x86_64)
+  end
+
   def test_product
-    assert @fedora == @fedora_17.product
+    generate_library_repository
+    assert_equal @fedora.id, @fedora_17_x86_64.product.id
   end
 
   def test_environment
-    assert @library == @fedora_17.environment
+    generate_library_repository
+    assert_equal @library.id, @fedora_17_x86_64.environment.id
   end
 
   def test_organization
-    assert @acme_corporation == @fedora_17.organization
+    generate_library_repository
+    assert_equal @acme_corporation.id, @fedora_17_x86_64.organization.id
   end
 
   def test_redhat?
-    assert !@fedora_17.redhat?
+    generate_library_repository
+    assert !@fedora_17_x86_64.redhat?
   end
 
   def test_custom?
-    assert @fedora_17.custom?
+    generate_library_repository
+    assert @fedora_17_x86_64.custom?
   end
 
   def test_in_environment
-    assert Repository.in_environment(@library).include?(@fedora_17)
+    generate_library_repository
+    assert_includes Repository.in_environment(@library), @fedora_17_x86_64
   end
 
   def test_in_product
-    assert Repository.in_product(@fedora).include?(@fedora_17)
+    generate_library_repository
+    assert_includes Repository.in_product(@fedora), @fedora_17_x86_64
   end
 
   def test_other_repos_with_same_content
-    assert @fedora_17.other_repos_with_same_content.include?(@fedora_17_dev)
+    generate_dev_repository
+    assert_includes @fedora_17_x86_64.other_repos_with_same_content, @fedora_17_x86_64_dev
   end
 
   def test_other_repos_with_same_product_and_content
-    assert @fedora_17.other_repos_with_same_product_and_content.include?(@fedora_17_dev)
+    generate_dev_repository
+    assert_includes @fedora_17_x86_64.other_repos_with_same_product_and_content, @fedora_17_x86_64_dev
   end
 
   def test_environment_id
-    assert @fedora_17.environment_id == @library.id
-  end
-
-  def test_yum_gpg_key_url
-    assert !@fedora_17.yum_gpg_key_url.nil?
-  end
-
-  def test_has_filters?
-    assert !@fedora_17.has_filters?
+    generate_library_repository
+    assert @fedora_17_x86_64.environment_id == @library.id
   end
 
   def test_clones
-    assert @fedora_17.clones == [@fedora_17_dev]
+    generate_dev_repository
+    assert_includes @fedora_17_x86_64.clones, @fedora_17_x86_64_dev
   end
 
   def test_is_cloned_in?
-    assert @fedora_17.is_cloned_in?(@dev)
+    generate_dev_repository
+    assert @fedora_17_x86_64.is_cloned_in?(@dev)
   end
 
   def test_promoted?
-    assert @fedora_17.promoted?
+    generate_dev_repository
+    assert @fedora_17_x86_64.promoted?
   end
 
   def test_get_clone
-    assert @fedora_17.get_clone(@dev) == @fedora_17_dev
+    generate_dev_repository
+    assert_equal @fedora_17_x86_64.get_clone(@dev), @fedora_17_x86_64_dev
   end
 
-  def test_gpg_key_name
-    @fedora_17.gpg_key_name = @unassigned_gpg_key.name
-    assert @fedora_17.gpg_key == @unassigned_gpg_key
-  end
 
   def test_as_json
-    assert @fedora_17.as_json.has_key? "gpg_key_name"
+    generate_library_repository
+    assert @fedora_17_x86_64.as_json.has_key? "gpg_key_name"
   end
 
   def test_environmental_instances
-    assert @fedora_17.environmental_instances.include? @fedora_17
-    assert @fedora_17.environmental_instances.include? @fedora_17_dev
+    generate_dev_repository
+    assert_includes @fedora_17_x86_64.environmental_instances, @fedora_17_x86_64
+    assert_includes @fedora_17_x86_64.environmental_instances, @fedora_17_x86_64_dev
+  end
+
+=begin
+  def test_has_filters?
+    generate_library_repository
+    assert !@fedora_17_x86_64.has_filters?
   end
 
   def test_applicable_filters
-    assert @fedora_17_dev.applicable_filters.include?(@fedora_filter)
+    generate_dev_repository
+    assert @fedora_17_x86_64_dev.applicable_filters.include?(@fedora_filter)
   end
 
+  def test_gpg_key_name
+    generate_library_repository
+    @fedora_17_x86_64.gpg_key_name = @unassigned_gpg_key.name
+    assert @fedora_17_x86_64.gpg_key == @unassigned_gpg_key
+  end
+
+  def test_yum_gpg_key_url
+    generate_library_repository
+    assert !@fedora_17_x86_64.yum_gpg_key_url.nil?
+  end
+=end
 end

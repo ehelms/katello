@@ -5,13 +5,6 @@ require 'minitest/autorun'
 require 'minitest/rails'
 
 
-class MiniTest::Rails::ActiveSupport::TestCase
-  #FactoryGirl.find_definitions
-
-  #self.use_transactional_fixtures = true
-  #self.fixture_path = File.expand_path('../fixtures/models', __FILE__)
-end
-
 def configure_vcr
   require "vcr"
 
@@ -31,7 +24,7 @@ def disable_glue_layers(services=[], models=[])
 
   models.each do |model|
     Object.send(:remove_const, model)
-    load "app/models/#{model.downcase}.rb"
+    load "app/models/#{model.underscore}.rb"
   end
 
   FactoryGirl.reload
@@ -41,7 +34,6 @@ class CustomMiniTestRunner
   class Unit < MiniTest::Unit
 
     def before_suites
-      #FactoryGirl.find_definitions
       # code to run before the first test
     end
 
