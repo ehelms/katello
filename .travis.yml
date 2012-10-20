@@ -1,0 +1,31 @@
+language:
+  - ruby
+
+before_install:
+  - "cd src/"
+
+install:
+  - bundle install --without jshintrb:devboost:profiling:debugging
+  - sudo apt-get install libssl-dev python m2crypto
+  - sudo pip install mock nose pyxml kerberos
+
+before_script:
+  - psql -c "CREATE USER katello WITH PASSWORD 'katello';" -U postgres
+  - psql -c "ALTER ROLE katello WITH CREATEDB" -U postgres
+  - psql -c "CREATE DATABASE katello_test OWNER katello;" -U postgres
+  - bundle exec rake parallel:create
+  - bundle exec rake parallel:migrate
+
+script:
+  - echo "********* Python CLI Unit Tests ***************"
+  - cd ../cli
+  - make test
+  - cd ../src
+  - echo "********* Stylesheet Compilation Test  ***************"
+  - RAILS_ENV=development bundle exec compass compile
+  - echo "********* RSPEC Unit Tests ***************"
+  - bundle exec rake parallel:spec
+
+rvm:
+ - "1.8.7"
+ - "1.9.3"
