@@ -1,7 +1,0 @@
-library_fedora:
-  environment:  library
-  product:      fedora
-
-dev_fedora:
-  environment:  dev
-  product:      fedora

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-/sbin/restorecon -rvvi /var/lib/katello /var/log/katello /usr/share/katello /etc/katello /usr/sbin/katello-*

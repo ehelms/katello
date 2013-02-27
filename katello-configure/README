@@ -1,1 +1,0 @@
-echo include katello | puppet --modulepath katello/puppet/modules --libdir katello/puppet/lib
