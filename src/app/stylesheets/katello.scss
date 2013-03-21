@@ -247,6 +247,7 @@ input[type='submit'], button, .button {
   }
 }
 
+/*
 table {
   border-collapse: collapse;
   border: 1px solid $stroke_color;
@@ -257,6 +258,7 @@ table {
   thead {
     background-color: lighten($stroke_color,25%);
     th {
+      cursor: pointer;
       font-size: 95%;
       padding: 2px 6px;
       font-family: $headlinefont;
@@ -335,7 +337,7 @@ table {
   &.gap {
     margin-bottom: 7em;
   }
-}
+}*/
 .treeTable {
     td {
         &:first-child {
@@ -1294,6 +1296,10 @@ footer a {
 
 .flash_hud {
   margin: 5px 0;
+
+  ul li a {
+    color: $kselected_color;
+  }
 }
 .flash_messages {
   background-color: $helptip-background_color;

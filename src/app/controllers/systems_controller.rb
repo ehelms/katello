@@ -145,7 +145,12 @@ class SystemsController < ApplicationController
   end
 
   def index
-    @system_groups = SystemGroup.where(:organization_id => current_organization).order(:name)
+    if params[:nutupane]
+      render :index_nutupane
+    else
+      @system_groups = SystemGroup.where(:organization_id => current_organization).order(:name)
+      render :index
+    end
   end
 
   def environments
@@ -198,14 +203,12 @@ class SystemsController < ApplicationController
     render :json=>Util::Support.array_with_total
   end
 
-
   def split_order(order)
     if order
       order.split("|")
     else
       [:name_sort, "ASC"]
     end
-
   end
 
   # Note that finding the provider_id is important to allow the subscription to be linked to the url for either the

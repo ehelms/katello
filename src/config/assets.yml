@@ -213,6 +213,12 @@ javascripts:
     - public/javascripts/alchemy/password.js
   custom_info:
     - public/javascripts/custom_info.js
+  systems:
+    - public/javascripts/bower/angular/angular.js
+    - public/javascripts/bower/angular-resource/angular-resource.js
+    - public/javascripts/bower/alchemy/alchemy.js
+    - public/javascripts/bower/alchemy-tables/alchemy-tables.js
+    - public/javascripts/systems/systems.controller.js
 
 stylesheets:
   common:
@@ -269,4 +275,6 @@ stylesheets:
     - public/stylesheets/compiled/sections/notifications.css
   content_search:
     - public/stylesheets/compiled/sections/content_search.css
+  nutupane:
+    - public/stylesheets/compiled/widgets/nutupane.css
   empty:

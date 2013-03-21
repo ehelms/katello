@@ -30,6 +30,13 @@
           env_select.envsys = false
       });
 
+.grid_16.flash_hud
+  %ul.flash_messages.warning
+    %li
+      %span
+        = _("There is a new design in the works for this page.  Would you like to take it for a test drive?")
+      %a{ 'href' => systems_path(:nutupane => true) }
+        = _("Let's go!")
 .grid_16#main
   = two_panel(@systems, @panel_options)
 
