@@ -24,7 +24,7 @@ var thisPanel = null,
 var last_ajax_panelpage;
 
 $(document).ready(function () {
-    page_width = $('#maincontent .maincontent').width();
+    page_width = $('.center').width();
     left = $('.left');
     right = $('.right');
     left.resize(function () {
@@ -32,7 +32,7 @@ $(document).ready(function () {
         panelLeft = left.width();
         $('.block').not('#new').width(panelLeft - 17);
         apanel.width((page_width - 21) - panelLeft);
-        right.width((page_width - 75) - panelLeft);
+        right.width((page_width - 50) - panelLeft);
         if (apanel.hasClass('opened')) {
             apanel.css({
                 "left": (panelLeft)
@@ -193,13 +193,6 @@ $(document).ready(function () {
             }
         });
         return false;
-    });
-    $('.left').resizable({
-        maxWidth: 550,
-        minWidth: 350,
-        grid: 25,
-        handles: 'e',
-        autoHide: true
     });
 
     //register a common select none action
@@ -524,8 +517,8 @@ KT.panel = (function ($) {
                 top;
 
             top_position = left_panel.offset().top;
-            offset = offset ? offset : 10;
-            offset += $('#maincontent .maincontent').offset().left;
+            offset = offset ? offset : 0;
+            offset += $('.center').offset().left;
             offset -= scrollX;
 
             if (jQPanel.length > 0) {
@@ -558,8 +551,8 @@ KT.panel = (function ($) {
         handleScrollResize = function (jQPanel, offset) {
             var scrollX = KT.common.scrollLeft();
 
-            offset = offset ? offset : 10;
-            offset += $('#maincontent .maincontent').offset().left;
+            offset = offset ? offset : 0;
+            offset += $('.center').offset().left;
             offset -= scrollX;
 
             if (jQPanel.length > 0) {

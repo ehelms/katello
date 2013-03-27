@@ -21,7 +21,7 @@
         $(document).ready(function() {
             env_select.envsys = false
         });
-  .grid_16
+  .grid_16.center
     = environment_selector(:library_clickable=>false, :accessible_envs=>accessible_envs,  :url_proc => lambda {|a| environments_systems_path(:env_id =>a[:environment].id )})
 -else
   = javascript do
@@ -30,13 +30,6 @@
           env_select.envsys = false
       });
 
-.grid_16.flash_hud
-  %ul.flash_messages.warning
-    %li
-      %span
-        = _("There is a new design in the works for this page.  Would you like to take it for a test drive?")
-      %a{ 'href' => systems_path(:nutupane => true) }
-        = _("Let's go!")
 .grid_16#main
   = two_panel(@systems, @panel_options)
 

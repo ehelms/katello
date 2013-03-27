@@ -13,6 +13,9 @@ javascripts:
     - public/javascripts/vendor/rails.js
     - public/javascripts/vendor/jquery/plugins/jquery.jnotify.js
     - public/javascripts/vendor/jquery/plugins/jquery.text-overflow.js
+    - public/javascripts/bower/angular/angular.js
+    - public/javascripts/bower/angular-resource/angular-resource.js
+    - public/javascripts/bower/alchemy/alchemy.js
     - public/javascripts/katello.js
     - public/javascripts/menu.js
     - public/javascripts/routes.js
@@ -214,11 +217,11 @@ javascripts:
   custom_info:
     - public/javascripts/custom_info.js
   systems:
-    - public/javascripts/bower/angular/angular.js
-    - public/javascripts/bower/angular-resource/angular-resource.js
-    - public/javascripts/bower/alchemy/alchemy.js
     - public/javascripts/bower/alchemy-tables/alchemy-tables.js
     - public/javascripts/systems/systems.controller.js
+  menu:
+    - public/javascripts/alchemy-header/alchemy-header.js
+    - public/javascripts/menu/menu.controller.js
 
 stylesheets:
   common:
@@ -232,6 +235,17 @@ stylesheets:
     - public/stylesheets/compiled/widgets/path_selector.css
     - public/stylesheets/compiled/fancyqueries.css
     - public/stylesheets/compiled/katello.css
+  common_experimental:
+    - public/javascripts/vendor/jquery-ui-1.8.11.custom/css/custom-theme/jquery-ui-1.8.11.custom.css
+    - public/stylesheets/jquery.loadmask.css
+    - public/stylesheets/jquery.jnotify.css
+    - public/stylesheets/jquery.treeTable.css
+    - public/stylesheets/jquery.jscrollpane.css
+    - public/stylesheets/jquery.tipsy.css
+    - public/stylesheets/compiled/widgets/tipsy_custom.css
+    - public/stylesheets/compiled/widgets/path_selector.css
+    - public/stylesheets/compiled/fancyqueries.css
+    - public/stylesheets/compiled/katello_experimental.css
   ie:
     - public/stylesheets/compiled/ie.css
   contents:
@@ -277,4 +291,6 @@ stylesheets:
     - public/stylesheets/compiled/sections/content_search.css
   nutupane:
     - public/stylesheets/compiled/widgets/nutupane.css
+  header:
+    - public/stylesheets/compiled/widgets/header.css
   empty:

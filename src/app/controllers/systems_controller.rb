@@ -145,7 +145,7 @@ class SystemsController < ApplicationController
   end
 
   def index
-    if params[:nutupane]
+    if current_user.experimental_ui
       render :index_nutupane
     else
       @system_groups = SystemGroup.where(:organization_id => current_organization).order(:name)
