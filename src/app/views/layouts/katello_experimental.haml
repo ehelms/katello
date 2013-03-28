@@ -6,7 +6,7 @@
 = content_for(:stylesheets_block) do
   = include_stylesheets :common_experimental
   = include_stylesheets controller.section_id
-  -#= include_stylesheets :header
+  = include_stylesheets :header
   = yield :stylesheets
 
 = content_for(:head) do
@@ -17,22 +17,18 @@
     = include_stylesheets :ie, :embed_assets => false
 
 = content_for(:body) do
-  = render :partial => "common/header_experimental"
 
-  %article
-    -#{ 'ng-app' => 'Katello' }
-    -#= render :file => "common/menu"
-    .center
-      %nav.subnav#subnav
-        = render_main_sub_menu
+  %article{ 'ng-app' => 'Katello' }
+    = render :file => "common/menu"
+    -#%section.subnav-container
+      .center
+        %nav.subnav#subnav
+          = render_main_sub_menu
     %section.maincontent
       = yield
 
-  -#%footer
-    = render :partial => "common/footer"
-
 = content_for(:javascripts_block) do
-  = include_javascripts :common
+  = include_javascripts :common_experimental
   %script{ :type => "text/javascript" }
     -if protect_against_forgery?
       :plain

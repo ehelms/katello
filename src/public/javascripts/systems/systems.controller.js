@@ -1,18 +1,10 @@
 'use strict';
 
-var Katello = angular.module('Katello', ['alchemy', 'alch-templates', 'ngResource']);
-
 Katello.config(['$httpProvider', function($httpProvider){
     $httpProvider.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name=csrf-token]').attr('content');
 }]);
 
-angular.module('Katello').factory('System', ['$resource', '$location', function($resource){
-    var System = $resource('/katello/api/systems/');
-
-    return System;
-}]);
-
-angular.module('Katello').factory('SystemTable', ['System', '$location', '$http', function(System, $location, $http){
+angular.module('Katello').factory('SystemTable', ['$location', '$http', function($location, $http){
     var SystemTable = {};
 
     SystemTable.get = function(sort, callback){

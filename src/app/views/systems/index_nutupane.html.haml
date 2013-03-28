@@ -1,6 +1,9 @@
 = javascript :systems
 = stylesheet :nutupane
 
-%div{ 'ng-app' => 'Katello', 'ng-controller' => 'SystemsController' }
+%h1
+  Systems
+
+%div{ 'ng-controller' => 'SystemsController' }
   %div{ 'alch-table-toolbar' => 'table' }
   %table.table.stable.stripe-row{ 'alch-table' => 'table', 'row-select' => 'true', 'ng-class' => '{ "table-mask" : table.working }' }

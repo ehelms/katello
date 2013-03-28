@@ -13,10 +13,55 @@ javascripts:
     - public/javascripts/vendor/rails.js
     - public/javascripts/vendor/jquery/plugins/jquery.jnotify.js
     - public/javascripts/vendor/jquery/plugins/jquery.text-overflow.js
+    - public/javascripts/katello.js
+    - public/javascripts/menu.js
+    - public/javascripts/routes.js
+    - public/javascripts/chosen.jquery.js
+    - public/javascripts/vendor/jquery/plugins/jquery.linkHover.js
+    - public/javascripts/vendor/jquery/plugins/jquery.sparkline.min.js
+    - public/javascripts/vendor/jquery/plugins/jquery.mousewheel.js
+    - public/javascripts/vendor/jquery/plugins/jquery.jscrollpane.js
+    - public/javascripts/vendor/jquery/plugins/jquery.ba-bbq.js
+    - public/javascripts/vendor/jquery/plugins/jquery.tipsy.js
+    - public/javascripts/spin.min.js
+    #edit
+    - public/javascripts/vendor/jquery/plugins/jquery.jeditable.js
+    - public/javascripts/vendor/jquery/plugins/jquery.jeditable.ajaxupload.js
+    - public/javascripts/vendor/jquery/plugins/jquery.ajaxfileupload.js
+    - public/javascripts/jquery.jeditable.custominputs.js
+    #panel
+    - public/javascripts/vendor/jquery/plugins/jquery.fancyqueries.js
+    - public/javascripts/vendor/jquery/plugins/jquery.ba-resize.js
+    - public/javascripts/search.js
+    - public/javascripts/panel.js
+    - public/javascripts/katello_object.js
+    #form
+    - public/javascripts/vendor/jquery/plugins/jquery.form.js
+    #notices:
+    - public/javascripts/notices.js
+    - public/javascripts/vendor/jquery/plugins/jquery.periodicalupdater.js
+    #tipsycustom
+    - public/javascripts/widgets/tipsy.custom.js
+    #env_select
+    - public/javascripts/widgets/path_selector.js
+    #old env_select
+    - public/javascripts/env_select_scroll.js
+    - public/javascripts/env_select.js
+  common_experimental:
+    - public/javascripts/vendor/jquery/jquery-1.6.2.js
+    - public/javascripts/vendor/underscore-1.3.1.js
+    - public/javascripts/vendor/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js
+    - public/javascripts/vendor/jquery/plugins/jquery.hoverIntent.js
+    - public/javascripts/vendor/jquery/plugins/jquery.ui.totop.js
+    - public/javascripts/vendor/rails.js
+    - public/javascripts/vendor/jquery/plugins/jquery.jnotify.js
+    - public/javascripts/vendor/jquery/plugins/jquery.text-overflow.js
     - public/javascripts/bower/angular/angular.js
+    - public/javascripts/bower/angular-sanitize/angular-sanitize.js
     - public/javascripts/bower/angular-resource/angular-resource.js
     - public/javascripts/bower/alchemy/alchemy.js
     - public/javascripts/katello.js
+    - public/javascripts/katello_experimental.js
     - public/javascripts/menu.js
     - public/javascripts/routes.js
     - public/javascripts/chosen.jquery.js

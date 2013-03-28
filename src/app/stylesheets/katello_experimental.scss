@@ -1321,6 +1321,7 @@ footer a {
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
+  margin-top: 40px;
 }
 
 .center {
@@ -1374,7 +1375,7 @@ body > footer {
 #experimental_indicator {
   position: absolute;
   color: rgb(255, 196, 90);
-  top: 52px;
-  left: 80px;
+  top: 0;
+  left: 170px;
   font-family: Overpass;
 }
