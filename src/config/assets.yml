@@ -181,6 +181,7 @@ javascripts:
     - public/javascripts/packages.js
     - public/javascripts/package_actions.js
     - public/javascripts/auto_complete.js
+    - public/javascripts/env_content_view_selector.js
   system_subscriptions:
     - public/javascripts/system_subscriptions.js
   system_packages:
@@ -267,6 +268,8 @@ javascripts:
   menu:
     - public/javascripts/alchemy-header/alchemy-header.js
     - public/javascripts/menu/menu.controller.js
+  default_info:
+    - public/javascripts/default_info.js
 
 stylesheets:
   common:

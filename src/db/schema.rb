@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130319162919) do
+ActiveRecord::Schema.define(:version => 20130321121430) do
 
   create_table "activation_keys", :force => true do |t|
     t.string   "name"
@@ -138,6 +137,20 @@ ActiveRecord::Schema.define(:version => 20130319162919) do
 
   add_index "component_content_views", ["content_view_definition_id", "content_view_id"], :name => "component_content_views_index"
 
+  create_table "content_view_definition_bases", :force => true do |t|
+    t.string   "name"
+    t.string   "label",                              :null => false
+    t.text     "description"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "composite",       :default => false, :null => false
+    t.string   "type"
+    t.integer  "source_id"
+  end
+
+  add_index "content_view_definition_bases", ["name", "organization_id"], :name => "index_content_view_definitions_on_name_and_organization_id"
+
   create_table "content_view_definition_products", :force => true do |t|
     t.integer  "content_view_definition_id"
     t.integer  "product_id"
@@ -156,19 +169,6 @@ ActiveRecord::Schema.define(:version => 20130319162919) do
 
   add_index "content_view_definition_repositories", ["content_view_definition_id", "repository_id"], :name => "cvd_repo_index"
 
-  create_table "content_view_definitions", :force => true do |t|
-    t.string   "name"
-    t.string   "label",                              :null => false
-    t.text     "description"
-    t.integer  "organization_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "composite",       :default => false, :null => false
-  end
-
-  add_index "content_view_definitions", ["name", "organization_id"], :name => "index_content_view_definitions_on_name_and_organization_id"
-  add_index "content_view_definitions", ["organization_id", "label"], :name => "index_content_view_definitions_on_organization_id_and_label", :unique => true
-
   create_table "content_view_environments", :force => true do |t|
     t.string   "name"
     t.string   "label",           :null => false
@@ -176,9 +176,11 @@ ActiveRecord::Schema.define(:version => 20130319162919) do
     t.integer  "content_view_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "environment_id",  :null => false
   end
 
   add_index "content_view_environments", ["content_view_id"], :name => "index_content_view_environments_on_content_view_id"
+  add_index "content_view_environments", ["environment_id"], :name => "index_content_view_environments_on_environment_id"
 
   create_table "content_view_version_environments", :id => false, :force => true do |t|
     t.integer  "content_view_version_id"
@@ -191,9 +193,10 @@ ActiveRecord::Schema.define(:version => 20130319162919) do
 
   create_table "content_view_versions", :force => true do |t|
     t.integer  "content_view_id"
-    t.integer  "version",         :null => false
+    t.integer  "version",               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "definition_archive_id"
   end
 
   add_index "content_view_versions", ["id", "content_view_id"], :name => "cvv_cv_index"
@@ -207,11 +210,9 @@ ActiveRecord::Schema.define(:version => 20130319162919) do
     t.boolean  "default",                    :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "environment_default_id"
   end
 
   add_index "content_views", ["content_view_definition_id"], :name => "index_content_views_on_content_view_definition_id"
-  add_index "content_views", ["environment_default_id"], :name => "index_content_views_on_environment_default_id"
   add_index "content_views", ["name", "organization_id"], :name => "index_content_views_on_name_and_organization_id"
   add_index "content_views", ["organization_id", "label"], :name => "index_content_views_on_organization_id_and_label", :unique => true
   add_index "content_views", ["organization_id"], :name => "index_content_views_on_organization_id"

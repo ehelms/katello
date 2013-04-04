@@ -33,18 +33,29 @@ class Api::OrganizationDefaultInfoController < Api::ApiController
 
   def create
     inf_type = params[:informable_type]
-    unless @organization.default_info[inf_type].include?(params[:keyname])
-      @organization.default_info[inf_type] << params[:keyname]
+    if @organization.default_info[inf_type].include?(params[:keyname])
+      raise HttpErrors::BadRequest,
+        _("Organization [ %{org} ] already contains default info [ %{info} ] for [ %{object} ]") %
+        { :org => @organization.name, :info => params[:keyname], :object => inf_type.capitalize.pluralize }
     end
+    @organization.default_info[inf_type] << params[:keyname]
     @organization.save!
-    render :json => @organization.default_info[inf_type].to_json
+    render :json => {
+      :keyname => params[:keyname],
+      :informable_type => inf_type,
+      :organization => @organization.attributes
+    }.to_json
   end
 
   def destroy
     inf_type = params[:informable_type]
     @organization.default_info[inf_type].delete(params[:keyname])
     @organization.save!
-    render :json => @organization.default_info[inf_type].to_json
+    render :json => {
+      :keyname => params[:keyname],
+      :informable_type => inf_type,
+      :organization => @organization.attributes
+    }.to_json
   end
 
   def apply_to_all
@@ -59,13 +70,15 @@ class Api::OrganizationDefaultInfoController < Api::ApiController
   private
 
   def check_keyname
-    raise HttpErrors::BadRequest, _("A keyname must be provided") if params[:keyname].nil?
+    if params[:keyname].nil?
+      raise HttpErrors::BadRequest, _("A keyname must be provided")
+    end
   end
 
   def check_informable_type
     unless Organization::ALLOWED_DEFAULT_INFO_TYPES.include?(params[:informable_type])
-      raise HttpErrors::BadRequest, _("Type must be one of the following [ %(list)s ]") %
-        Organization::ALLOWED_DEFAULT_INFO_TYPES.join(", ")
+      raise HttpErrors::BadRequest, _("Type must be one of the following [ %{list} ]") %
+        { :list => Organization::ALLOWED_DEFAULT_INFO_TYPES.join(", ") }
     end
   end
 
