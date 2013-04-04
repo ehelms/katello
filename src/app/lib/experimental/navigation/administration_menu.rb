@@ -20,13 +20,13 @@ module Experimental
           :display=> _("Administer"),
           :if     => :sub_level,
           :type   => 'dropdown',
-          :items  => [ 
-            menu_orgs, 
-            menu_users, 
+          :items  => [
+            menu_orgs,
+            menu_users,
             menu_roles
           ]
         }
-        
+
         menu[:items] << menu_sync_tasks if Katello.config.katello?
         menu[:items] << menu_about # keep the about as the last item
 

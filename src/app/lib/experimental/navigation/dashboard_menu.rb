@@ -16,7 +16,7 @@ module Experimental
       include Rails.application.routes.url_helpers
 
       def menu_dashboard
-        { 
+        {
           :key     => :dashboard,
           :display => _("Dashboard"),
           :url     => dashboard_index_path

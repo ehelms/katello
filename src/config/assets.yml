@@ -266,7 +266,7 @@ javascripts:
     - public/javascripts/bower/alchemy-tables/alchemy-tables.js
     - public/javascripts/systems/systems.controller.js
   menu:
-    - public/javascripts/alchemy-header/alchemy-header.js
+    - public/javascripts/bower/alchemy-header/alchemy-header.js
     - public/javascripts/menu/menu.controller.js
   default_info:
     - public/javascripts/default_info.js

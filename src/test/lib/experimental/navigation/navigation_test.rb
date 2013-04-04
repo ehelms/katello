@@ -15,7 +15,7 @@ require 'minitest_helper'
 
 class NavigationTest < MiniTest::Rails::ActiveSupport::TestCase
   fixtures :organizations, :users
-  
+
   def setup
     @acme_corporation = Organization.find(organizations(:acme_corporation).id)
     @admin            = User.find(users(:admin))
@@ -49,7 +49,7 @@ class NavigationDashboardTest < MiniTest::Rails::ActiveSupport::TestCase
 
   def test_menu_dashboard
     dashboard = @navigation.menu_dashboard
-    
+
     assert_equal _('Dashboard'), dashboard[:display]
     assert_equal dashboard_index_path, dashboard[:url]
   end
@@ -68,7 +68,7 @@ class NavigationContentTest < MiniTest::Rails::ActiveSupport::TestCase
 
   def test_menu_content
     content = @navigation.menu_content
-    
+
     assert_equal _('Content'), content[:display]
     assert_nil   content[:url]
     assert_equal 6, content[:items].length
@@ -76,7 +76,7 @@ class NavigationContentTest < MiniTest::Rails::ActiveSupport::TestCase
 
   def test_menu_subscriptions
     content = @navigation.menu_subscriptions
-    
+
     assert_equal _('Subscriptions'), content[:display]
     assert_equal subscriptions_path, content[:url]
     assert_equal 4, content[:items].length
@@ -84,7 +84,7 @@ class NavigationContentTest < MiniTest::Rails::ActiveSupport::TestCase
 
   def test_menu_repositories
     content = @navigation.menu_repositories
-    
+
     assert_equal _('Repositories'), content[:display]
     assert_equal providers_path, content[:url]
     assert_equal 3, content[:items].length
@@ -92,7 +92,7 @@ class NavigationContentTest < MiniTest::Rails::ActiveSupport::TestCase
 
   def test_menu_sync_management
     content = @navigation.menu_sync_management
-    
+
     assert_equal _('Sync Management'), content[:display]
     assert_equal sync_management_index_path, content[:url]
     assert_equal 3, content[:items].length
@@ -100,7 +100,7 @@ class NavigationContentTest < MiniTest::Rails::ActiveSupport::TestCase
 
   def test_menu_content_search
     content = @navigation.menu_content_search
-    
+
     assert_equal _('Content Search'), content[:display]
     assert_equal content_search_index_path, content[:url]
     assert_nil   content[:items]
@@ -108,7 +108,7 @@ class NavigationContentTest < MiniTest::Rails::ActiveSupport::TestCase
 
   def test_menu_content_view_definitions
     content = @navigation.menu_content_view_definitions
-    
+
     assert_equal _('Content View Definitions'), content[:display]
     assert_equal content_view_definitions_path, content[:url]
     assert_nil   content[:items]
@@ -116,7 +116,7 @@ class NavigationContentTest < MiniTest::Rails::ActiveSupport::TestCase
 
   def test_menu_changeset_management
     content = @navigation.menu_changeset_management
-    
+
     assert_equal _('Changeset Management'), content[:display]
     assert_equal promotions_path, content[:url]
     assert_equal 2, content[:items].length

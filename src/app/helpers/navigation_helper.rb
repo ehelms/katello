@@ -18,12 +18,12 @@ module NavigationHelper
     main_menu_items = navigation.generate_main_menu
     admin_items = navigation.generate_admin_menu
 
-    menu = { 
+    menu = {
       :location => 'left',
       :items => main_menu_items
     }
 
-    admin_menu = { 
+    admin_menu = {
       :location => 'right',
       :items    => admin_items
     }
@@ -53,11 +53,11 @@ module NavigationHelper
   end
 
   def add_notices
-    display = '<span>' 
-    display += '<i class="warning_icon-grey"></i>' 
-    display += Notice.for_user(current_user).for_org(current_organization).count.to_s 
+    display = '<span>'
+    display += '<i class="warning_icon-grey"></i>'
+    display += Notice.for_user(current_user).for_org(current_organization).count.to_s
     display += '</span>'
-   
+
     return {
       :display=> display,
       :url    => notices_path

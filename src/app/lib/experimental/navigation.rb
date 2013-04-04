@@ -17,7 +17,7 @@ module Experimental
       include ContentMenu
       include DashboardMenu
       include SystemMenu
-      
+
       def initialize(current_organization)
         @current_organization = current_organization
       end
@@ -35,7 +35,7 @@ module Experimental
       end
 
       def default_url_options
-        { :script_name => Rails.application.config.relative_url_root 
+        { :script_name => Rails.application.config.relative_url_root
         }.merge(Rails.application.routes.default_url_options)
       end
 

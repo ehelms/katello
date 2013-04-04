@@ -21,11 +21,11 @@ module Experimental
           :if      => lambda{@current_organization},
           :type    => 'dropdown',
           :items   => [
-            menu_subscriptions, 
-            menu_repositories, 
-            menu_sync_management, 
-            menu_content_search, 
-            menu_content_view_definitions, 
+            menu_subscriptions,
+            menu_repositories,
+            menu_sync_management,
+            menu_content_search,
+            menu_content_view_definitions,
             menu_changeset_management
           ]
         }

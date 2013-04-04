@@ -20,7 +20,7 @@ module Experimental
           :display=> _("Systems"),
           :type   => 'dropdown',
           :items  => [
-            menu_systems_org_list, 
+            menu_systems_org_list,
             menu_systems_environments_list
           ]
         }
