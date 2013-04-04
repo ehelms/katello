@@ -1,15 +1,12 @@
-/ orgbox Starts Here
-#switcherContainer.clickable
+#switcherContainer.clickable.menu-container
   - if current_organization && !current_organization.name.nil?
-    %a#switcherButton{:href => "#", :title=>"#{current_organization.name}"}
-      .one-line-ellipsis
-        #{current_organization.name}
-      .arrow_icon_menu
+    %a.menu-item#switcherButton{:href => "#", :title=>"#{current_organization.name}"}
+      = current_organization.name
+      %i.down_arrow_icon-grey
   - else
-    %a#switcherButton{:href => "#", :title=>""}
-      .one-line-ellipsis
-        #{_("Select an Organization:")}
-      .arrow_icon_menu
+    %a.menu-item#switcherButton{:href => "#", :title=>""}
+      = _("Select an Organization:")
+      %i.down_arrow_icon-grey
   #switcherBox
     #switcherForm.org
       #orgfilter
@@ -24,5 +21,3 @@
           .gears_icon
           %span{:class=>"fl clearfix"}
             #{_("Manage Organizations")}
-
-/ orgbox Ends Here

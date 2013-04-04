@@ -2,77 +2,19 @@
 
 Katello.controller('MenuController', ['$scope', '$sanitize', function($scope, $sanitize){
 
-    $scope.menu = {
-        left : {
-            items : [
-                { 
-                    display : 'Dashboard',
-                    href    : 'dashboard'
-                },{ 
-                    display : 'Content',
-                    href    : 'subscriptions',
-                    type    : 'dropdown',
-                    items   : ''
-                },{ 
-                    display : 'Systems',
-                    href    : 'systems',
-                    active  : true
-                },{ 
-                    display : 'Setup',
-                    href    : 'smart_proxies'
-                }
-            ]
-        },
-        right: {
-            items: [
-                {
-                    display : 'Configure'
-                },{ 
-                    display : $sanitize('<a href=""><i class="warning_icon-grey"></i>41</a>')
-                }
-            ]
-        }
-    };
+    $scope.menu = KT.main_menu;
+    $scope.user_menu = KT.user_menu;
+    $scope.admin_menu = KT.admin_menu;
+    $scope.notices = KT.notices;
 
-    $scope.user_menu = {
-        right : {
-            items : [
-                {
-                    display: 'admin',
-                    type: 'dropdown',
-                    hover: false,
-                    items: [
-                        {
-                            display : 'Admin'
-                        },{ 
-                            display : 'Notifications'
-                        }
-                    ]
-                }
-            ]
-        }
-    };
-
-    $scope.sub_nav = {
-        left : {
-            items : [
-                { 
-                    display : 'Subscriptions',
-                    href    : 'subscriptions'
-                },{ 
-                    display : 'Repositories',
-                    href    : 'providers',
-                    type    : 'dropdown',
-                    items   : ''
-                },{ 
-                    display : 'Sync Management',
-                    href    : 'sync_management'
-                },{ 
-                    display : 'Content Search',
-                    href    : 'content_search'
-                }
-            ]
-        },
+    if( $('body').attr('id') === 'systems' ){
+        KT.main_menu['items'][2].active = true;
+    } else if( $('body').attr('id') === 'contents' || $('body').attr('id') === 'subscriptions' ){
+        KT.main_menu['items'][1].active = true;
+    } else if( $('body').attr('id') === 'operations' ){
+        KT.admin_menu['items'][0].active = true;
+    } else {
+        KT.main_menu['items'][0].active = true;
     }
 
 }]);

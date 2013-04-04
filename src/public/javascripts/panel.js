@@ -25,8 +25,8 @@ var last_ajax_panelpage;
 
 $(document).ready(function () {
     page_width = $('.center').width();
-    left = $('.left');
-    right = $('.right');
+    left = $('.left_panel');
+    right = $('.right_panel');
     left.resize(function () {
         var apanel = $('.panel');
         panelLeft = left.width();
@@ -384,7 +384,7 @@ KT.panel = (function ($) {
             return paneljQ;
         },
         adjustHeight = function (paneljQ, isSubpanel) {
-            var leftPanel = $('.left'),
+            var leftPanel = $('.left_panel'),
                 tupane_panel = $('#panel'),
                 header_spacing = tupane_panel.find('.head').height(),
                 subnav_spacing = tupane_panel.find('nav').height() + 10,
@@ -512,7 +512,7 @@ KT.panel = (function ($) {
                 isFixed = jQPanel.css('position') === 'fixed',
                 container = $('#container'),
                 bodyY = parseInt(container.position().top, 10),
-                left_panel = container.find('.left'),
+                left_panel = container.find('.left_panel'),
                 left_bottom_pos = left_panel.offset().top + left_panel.height(),
                 top;
 
@@ -571,7 +571,7 @@ KT.panel = (function ($) {
                 if (promise) {
                     closePanel();
                     promise.done(function(){
-                        $('.left').resize();
+                        $('.left_panel').resize();
                         select_item(refresh);
                     });
                 }

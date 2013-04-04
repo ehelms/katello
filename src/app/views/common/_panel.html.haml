@@ -14,7 +14,7 @@
 
 .center
   #container.container_16
-    .right
+    .right_panel
       .helptip_area
         = help_tip_button('panel-help')
         = help_tip((_("To view the details of an item on the left, simply click on a single row." + |
@@ -30,7 +30,7 @@
             %a#select-none #{_("Select None")}
     = render :partial=>"common/tupane"
 
-    %div.left{:class => left_panel_width ? left_panel_width : 'column_panel_' + columns.length.to_s }
+    %div.left_panel{:class => left_panel_width ? left_panel_width : 'column_panel_' + columns.length.to_s }
       #list-title
         %header
           %h2.fl.one-line-ellipsis{:title => title} #{title}

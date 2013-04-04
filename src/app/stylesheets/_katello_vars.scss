@@ -79,7 +79,7 @@ $erratum_icon_grey:           image-url("alchemy/icons/action-icons.png") -576px
 $erratum_icon_black:          image-url("alchemy/icons/action-icons.png") -576px -16px no-repeat;
 $system_group_icon_grey:      image-url("alchemy/icons/action-icons.png") -590px 0px no-repeat;
 $system_group_icon_black:     image-url("alchemy/icons/action-icons.png") -590px -16px no-repeat;
-$logo_img:                    image-url("embed/logo.png") no-repeat 0 3px transparent;
+$logo_img:                    image-url("embed/logo.png") no-repeat 0 0 transparent;
 
 @mixin action-icon($icon) {
     background: $icon;

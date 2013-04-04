@@ -1,5 +1,7 @@
 = javascript :menu
 
+= generate_menu
+
 %div{ 'ng-controller' => 'MenuController' }
   %header.header.logo-header
     %a.fl.logo{ 'href' => 'dashboard' }
@@ -7,5 +9,10 @@
       = "experimental"
     %nav{ 'alch-menu' => "user_menu" }
   %header.header.nav-header
-    -#= render :file => 'components/org_switcher_experimental'
-    .nav{ "alch-menu" => "menu" }
+    = render :file => 'components/org_switcher_experimental'
+    .nav(compact){ "alch-menu" => "menu" }
+    .nav.right
+      %ul.menu-container
+        %li.menu-item{ "ng-mouseenter" => "handle_hover(notices, true)", "ng-mouseleave" => "handle_hover(notices, false)" }
+          %a.menu-item-link{ :href => "{{ notices.url }}", "ng-click" => "set_active(notices)", "ng-class" => "{ 'active-item' : notices.active }", "ng-bind-html-unsafe" => "notices.display" }
+    .nav{ "alch-menu" => "admin_menu" }
