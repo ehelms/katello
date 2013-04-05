@@ -35,7 +35,7 @@ module Experimental
       end
 
       def default_url_options
-        { :script_name => Rails.application.config.relative_url_root
+        { :script_name => ActionController::Base.config.relative_url_root
         }.merge(Rails.application.routes.default_url_options)
       end
 

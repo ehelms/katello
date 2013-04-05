@@ -20,6 +20,7 @@ class NavigationTest < MiniTest::Rails::ActiveSupport::TestCase
     @acme_corporation = Organization.find(organizations(:acme_corporation).id)
     @admin            = User.find(users(:admin))
     User.current      = @admin
+    Katello.config[:url_prefix] = '/katello'
   end
 
   def test_new
@@ -45,6 +46,7 @@ class NavigationDashboardTest < MiniTest::Rails::ActiveSupport::TestCase
   def setup
     @acme_corporation = Organization.find(organizations(:acme_corporation).id)
     @navigation       = Experimental::Navigation::Menu.new(@acme_corporation)
+    Katello.config[:url_prefix] = '/katello'
   end
 
   def test_menu_dashboard
@@ -64,6 +66,7 @@ class NavigationContentTest < MiniTest::Rails::ActiveSupport::TestCase
   def setup
     @acme_corporation = Organization.find(organizations(:acme_corporation).id)
     @navigation       = Experimental::Navigation::Menu.new(@acme_corporation)
+    Katello.config[:url_prefix] = '/katello'
   end
 
   def test_menu_content
