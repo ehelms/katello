@@ -82,12 +82,15 @@ Src::Application.routes.draw do
         post :packages
         post :packages_items
         post :errata_items
+        get :view_packages
         post :repos
         post :views
         get :repo_packages
         get :repo_errata
         get :repo_compare_packages
         get :repo_compare_errata
+        get :view_compare_packages
+        get :view_compare_errata
       end
   end
 
@@ -575,6 +578,7 @@ Src::Application.routes.draw do
           post :copy
           post :remove_systems
           delete :destroy_systems
+          put :update_systems
         end
 
         resource :packages, :action => [:create, :update, :destroy], :controller => :system_group_packages
