@@ -99,6 +99,7 @@ Src::Application.routes.draw do
       get :default_label
       get :items
     end
+
     member do
       post :clone
       get :views
@@ -106,13 +107,32 @@ Src::Application.routes.draw do
       post :publish
       get :status
       get :content
-      post :update_content
+      put :update_content
       put :update_component_views
-      get :filter
     end
+
     resources :content_view, :only => [], :controller => :content_view_definitions do
       member do
         post :refresh
+      end
+    end
+    resources :filters, :controller => :filters, :only => [:index, :new, :create, :edit, :update] do
+      collection do
+        delete :destroy_filters
+      end
+
+      resources :rules, :controller => :filter_rules, :only => [:new, :create, :edit, :update] do
+        collection do
+          delete :destroy_rules
+        end
+
+        member do
+          get :edit_inclusion
+          get :edit_parameter_list
+          get :edit_date_type_parameters
+          put :add_parameter
+          delete :destroy_parameters
+        end
       end
     end
   end
@@ -189,8 +209,10 @@ Src::Application.routes.draw do
       get :items
       post :upload
       post :delete_manifest
+      post :refresh_manifest
       get :history
       get :history_items
+      get :edit_manifest
     end
   end
 
@@ -538,6 +560,18 @@ Src::Application.routes.draw do
       resource :packages, :action => [:create, :update, :destroy], :controller => :system_packages
     end
 
+    resources :distributors, :only => [:show, :destroy, :create, :index, :update] do
+      member do
+        get :pools
+      end
+      resources :subscriptions, :only => [:create, :index, :destroy] do
+        collection do
+            match '/' => 'subscriptions#destroy_all', :via => :delete
+            match '/serials/:serial_id' => 'subscriptions#destroy_by_serial', :via => :delete
+        end
+      end
+    end
+
     resources :providers, :except => [:index] do
       resources :sync, :only => [:index, :create] do
         delete :index, :on => :collection, :action => :cancel
@@ -600,6 +634,7 @@ Src::Application.routes.draw do
           get :tasks
         end
       end
+      resources :distributors, :only => [:index, :create]
       resources :activation_keys, :only => [:index, :create, :destroy, :show, :update] do
         member do
           post :system_groups, :action => :add_system_groups
@@ -625,17 +660,31 @@ Src::Application.routes.draw do
           post :publish
           post :clone
         end
-        resources :products, :only => [] do
-          get :index, :action => :list_content_view_definition_products,
-            :on => :collection
-          put :index, :action => :update_content_view_definition_products,
-            :on => :collection
+        resources :products, :controller => :content_view_definitions, :only => [] do
+          collection do
+            get :index, :action => :list_products
+            put :index, :action => :update_products
+          end
         end
-        resources :repositories, :only => [] do
-          get :index, :action => :list_content_view_definition_repositories,
-            :on => :collection
-          put :index, :action => :update_content_view_definition_repositories,
-            :on => :collection
+        resources :repositories, :controller => :content_view_definitions, :only => [] do
+          collection do
+            get :index, :action => :list_repositories
+            put :index, :action => :update_repositories
+          end
+        end
+        resources :filters, :controller => :filters, :only => [:index, :show, :create, :destroy] do
+          resources :products, :controller => :filters, :only => [] do
+            collection do
+              get :index, :action => :list_products
+              put :index, :action => :update_products
+            end
+          end
+          resources :repositories, :controller => :filters, :only => [] do
+            collection do
+              get :index, :action => :list_repositories
+              put :index, :action => :update_repositories
+            end
+          end
         end
       end
     end
@@ -650,6 +699,8 @@ Src::Application.routes.draw do
         post :refresh
       end
     end
+
+
 
     resources :changesets, :only => [:show, :update, :destroy] do
       post :promote, :on => :member, :action => :promote
@@ -709,6 +760,7 @@ Src::Application.routes.draw do
       resources :systems, :only => [:create, :index] do
         get :report, :on => :collection
       end
+      resources :distributors, :only => [:create, :index]
       resources :products, :only => [:index] do
         get :repositories, :on => :member
       end
@@ -778,6 +830,7 @@ Src::Application.routes.draw do
     match '/consumers/:id/entitlements' => 'candlepin_proxies#delete', :via => :delete, :as => :proxy_consumer_entitlements_delete_path
     match '/consumers/:id/entitlements/dry-run' => 'candlepin_proxies#get', :via => :get, :as => :proxy_consumer_dryrun_path
     match '/consumers/:id/owner' => 'candlepin_proxies#get', :via => :get, :as => :proxy_consumer_owners_path
+    match '/consumers/:id/export' => 'candlepin_proxies#export', :via => :get, :as => :proxy_consumer_export_path
     match '/consumers/:consumer_id/certificates/:id' => 'candlepin_proxies#delete', :via => :delete, :as => :proxy_consumer_certificates_delete_path
     match '/consumers/:id/deletionrecord' => 'candlepin_proxies#delete', :via => :delete, :as => :proxy_consumer_deletionrecord_delete_path
     match '/pools' => 'candlepin_proxies#get', :via => :get, :as => :proxy_pools_path
