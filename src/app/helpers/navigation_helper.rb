@@ -54,7 +54,7 @@ module NavigationHelper
 
   def add_notices
     display = '<span>'
-    display += '<i class="warning_icon-grey"></i>'
+    display += '<i class="validation_icon-white icon"></i>'
     display += Notice.for_user(current_user).for_org(current_organization).count.to_s
     display += '</span>'
 
