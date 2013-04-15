@@ -11,6 +11,4 @@
  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 */
 
-//= require "alchemy/jquery/plugins/jquery.sortElements"
-//= require "widgets/slidingtree"
-//= require "promotions/promotion"
+//= require "alchemy/jquery/plugins/jquery.treeTable"

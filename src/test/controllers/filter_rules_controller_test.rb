@@ -193,15 +193,20 @@ class FilterRulesControllerTest < MiniTest::Rails::ActionController::TestCase
   test "PUT add_parameter - for errata parameter rule should be successful" do
     @filter = filters(:populated_filter)
     rule = ErratumRule.where(:filter_id => @filter.id).first
-    rule.parameters = HashWithIndifferentAccess.new({:errata_type => 'security',
-                                                     :date_range => {:start => '01/01/2013', :end => '01/31/2013'}})
+    rule.parameters = HashWithIndifferentAccess.new
+    format = "%m/%d/%Y%:z"
+    zone = DateTime.now.zone
+    start_date = DateTime.strptime("01/01/2013" + zone, format)
+    end_date = DateTime.strptime("01/31/2013" + zone, format)
+    rule.start_date = start_date
+    rule.end_date = end_date
+    rule.errata_types = ['security']
     rule.save!
 
     # success notice created
     notify = Notifications::Notifier.new
     notify.expects(:success).at_least_once
     @controller.expects(:notify).at_least_once.returns(notify)
-
     put :add_parameter, :content_view_definition_id => @filter.content_view_definition.id, :filter_id => @filter.id,
         :id => rule.id, :parameter => {:unit => {:id => 'RHSA-2013-1234'}}
 
@@ -221,27 +226,62 @@ class FilterRulesControllerTest < MiniTest::Rails::ActionController::TestCase
     notify = Notifications::Notifier.new
     notify.expects(:success).at_least_once
     @controller.expects(:notify).at_least_once.returns(notify)
-
+    format = "%m/%d/%Y%:z"
+    zone = DateTime.now.zone
+    start_date = DateTime.strptime("01/02/2012" + zone, format)
+    end_date = DateTime.strptime("01/31/2013" + zone, format)
     put :add_parameter, :content_view_definition_id => @filter.content_view_definition.id, :filter_id => @filter.id,
-        :id => rule.id, :parameter => {:date_range => {:start => '01/01/2013'}}
+        :id => rule.id, :parameter => {:date_range => {:start => start_date.strftime("%m/%d/%Y")}}
 
     assert_response :success
-    assert_equal rule.reload.parameters, {"date_range" => {"start" => '01/01/2013'}}
+    assert_equal start_date.to_i, rule.reload.start_date.to_i
 
     put :add_parameter, :content_view_definition_id => @filter.content_view_definition.id, :filter_id => @filter.id,
-        :id => rule.id, :parameter => {:date_range => {:end => '01/31/2013'}}
+        :id => rule.id, :parameter => {:date_range => {:end => end_date.strftime("%m/%d/%Y")}}
 
     assert_response :success
-    assert_equal rule.reload.parameters, {"date_range" => {"start" => '01/01/2013',
-                                                           "end" => '01/31/2013'}}
+    assert_equal start_date.to_i, rule.reload.start_date.to_i
+    assert_equal end_date.to_i, rule.reload.end_date.to_i
 
     put :add_parameter, :content_view_definition_id => @filter.content_view_definition.id, :filter_id => @filter.id,
         :id => rule.id, :parameter => {:errata_type => ['security']}
 
     assert_response :success
     assert_equal rule.reload.parameters, {"errata_type" => ['security'],
-                                          "date_range" => {"start" => '01/01/2013',
-                                                           "end" => '01/31/2013'}}
+                                          "date_range" => {"start" => start_date.to_i,
+                                                           "end" => end_date.to_i}}
+  end
+
+  test "PUT update_parameter - for package rule version should be successful" do
+    @filter = filters(:populated_filter)
+    rule = PackageRule.where(:filter_id => @filter.id).first
+
+    # success notice created
+    notify = Notifications::Notifier.new
+    notify.expects(:success).at_least_once
+    @controller.expects(:notify).at_least_once.returns(notify)
+
+    put :update_parameter, :content_view_definition_id => @filter.content_view_definition.id, :filter_id => @filter.id,
+        :id => rule.id, :parameter => {:unit => {:name => 'xterm.*', :version => '6.0'}}
+
+    assert_response :success
+    assert_includes rule.reload.parameters[:units], {"name" => "xterm.*", "version" => "6.0"}
+  end
+
+  test "PUT update_parameter - for package rule min_version and max_version should be successful" do
+    @filter = filters(:populated_filter)
+    rule = PackageRule.where(:filter_id => @filter.id).first
+
+    # success notice created
+    notify = Notifications::Notifier.new
+    notify.expects(:success).at_least_once
+    @controller.expects(:notify).at_least_once.returns(notify)
+
+    put :update_parameter, :content_view_definition_id => @filter.content_view_definition.id, :filter_id => @filter.id,
+        :id => rule.id, :parameter => {:unit => {:name => 'xterm.*', :min_version => '7.0', :max_version => '10.0'}}
+
+    assert_response :success
+    assert_includes rule.reload.parameters[:units], {"name" => "xterm.*", "min_version" => "7.0", "max_version" => "10.0"}
   end
 
   test "DELETE destroy_parameters - should be successful" do
@@ -256,7 +296,7 @@ class FilterRulesControllerTest < MiniTest::Rails::ActionController::TestCase
     assert_equal rule.parameters[:units].length, 1
 
     delete :destroy_parameters, :content_view_definition_id => @filter.content_view_definition.id,
-           :filter_id => @filter.id, :id => rule.id, :units => {rule.parameters[:units].first[:id] => ""}
+           :filter_id => @filter.id, :id => rule.id, :units => [rule.parameters[:units].first[:id]]
 
     assert_response :success
     assert_empty rule.reload.parameters[:units]
