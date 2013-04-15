@@ -2,6 +2,7 @@
 @import "alchemy/components/normalize";
 @import "widgets/org_switcher_experimental";
 
+$logo_img: url("katello-logo.png");
 
 .container_16 {
   width: $static_width - 20;
@@ -47,10 +48,10 @@
 .logo {
   background: $logo_img;
   text-indent: -5555px;
-  width: 170px;
-  bottom: 16px;
-  height: inherit;
+  width: 100px;
+  height: 15px;
   display: block;
+  margin-top: 5px;
 }
 
 .subnav-header {
@@ -99,7 +100,7 @@ body {
 #experimental_indicator {
   position: absolute;
   color: rgb(255, 196, 90);
-  top: -3px;
-  left: 170px;
+  top: 3px;
+  left: 132px;
   font-family: Overpass;
 }

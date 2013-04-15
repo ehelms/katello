@@ -60,7 +60,7 @@ class OrganizationsController < ApplicationController
   end
 
   def section_id
-    'orgs'
+    section_id = 'operations'
   end
 
   def menu_definition

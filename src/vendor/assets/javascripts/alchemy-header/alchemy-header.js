@@ -40,12 +40,11 @@ angular.module("alch-templates").run(function($templateCache) {
     "        ng-mouseleave=\"handle_hover(item, false)\">" +
     "        " +
     "        <a href=\"{{ item.url }}\" " +
-    "           ng-click=\"set_active(item)\" " +
     "           ng-class=\"{ 'active-item' : item.active }\"" +
     "           class=\"menu-item-link\">" +
     "        " +
     "          {{ item.display }}" +
-    "          <i class=\"down_arrow_icon-grey\" ng-show=\"item.type=='dropdown'\"></i>" +
+    "          <i class=\"down_arrow_icon-grey\" ng-show=\"item.type == 'dropdown'\"></i>" +
     "        </a>" +
     "        <ul alch-dropdown=\"item.items\"></ul>" +
     "    </li>" +
@@ -68,25 +67,18 @@ angular.module('alchemy').directive('alchMenu', function($window){
         templateUrl: 'component/templates/menu.html',
 
         controller: function($scope) {
-            $scope.active_item = {};
             $scope.dropdown = {};
-
-            $scope.set_active = function(item){
-                $scope.active_item.active = false;
-                $scope.active_item = item;
-                item.active = true;
-            };
 
             $scope.handle_hover = function(item, mousein){
                 if( item.type === 'dropdown' && mousein ){
+                    item.active = true;
                     $scope.dropdown = item.items;
                     $scope.dropdown.show = true;
                     $scope.dropdown.direction = $scope.menu.location;
-                    item.active = true;
                 } else {
                     $scope.dropdown.show = false;
-                    
-                    if( $scope.active_item !== item ){
+
+                    if( item !== $scope.menu.active_item ){
                         item.active = false;
                     }
                 }
@@ -138,34 +130,14 @@ angular.module('alchemy').directive('alchDropdown', function(){
                 }
             };
 
-            $scope.handle_hover = function(item, mousein){
-            };
-
             $scope.isRight = function(direction){
                 return direction === 'right';
             };
-
-        },
-
-        link: function(scope, element) {
-            /*scope.$watch('dropdown.show', function(value){
-                if( value ){
-                    var $dropdown  = $(element),
-                        $menu_item = $(element).parent().find('.active-item');
-
-                    console.log($menu_item);
-                    if( $menu_item.offset() ){
-                        console.log($menu_item.offset().left);
-                        $dropdown.css('left', $menu_item.offset().left);
-                        $dropdown.css('top', $menu_item.offset().top + 22);
-                    }
-                }
-            });*/
         }
     };
 });
 
-angular.module('alchemy').directive('alchFlyout', function($window){
+angular.module('alchemy').directive('alchFlyout', function(){
     return {
         restrict: 'EA',
         transclude: true,
@@ -183,13 +155,6 @@ angular.module('alchemy').directive('alchFlyout', function($window){
                     item.active = false;
                 }
             };
-        },
-
-        link: function(scope, element) {
-            scope.$watch('flyout.show', function(){
-                var $element = $(element),
-                    $parent  = $element.parent();
-            });
         }
     };
 });

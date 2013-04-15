@@ -8,10 +8,6 @@
   }
 }
 
-.nav-header {
-  border-bottom: 3px solid rgb(206, 206, 206);
-}
-
 .fade-in-down, .fade-in-bottom{
 -webkit-animation: fade-in-down .9s ease 0;
    -moz-animation: fade-in-down .9s ease 0;
@@ -20,12 +16,6 @@
     animation: fade-in-down .9s ease 0;
 }
 
-.subnav-container {
-  border-bottom: 3px solid rgb(206, 206, 206);
-  background-color: rgb(243, 243, 243);
-
-  .subnav {
-    margin-bottom: -3px;
-    padding-bottom: 0;
-  }
+.flyout {
+  min-width: 230px;
 }
