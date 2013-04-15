@@ -11,18 +11,5 @@
  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 */
 
-/*
- * A small javascript file needed to load things whenever a sync_schedule is opened for editing
- *
- */
-$(document).ready(function() {
-  if (schedule.syncable == false) {
-    $('.block').die('click');
-  }
-  $('#apply_button').live('click', function(e)
-  {
-      $('#data').val(JSON.stringify(one_panel.selectedItems));
-      $('#sync_schedule_form').submit();
-  });
-  $('.left_panel').resizable('destroy');
-});
+
+var Katello = angular.module('Katello', ['alchemy', 'alch-templates', 'ngSanitize']);
