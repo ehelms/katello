@@ -1,7 +1,11 @@
 @import "katello_colors";
 
+$menu-item_hover: #64686C;
+
 #orgSwitcherNav {
   margin-left: 20px;
+  height: 40px;
+  border-right: 1px solid $menu-item_hover;
 
   .favorite {
     margin-left: 10px;
