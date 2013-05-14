@@ -18,22 +18,18 @@
 
 = content_for(:body) do
   %article{ 'ng-app' => 'Katello' }
-    = render :file => "common/menu"
-    -#%section.subnav-container
-      .center
-        %nav.subnav#subnav
-          = render_main_sub_menu
+    = render :file => "bastion/components/menu"
     %section.maincontent
       = yield
 
 = content_for(:javascripts_block) do
   = javascript_include_tag "common/vendor"
+  = javascript_include_tag "bastion"
   %script{ :type => "text/javascript" }
     - if defined?(experimental_ui)
       :plain
         $.bbq = undefined;
   = javascript_include_tag :common
-  = javascript_include_tag 'common/experimental'
   %script{ :type => "text/javascript" }
     -if protect_against_forgery?
       :plain
@@ -46,4 +42,4 @@
 
   = yield :javascripts
 
-= render :file => 'alchemy/layouts/base'
+= render :template => 'alchemy/layouts/base'
