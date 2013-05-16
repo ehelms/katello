@@ -13,8 +13,9 @@ Gem::Specification.new do |s|
   s.summary     = "Summary of Bastion."
   s.description = "Description of Bastion."
 
-  s.files = Dir["{app,config,lib}/**/*"] + ["Rakefile", "README"]
+  s.files = Dir["{app,config,lib}/**/*"] + ["README"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.8"
+  s.add_dependency "ui_alchemy-rails"
 end

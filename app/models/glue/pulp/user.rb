@@ -60,6 +60,7 @@ module Glue::Pulp::User
     end
 
     def del_pulp_user
+      debugger
       Runcible::Resources::User.delete(self.remote_id)
     rescue => e
       Rails.logger.error "Failed to delete pulp user #{self.remote_id}: #{e}, #{e.backtrace.join("\n")}"
