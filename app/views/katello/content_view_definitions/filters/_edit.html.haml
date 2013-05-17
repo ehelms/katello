@@ -1,0 +1,38 @@
+= javascript 'katello/widgets/tabs'
+
+= render :partial => "katello/content_view_definitions/tupane_header"
+
+= content_for :content do
+
+  .grid_12#filter
+
+    .panel_link
+      = link_to(_("◀ Back to Filter List"),
+        katello_content_view_definition_filters_path(view_definition.id))
+
+    %br
+    %h4 #{_("Filter: %{name}") % {:name => filter.name}}
+
+    #filter_tabs.hidden
+      %ul
+        %li
+          %a{:href=>"##rules"} #{_("Rules")}
+        %li
+          %a{:href=>"##repos"} #{_("Repositories")}
+
+      %div#rules
+        = render :partial => "katello/content_view_definitions/filters/list_rules",
+                 :locals => {:editable => editable,
+                             :view_definition => view_definition,
+                             :filter => filter}
+
+      %div#repos
+        = render :partial => "katello/common/common_product_repo_selector",
+                 :locals => {:editable => editable,
+                             :organization => view_definition.organization,
+                             :record => filter,
+                             :readable_products => nil,
+                             :editable_products => nil,
+                             :save_url => katello_content_view_definition_filter_path(view_definition.id, filter.id)}
+
+= render :template => "katello/layouts/tupane_layout"

@@ -1,0 +1,31 @@
+= content_for :title do
+  #{_("New View Definition")}
+
+= content_for :content do
+  .clear
+    &nbsp;
+  #content_view_definition_create
+    = kt_form_for Katello::ContentViewDefinition.new do |form|
+
+      = form.text_field :name, :label => _("Name"), :class => :name_input
+
+      = form.field :label, :label => _("Label") do
+        = text_field_tag('katello_content_view_definition[label]', nil,
+                         :tabindex => form.tabindex, :size => 30, :class => :label_input,
+                         'data-url' => default_label_katello_content_view_definitions_path)
+        = image_tag "icons/spinner.gif", :class => 'label_spinner hidden'
+
+      - if Organization.current
+        = form.select :organization_id, options_from_collection_for_select([Organization.current], :id, :name)
+      - else
+        -# TODO: ENGINIFY: list of orgs will need to be updated based on user perms (e.g. readable)
+        = form.select :organization_id, options_from_collection_for_select(Organization.all, :id, :name)
+
+      = form.text_area :description, :size => "40x5", :label => _("Description"), :maxlength => default_description_limit
+
+      = form.field :composite, :label => _("Composite?") do
+        = check_box_tag 'katello_content_view_definition[composite]', "1", false, :tabindex => form.tabindex
+
+      = form.submit _("Create"), :disable_with => _("Creating..."), :class => 'create_button'
+
+= render :template => "katello/layouts/tupane_layout"

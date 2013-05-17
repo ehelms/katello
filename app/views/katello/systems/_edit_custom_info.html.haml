@@ -1,0 +1,10 @@
+= javascript 'katello/widgets/jquery.jeditable.helpers', 'katello/systems/system_edit'
+
+= render :partial => "katello/systems/system_tupane_header_nav"
+
+= render :partial => "katello/custom_info/edit",
+         :locals => { :informable => @system,
+                      :informable_type => "system",
+                      :informable_id => @system.id }
+
+= render :template => "katello/layouts/tupane_layout"
