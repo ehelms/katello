@@ -23,3 +23,4 @@
 //= require "common/notices"
 //= require "common/env_select_scroll"
 //= require "common/env_select"
+//= require "common/menu"

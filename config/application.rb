@@ -162,7 +162,8 @@ module Src
       if path =~ /\.(css|js)\z/
         full_path = Rails.application.assets.resolve(path).to_path
         app_assets_path = Rails.root.join('app', 'assets').to_path
-        if full_path.starts_with? app_assets_path
+        engine_assets_path = Rails.root.join('engines').to_path
+        if full_path.starts_with?(app_assets_path) || full_path.starts_with?(engine_assets_path)
           puts "including asset: " + full_path
           true
         else
