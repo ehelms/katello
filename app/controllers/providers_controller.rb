@@ -104,6 +104,7 @@ class ProvidersController < ApplicationController
   end
 
   def edit
+    debugger
     render :partial => "edit", :locals => {:provider => @provider, :editable=>@provider.editable?,
                                                                        :repositories_cloned_in_envrs=>repositories_cloned_in_envrs,
                                                                        :name=>controller_display_name}

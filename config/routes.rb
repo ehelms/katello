@@ -329,36 +329,38 @@ Src::Application.routes.draw do
     end
   end
 
-  resources :providers do
-    collection do
-      get :auto_complete_search
-      put :refresh_products
-    end
+  scope "(organizations/:organization)" do
+    resources :providers do
+      collection do
+        get :auto_complete_search
+        put :refresh_products
+      end
 
-    resources :products do
-      get :default_label, :on => :collection
-
-      resources :repositories, :only => [:new, :create, :edit, :destroy] do
+      resources :products do
         get :default_label, :on => :collection
-        member do
-          put :update_gpg_key, :as => :update_repo_gpg_key
+
+        resources :repositories, :only => [:new, :create, :edit, :destroy] do
+          get :default_label, :on => :collection
+          member do
+            put :update_gpg_key, :as => :update_repo_gpg_key
+          end
         end
       end
-    end
-    collection do
-      get :items
-      get :redhat_provider
-      post :redhat_provider, :action => :update_redhat_provider
-    end
-    member do
-      get :repo_discovery
-      get :discovered_repos
-      get :new_discovered_repos
-      post :discover
-      post :cancel_discovery
-      get :products_repos
-      get :manifest_progress
-      get :schedule
+      collection do
+        get :items
+        get :redhat_provider
+        post :redhat_provider, :action => :update_redhat_provider
+      end
+      member do
+        get :repo_discovery
+        get :discovered_repos
+        get :new_discovered_repos
+        post :discover
+        post :cancel_discovery
+        get :products_repos
+        get :manifest_progress
+        get :schedule
+      end
     end
   end
 

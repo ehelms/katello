@@ -201,7 +201,11 @@ class ApplicationController < ActionController::Base
     end
     begin
       if @current_org.nil? && current_user
-        o = Organization.find(session[:current_organization_id])
+        if params[:organization]
+          o = Organization.find_by_label(params[:organization])
+        else
+          o = Organization.find(session[:current_organization_id])
+        end
         if current_user.allowed_organizations.include?(o)
           @current_org = o
         else
@@ -291,6 +295,7 @@ class ApplicationController < ActionController::Base
       execute_after_filters
       raise Errors::SecurityViolation, _("User does not belong to an organization.")
     end
+    Rails.application.routes.default_url_options[:organization] = current_organization.label
   end
 
   # TODO this check can be removed once we start deleting sessions during org deletion
