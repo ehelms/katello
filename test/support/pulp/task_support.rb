@@ -13,32 +13,26 @@
 require 'minitest_helper'
 
 
-module ConsumerSupport
+module TaskSupport
 
-  @consumer = nil
-
-  def self.consumer_id
-    @consumer.id
+  def self.wait_on_tasks(task_list)
+    task_list.each do |task|
+      wait_on_task(task)
+    end
   end
 
-  def self.consumer
-    @consumer
-  end
-
-  def self.create_consumer(consumer_id)
-    @consumer = System.find(consumer_id)
-    @consumer.set_pulp_consumer
+  def self.wait_on_task(task)
+    while !(['finished', 'error', 'timed_out', 'canceled', 'reset', 'success'].include?(task['state'])) do
+      task = PulpSyncStatus.pulp_task(Runcible::Resources::Task.poll(task['progress']["task_id"]))
+      sleep_if_needed
+    end
   rescue => e
-    puts e
-    puts e.backtrace
-  ensure
-    return @consumer
   end
 
-  def self.destroy_consumer
-    @consumer.del_pulp_consumer
-  rescue RestClient::ResourceNotFound => e
-    #ignore if not found
+  def self.sleep_if_needed
+    if VCR.configuration.default_cassette_options[:record] != :none
+      sleep 0.5 # do not overload backend engines
+    end
   end
 
 end

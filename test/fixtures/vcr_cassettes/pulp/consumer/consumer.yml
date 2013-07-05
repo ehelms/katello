@@ -1,0 +1,161 @@
+--- 
+http_interactions: 
+- request: 
+    method: post
+    uri: https://localhost.localdomain/pulp/api/v2/consumers/010E99C0-3276-11E2-81C1-0800200C9A66/profiles//
+    body: 
+      encoding: US-ASCII
+      string: "{\"content_type\":\"rpm\",\"profile\":[{\"vendor\":\"FedoraHosted\",\"name\":\"elephant\",\"version\":\"0.3\",\"release\":\"0.8\",\"arch\":\"noarch\"}]}"
+    headers: 
+      Accept: 
+      - application/json
+      Accept-Encoding: 
+      - gzip, deflate
+      Content-Type: 
+      - application/json
+      Authorization: 
+      - OAuth oauth_body_hash="2jmj7l5rSw0yVb%2FvlWAYkK%2FYBwk%3D", oauth_consumer_key="katello", oauth_nonce="zAVBQ858aL1W4w1JX25UObVbjzr41WyqKUPFiRVI", oauth_signature="Iop4J9IEKRDze%2BAbHQGRgYEbtek%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1374503220", oauth_version="1.0"
+      Pulp-User: 
+      - admin
+      Content-Length: 
+      - "126"
+      User-Agent: 
+      - Ruby
+  response: 
+    status: 
+      code: 201
+      message: Created
+    headers: 
+      Date: 
+      - Mon, 22 Jul 2013 14:27:00 GMT
+      Server: 
+      - Apache/2.4.4 (Fedora) OpenSSL/1.0.1c-fips PHP/5.4.9 mod_wsgi/3.4 Python/2.7.3 mod_perl/2.0.7 Perl/v5.16.3
+      Location: 
+      - /pulp/api/v2/consumers/010E99C0-3276-11E2-81C1-0800200C9A66/profiles/010E99C0-3276-11E2-81C1-0800200C9A66/rpm/
+      Content-Length: 
+      - "428"
+      Content-Type: 
+      - application/json
+    body: 
+      encoding: US-ASCII
+      string: "{\"profile\": [{\"release\": \"0.8\", \"vendor\": \"FedoraHosted\", \"version\": \"0.3\", \"arch\": \"noarch\", \"name\": \"elephant\"}], \"_href\": \"/pulp/api/v2/consumers/010E99C0-3276-11E2-81C1-0800200C9A66/profiles/010E99C0-3276-11E2-81C1-0800200C9A66/rpm/\", \"_ns\": \"consumer_unit_profiles\", \"consumer_id\": \"010E99C0-3276-11E2-81C1-0800200C9A66\", \"content_type\": \"rpm\", \"_id\": {\"$oid\": \"51ed4134e138235ea6b21ce1\"}, \"id\": \"51ed4134e138235ea6b21ce1\"}"
+    http_version: 
+  recorded_at: Mon, 22 Jul 2013 14:27:01 GMT
+- request: 
+    method: post
+    uri: https://localhost.localdomain/pulp/api/v2/consumers/
+    body: 
+      encoding: US-ASCII
+      string: "{\"id\":\"010E99C0-3276-11E2-81C1-0800200C9A66\",\"display_name\":\"Simple Server\"}"
+    headers: 
+      Accept: 
+      - application/json
+      Accept-Encoding: 
+      - gzip, deflate
+      Content-Type: 
+      - application/json
+      Authorization: 
+      - OAuth oauth_body_hash="2jmj7l5rSw0yVb%2FvlWAYkK%2FYBwk%3D", oauth_consumer_key="katello", oauth_nonce="0rfSJeXyZyWks7RW6Ae2S4oiZq22sVl1nQa6Vt31DUQ", oauth_signature="G1EhU2r3%2FqDzPSPP4oWe24ul8Zo%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1374503221", oauth_version="1.0"
+      Pulp-User: 
+      - admin
+      Content-Length: 
+      - "76"
+      User-Agent: 
+      - Ruby
+  response: 
+    status: 
+      code: 201
+      message: Created
+    headers: 
+      Date: 
+      - Mon, 22 Jul 2013 14:27:01 GMT
+      Server: 
+      - Apache/2.4.4 (Fedora) OpenSSL/1.0.1c-fips PHP/5.4.9 mod_wsgi/3.4 Python/2.7.3 mod_perl/2.0.7 Perl/v5.16.3
+      Location: 
+      - "{'_href': u'/pulp/api/v2/consumers/010E99C0-3276-11E2-81C1-0800200C9A66/'}"
+      Content-Length: 
+      - "2191"
+      Content-Type: 
+      - application/json
+    body: 
+      encoding: US-ASCII
+      string: "{\"display_name\": \"Simple Server\", \"description\": null, \"certificate\": \"-----BEGIN RSA PRIVATE KEY-----\\nMIICXQIBAAKBgQDCgG89jbv55QU6k7dlwVCgeW6Tq09c4P59F71II9ZjMNjhvgm4\\nukrOhG/WB6C2mSTpcEPQMP6rjTqd20GVs8XvwmZG1V1rry9uXEXh/boGsIsf/4Ff\\nZlo4wC8lmBRx0hdxgx7gaqQ3L0RF85Wys9Flr2cePIQ9eSahHHH+9CNbwQIDAQAB\\nAoGBAMCREhGaIvK9mRiuqRO4ek/3CdBv+koVhEBrYX5r5NUdxoxxbwSShH/ExUjd\\nEnPWWaI5ARq9d1Z3pAIn0t4ZN6x4LGcxvBWDCNPJz3A5T0Ov1T09voqnED3/ifpf\\niJbj3FSexzvzzindf59vZgGBRkMyB7r4iLWWLYfmBX9aZdzxAkEA336oJlsKRXs0\\ntIZyWsntJziwxyKwTM+ROMowQq+zI66jnc76dFHB+Lq0JFQxx12CBiSV79F+wYKN\\nHJcYYRW9pQJBAN7KSLdCFCYa/CWyfrF6lraLgkjd2hZAZJ95Nu6yoVFJx4T9GKs6\\nYVBFhdXIqbnupl4ZeeTM2v6pkODds1HRgu0CQAedcCtGZNYzOXuBLTpMsQjqFJPk\\naa9kTyVpNjW/eNIZbDe/SqdV9c78xZCLUdriI8ED1BwEvlXnldlIiKseK4UCQHkG\\nJ+QtKCbfB9Qul3Yv4sk9FcQhiAQIbODYhwe5z7oJuzG6D3mMmCpz6dUNUW3of0Wk\\nzzuEMP6f/Ey7AltS1a0CQQCa1gTCBFw8jnygPxSwY99VZ2va47JrR0aiNZ6DOdHI\\nzLHBMJS8SZdTBK/2JbtbdI7sPHLLE7SDJMUc5YcQpcJk\\n-----END RSA PRIVATE KEY-----\\n-----BEGIN CERTIFICATE-----\\nMIICoTCCAYkCAgYgMA0GCSqGSIb3DQEBBQUAMIGAMQswCQYDVQQGEwJVUzEXMBUG\\nA1UECBMOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcTB1JhbGVpZ2gxEDAOBgNVBAoT\\nB1NvbWVPcmcxFDASBgNVBAsTC1NvbWVPcmdVbml0MR4wHAYDVQQDExVsb2NhbGhv\\nc3QubG9jYWxkb21haW4wHhcNMTMwNzIyMTQyNzAxWhcNMjMwNzIwMTQyNzAxWjAv\\nMS0wKwYDVQQDEyQwMTBFOTlDMC0zMjc2LTExRTItODFDMS0wODAwMjAwQzlBNjYw\\ngZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMKAbz2Nu/nlBTqTt2XBUKB5bpOr\\nT1zg/n0XvUgj1mMw2OG+Cbi6Ss6Eb9YHoLaZJOlwQ9Aw/quNOp3bQZWzxe/CZkbV\\nXWuvL25cReH9ugawix//gV9mWjjALyWYFHHSF3GDHuBqpDcvREXzlbKz0WWvZx48\\nhD15JqEccf70I1vBAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAJ5kva+Sw6P4oiBm\\nskgIbU5iOnMd0+1fRBv0h6OuT2sXLzcoCh1JsQYvOQHJo6JBHy3wd/dgXcBLDGR/\\nRDw3rQ7A5U+h1VavZTcbFvilrIwbfySWb1N84XXCE/LHeEhnp4Rp862IlR50zlnt\\ntTVSYaae/S+Sw+K2Dl4VoYFlO8qxhnQ6UZGTUzw5kQw3quDWlk1kpZcDg1DIArb2\\nIH0IA6BSNPuA7heG8VYk45cIfgZsf3ZotlAwfSAcnoMIcQVYXcfUicpH0aMD7OSY\\nSCoid8D1TkU4MIFluOI/UeglsU60fkiDR0jcx6YLdcNG5AlDxxrTYX4S7erTWBNE\\nbClpm/k=\\n-----END CERTIFICATE-----\", \"_ns\": \"consumers\", \"notes\": {}, \"capabilities\": {}, \"_id\": {\"$oid\": \"51ed4135e138235ea6b21cf4\"}, \"id\": \"010E99C0-3276-11E2-81C1-0800200C9A66\", \"_href\": {\"_href\": \"/pulp/api/v2/consumers/010E99C0-3276-11E2-81C1-0800200C9A66/\"}}"
+    http_version: 
+  recorded_at: Mon, 22 Jul 2013 14:27:01 GMT
+- request: 
+    method: put
+    uri: https://localhost.localdomain/pulp/api/v2/consumers/010E99C0-3276-11E2-81C1-0800200C9A66/
+    body: 
+      encoding: US-ASCII
+      string: "{\"delta\":{\"display_name\":\"Not So Simple Server\"}}"
+    headers: 
+      Accept: 
+      - application/json
+      Accept-Encoding: 
+      - gzip, deflate
+      Content-Type: 
+      - application/json
+      Authorization: 
+      - OAuth oauth_body_hash="2jmj7l5rSw0yVb%2FvlWAYkK%2FYBwk%3D", oauth_consumer_key="katello", oauth_nonce="uBKsH1fibfhOpHPCkhlfDt0Jdj5SGwhKd7HFP4eVPA", oauth_signature="A4eobx%2BBSZbx6itJxHTRyDYJy%2Fw%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1374503221", oauth_version="1.0"
+      Pulp-User: 
+      - admin
+      Content-Length: 
+      - "49"
+      User-Agent: 
+      - Ruby
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Date: 
+      - Mon, 22 Jul 2013 14:27:01 GMT
+      Server: 
+      - Apache/2.4.4 (Fedora) OpenSSL/1.0.1c-fips PHP/5.4.9 mod_wsgi/3.4 Python/2.7.3 mod_perl/2.0.7 Perl/v5.16.3
+      Content-Length: 
+      - "1285"
+      Content-Type: 
+      - application/json
+    body: 
+      encoding: US-ASCII
+      string: "{\"display_name\": \"Not So Simple Server\", \"description\": null, \"certificate\": \"-----BEGIN CERTIFICATE-----\\nMIICoTCCAYkCAgYgMA0GCSqGSIb3DQEBBQUAMIGAMQswCQYDVQQGEwJVUzEXMBUG\\nA1UECBMOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcTB1JhbGVpZ2gxEDAOBgNVBAoT\\nB1NvbWVPcmcxFDASBgNVBAsTC1NvbWVPcmdVbml0MR4wHAYDVQQDExVsb2NhbGhv\\nc3QubG9jYWxkb21haW4wHhcNMTMwNzIyMTQyNzAxWhcNMjMwNzIwMTQyNzAxWjAv\\nMS0wKwYDVQQDEyQwMTBFOTlDMC0zMjc2LTExRTItODFDMS0wODAwMjAwQzlBNjYw\\ngZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMKAbz2Nu/nlBTqTt2XBUKB5bpOr\\nT1zg/n0XvUgj1mMw2OG+Cbi6Ss6Eb9YHoLaZJOlwQ9Aw/quNOp3bQZWzxe/CZkbV\\nXWuvL25cReH9ugawix//gV9mWjjALyWYFHHSF3GDHuBqpDcvREXzlbKz0WWvZx48\\nhD15JqEccf70I1vBAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAJ5kva+Sw6P4oiBm\\nskgIbU5iOnMd0+1fRBv0h6OuT2sXLzcoCh1JsQYvOQHJo6JBHy3wd/dgXcBLDGR/\\nRDw3rQ7A5U+h1VavZTcbFvilrIwbfySWb1N84XXCE/LHeEhnp4Rp862IlR50zlnt\\ntTVSYaae/S+Sw+K2Dl4VoYFlO8qxhnQ6UZGTUzw5kQw3quDWlk1kpZcDg1DIArb2\\nIH0IA6BSNPuA7heG8VYk45cIfgZsf3ZotlAwfSAcnoMIcQVYXcfUicpH0aMD7OSY\\nSCoid8D1TkU4MIFluOI/UeglsU60fkiDR0jcx6YLdcNG5AlDxxrTYX4S7erTWBNE\\nbClpm/k=\\n-----END CERTIFICATE-----\", \"_ns\": \"consumers\", \"notes\": {}, \"capabilities\": {}, \"_id\": {\"$oid\": \"51ed4135e138235ea6b21cf4\"}, \"id\": \"010E99C0-3276-11E2-81C1-0800200C9A66\", \"_href\": \"/pulp/api/v2/consumers/010E99C0-3276-11E2-81C1-0800200C9A66/\"}"
+    http_version: 
+  recorded_at: Mon, 22 Jul 2013 14:27:01 GMT
+- request: 
+    method: delete
+    uri: https://localhost.localdomain/pulp/api/v2/consumers/010E99C0-3276-11E2-81C1-0800200C9A66/
+    body: 
+      encoding: US-ASCII
+      string: ""
+    headers: 
+      Accept: 
+      - application/json
+      Accept-Encoding: 
+      - gzip, deflate
+      Content-Type: 
+      - application/json
+      Authorization: 
+      - OAuth oauth_consumer_key="katello", oauth_nonce="Pvfj6fkhgM7JXPVivLHOgbjK8yPphUdICkqXLKvcwQ", oauth_signature="q4MWeda%2FL2hTFV4LkLaJzmknLEc%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1374503221", oauth_version="1.0"
+      Pulp-User: 
+      - admin
+      User-Agent: 
+      - Ruby
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Date: 
+      - Mon, 22 Jul 2013 14:27:01 GMT
+      Server: 
+      - Apache/2.4.4 (Fedora) OpenSSL/1.0.1c-fips PHP/5.4.9 mod_wsgi/3.4 Python/2.7.3 mod_perl/2.0.7 Perl/v5.16.3
+      Content-Length: 
+      - "4"
+      Content-Type: 
+      - application/json
+    body: 
+      encoding: US-ASCII
+      string: "null"
+    http_version: 
+  recorded_at: Mon, 22 Jul 2013 14:27:01 GMT
+recorded_with: VCR 2.5.0
