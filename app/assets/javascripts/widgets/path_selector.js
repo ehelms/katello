@@ -53,6 +53,8 @@ KT.path_select = function(div_id, name, environments, options_in){
             options.link_first = default_opt(options_in.link_first, true);
             options.expand = default_opt(options_in.expand, true);
             options.footer = default_opt(options_in.footer, false);
+        
+            options.selected = default_opt(options_in.selected, undefined);
 
             $(div).append(KT.path_select_template.selector(environments, paths_id, options.submit_button_text, options.cancel_button_text, options.footer));
             path_selector = $("#" + paths_id);
@@ -99,8 +101,12 @@ KT.path_select = function(div_id, name, environments, options_in){
                 }
             }
 
+            if (options.selected) {
+                select(options.selected);
+            }
+
             $(document).mouseup(function(e){
-                if(path_selector.has(e.target).length === 0){
+                if(path_selector.has(e.target).length === 0 && !options.inline) {
                     path_selector.hide();
                 }
             });

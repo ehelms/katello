@@ -137,6 +137,7 @@ Src::Application.routes.draw do
           put :checkin
         end
         collection do
+          get :systems_registerable
           match "/tasks/:id" => "tasks#show", :via => :get
         end
         resources :subscriptions, :only => [:create, :index, :destroy] do

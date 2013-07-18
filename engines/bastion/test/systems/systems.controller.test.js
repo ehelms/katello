@@ -32,13 +32,13 @@ describe('Controller: SystemsController', function() {
             apiSystemsPath: function() { return '/api/systems';},
             editSystemPath: function(id) { return '/system/' + id;}
         };
-        System = {};
+        Systems = {};
     });
 
     // Initialize controller
     beforeEach(inject(function($controller, $rootScope) {
         $scope = $rootScope.$new();
-        $controller('SystemsController', {$scope: $scope, $state: $state, Nutupane: Nutupane, System: System});
+        $controller('SystemsController', {$scope: $scope, $state: $state, Nutupane: Nutupane, Systems: Systems});
     }));
 
     it("provides a way to get the status color for the system.", function() {

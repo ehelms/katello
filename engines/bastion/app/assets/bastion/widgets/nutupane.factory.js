@@ -60,7 +60,7 @@ angular.module('Bastion.widgets').factory('Nutupane',
 
                 self.table.working = true;
                 var deferred = $q.defer();
-                self.table.resource.get(params, function(resource) {
+                self.table.resource.get(params).then(function(resource) {
                     deferred.resolve(resource);
                     self.table.working = false;
                 });

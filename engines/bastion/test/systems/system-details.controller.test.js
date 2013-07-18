@@ -21,7 +21,7 @@ describe('Controller: SystemDetailsController', function() {
     beforeEach(inject(function(_$controller_, $rootScope) {
         $controller = _$controller_;
         $scope = $rootScope.$new();
-        // Mocks
+
         mockSystem = {
             facts: {
                 cpu: "Itanium",
@@ -30,33 +30,37 @@ describe('Controller: SystemDetailsController', function() {
                 anotherFact: "yes"
             }
         };
-        System = {
+        Systems = {
             get: function() {
                 return mockSystem;
             },
             releaseVersions: function() {}
         };
-        spyOn(System, 'get').andCallThrough();
-        spyOn(System, 'releaseVersions').andReturn(['RHEL6']);
+    
+        Environments = {};
+        ContentViews = {};
+
+        spyOn(Systems, 'get').andReturn({value: 'yo'});
+        spyOn(Systems, 'releaseVersions').andReturn(['RHEL6']);
 
         $scope.$stateParams = {systemId: 2};
 
-        $controller('SystemDetailsController', {$scope: $scope, System: System});
+        $controller('SystemDetailsController', {$scope: $scope, Systems: Systems, Environments: Environments, ContentViews: ContentViews });
     }));
 
     it("gets the system using the System service and puts it on the $scope.", function() {
-        expect(System.get).toHaveBeenCalledWith({id: 2}, jasmine.any(Function));
+        expect(Systems.get).toHaveBeenCalledWith({id: 2}, jasmine.any(Function));
         expect($scope.system).toBe(mockSystem);
     });
 
     it("gets the available release versions and puts them on the $scope", function() {
-        expect(System.releaseVersions).toHaveBeenCalledWith({id: 2});
+        expect(Systems.releaseVersions).toHaveBeenCalledWith({id: 2});
         expect($scope.releaseVersions).toEqual(['RHEL6']);
     });
 
     describe("populates advanced system information", function () {
         beforeEach(function() {
-            System.get = function(systemId, callback) {
+            Systems.get = function(systemId, callback) {
                 callback.apply();
             }
             $controller('SystemDetailsController', {$scope: $scope, System: System});

@@ -26,10 +26,10 @@
  *   within the table.
  */
 angular.module('Bastion.systems').controller('SystemsController',
-    ['$scope', '$state', 'Nutupane', 'System',
-    function($scope, $state, Nutupane, System) {
+    ['$scope', '$state', 'Nutupane', 'Systems',
+    function($scope, $state, Nutupane, Systems) {
 
-        var nutupane = new Nutupane(System);
+        var nutupane = new Nutupane(Systems);
         $scope.table = nutupane.table;
 
         $scope.getStatusColor = function(status) {

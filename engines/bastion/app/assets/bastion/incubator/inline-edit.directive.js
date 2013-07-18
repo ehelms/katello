@@ -40,6 +40,9 @@ angular.module('alchemy')
         $scope.edit = function() {
             $scope.editMode = true;
             previousValue = $scope.model;
+            $scope.handleOptions().then(function(options) {
+                $scope.options = options.records;
+            });
         };
 
         $scope.save = function() {
@@ -51,7 +54,14 @@ angular.module('alchemy')
             $scope.editMode = false;
             $scope.model = previousValue;
             $scope.handleCancel({ value: $scope.model });
+            console.log($scope);
         };
+
+        $scope.$watch('triggerEdit', function(edit) {
+            if (edit) {
+
+            }
+        });
     }])
     .directive('alchEditText', function() {
         return {
@@ -86,12 +96,16 @@ angular.module('alchemy')
             replace: true,
             scope: {
                 model: '=alchEditSelect',
-                options: '=options',
+                object: '=',
+                handleOptions: '&onOptions',
                 handleSave: '&onSave',
-                handleCancel: '&onCancel'
+                handleCancel: '&onCancel',
+                triggerEdit: '='
             },
             template: '<div>' +
-                        '<select ng-model="model" ng-options="option for option in options" ng-show="editMode">' +
+                        '<select ng-model="object" ' +
+                                 'ng-options="option.id as option.name for option in options" ' +
+                                 'ng-show="editMode">' +
                         '</select>' +
                         '<div alch-edit></div>' +
                       '</div>'

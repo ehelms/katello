@@ -13,32 +13,37 @@
 
 /**
  * @ngdoc service
- * @name  Katello.systems.factory:Systems
+ * @name  Bastion.environments.factory:Environments
  *
  * @requires $resource
  * @requires $q
+ * @requires $http
  * @requires Collection
  * @requires Routes
+ * @requires CurrentOrganization
  *
  * @description
- *   Provides a $resource for system or list of systems.
+ *   Provides a $resource for interacting with environments.
  */
-angular.module('Bastion.systems').factory('Systems',
-    ['$resource', '$q', 'Collection', 'Routes',
-    function($resource, $q, Collection, Routes) {
-        var resource = $resource(Routes.apiSystemsPath() + '/:id/:action', {id: '@uuid'}, {
-                update: { method: 'PUT'},
-                query: { method: 'GET'},
-                releaseVersions: { method: 'GET', params: {action: 'releases'}}
-            });
+angular.module('Bastion.environments').factory('Environments',
+    ['$resource', '$q', '$http', 'Collection', 'Routes', 'CurrentOrganization',
+    function($resource, $q, $http, Collection, Routes, CurrentOrganization) {
+        var resource = $resource(Routes.apiEnvironmentPath(CurrentOrganization) + '/:id/:action',
+            {id: '@id'}, 
+            {
+                update: { method: 'PUT' },
+                query:  { method: 'GET' }
+            }
+        );
 
         var collection = new Collection(resource);
 
-        collection.releaseVersions = function(args) {
+        collection.paths = function(args) {
             var deferred = $q.defer();
 
-            resource.releaseVersions(args, function(data) {
-                deferred.resolve(data.releases);
+            $http.get(Routes.organizationEnvironmentsPath(CurrentOrganization) + '/registerable_paths')
+            .success(function(data) {
+                deferred.resolve(data);
             });
 
             return deferred.promise;
