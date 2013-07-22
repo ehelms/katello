@@ -17,7 +17,7 @@ require './test/support/pulp/task_support'
 module RepositorySupport
   include TaskSupport
 
-  @repo_url = "file:///var/www/test_repo"
+  @repo_url = "file:///var/www/test_repos/zoo"
   @repo     = nil
 
   def self.repo_id
@@ -43,7 +43,7 @@ module RepositorySupport
     @repo.feed = @repo_url
 
     @repo.create_pulp_repo
-  rescue => e
+  rescue RestClient::ResourceNotFound => e
   ensure
     return @repo
   end
@@ -51,12 +51,11 @@ module RepositorySupport
   def self.sync_repo
     tasks = @repo.sync
     TaskSupport.wait_on_tasks(tasks)
-  rescue => e
   end
 
   def self.destroy_repo
     @repo.destroy_repo
-  rescue => e
+  rescue RestClient::ResourceNotFound => e
   end
 
 end

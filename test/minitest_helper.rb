@@ -54,7 +54,6 @@ class Minitest::Rails::ActionController::TestCase
   include ControllerSupport
 end
 
-
 module VCR
   def self.live?
     VCR.configuration.default_cassette_options[:record] != :none
@@ -71,7 +70,7 @@ def configure_vcr
   end
 
   if mode != :none
-    system("sudo cp -rf #{File.expand_path('../', __FILE__)}/fixtures/test_repo /var/www/")
+    system("sudo cp -rf #{File.expand_path('../', __FILE__)}/fixtures/test_repos /var/www/")
   end
 
   VCR.configure do |c|

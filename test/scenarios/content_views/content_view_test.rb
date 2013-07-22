@@ -13,7 +13,7 @@
 require 'digest'
 
 require 'minitest_helper'
-require './test/support/repository_support'
+require './test/support/pulp/repository_support'
 
 class ContentViewScenarioTest < MiniTest::Rails::ActiveSupport::TestCase
   extend ActiveRecord::TestFixtures
@@ -29,7 +29,7 @@ class ContentViewScenarioTest < MiniTest::Rails::ActiveSupport::TestCase
     loaded_fixtures = load_fixtures
 
     models = ["Organization", "KTEnvironment", "User", "ContentViewEnvironment","ContentViewDefinitionBase",
-              "ContentViewDefinition", "Repository", "ContentView", "EnvironmentProduct", "ContentViewVersion",
+              "ContentViewDefinition", "Repository", "ContentView", "ContentViewVersion",
               "ComponentContentView", "System", "Product", "ContentViewVersion", "ContentViewDefinitionArchive",
               "Filter", "PackageRule", "ErratumRule", "Changeset", "PromotionChangeset"]
     disable_glue_layers([], models, true)

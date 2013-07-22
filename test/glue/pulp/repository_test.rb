@@ -34,7 +34,7 @@ class GluePulpRepoTestBase < MiniTest::Rails::ActiveSupport::TestCase
 
     @@fedora_17_x86_64 = Repository.find(@loaded_fixtures['repositories']['fedora_17_x86_64']['id'])
     @@fedora_17_x86_64.relative_path = '/test_path/'
-    @@fedora_17_x86_64.feed = "file:///var/www/test_repo"
+    @@fedora_17_x86_64.feed = "file:///var/www/test_repos/zoo"
   end
 
 end
@@ -294,8 +294,11 @@ class GluePulpRepoAddContentTest < GluePulpRepoTestBase
     task_list = @@fedora_17_x86_64.sync
     TaskSupport.wait_on_tasks(task_list)
 
-    task_list = @@fedora_17_x86_64.promote(@@library, @@staging)
-    TaskSupport.wait_on_tasks(task_list)
+    #clone_id = @@fedora_17_x86_64.clone_id(@@staging, @@staging.default_content_view)
+    #Runcible::Extensions::Repository.delete(clone_id)
+
+    task = @@fedora_17_x86_64.promote(@@library, @@staging)
+    TaskSupport.wait_on_tasks(task)
 
     clone_id = @@fedora_17_x86_64.clone_id(@@staging, @@staging.default_content_view)
     @@cloned_repo = Repository.where(:pulp_id => clone_id).first

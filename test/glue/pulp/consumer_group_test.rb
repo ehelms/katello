@@ -133,7 +133,7 @@ class GluePulpConsumerGroupRequiresBoundRepoTest < GluePulpConsumerGroupTestBase
   def test_install_package
     job = @simple_group.install_package(['elephant'])
     task = job.first
-    TaskSupport.wait_on_task(task)
+    TaskSupport.wait_on_tasks(task, :ignore_exception => true)
 
     assert_includes task['tags'], 'pulp:action:unit_install'
   end
@@ -141,7 +141,7 @@ class GluePulpConsumerGroupRequiresBoundRepoTest < GluePulpConsumerGroupTestBase
   def test_uninstall_package
     job = @simple_group.uninstall_package(['cheetah'])
     task = job.first
-    TaskSupport.wait_on_task(task)
+    TaskSupport.wait_on_tasks(task, :ignore_exception => true)
 
     assert_includes task['tags'], 'pulp:action:unit_uninstall'
   end
@@ -149,7 +149,7 @@ class GluePulpConsumerGroupRequiresBoundRepoTest < GluePulpConsumerGroupTestBase
   def test_update_package
     job = @simple_group.update_package(['cheetah'])
     task = job.first
-    TaskSupport.wait_on_task(task)
+    TaskSupport.wait_on_tasks(task, :ignore_exception => true)
 
     assert_includes task['tags'], 'pulp:action:unit_update'
   end
@@ -157,7 +157,7 @@ class GluePulpConsumerGroupRequiresBoundRepoTest < GluePulpConsumerGroupTestBase
   def test_update_all_packages
     job = @simple_group.update_package([])
     task = job.first
-    TaskSupport.wait_on_task(task)
+    TaskSupport.wait_on_tasks(task, :ignore_exception => true)
 
     assert_includes task['tags'], 'pulp:action:unit_update'
   end
@@ -165,7 +165,7 @@ class GluePulpConsumerGroupRequiresBoundRepoTest < GluePulpConsumerGroupTestBase
   def test_install_package_group
     job = @simple_group.install_package_group(['mammals'])
     task = job.first
-    TaskSupport.wait_on_task(task)
+    TaskSupport.wait_on_tasks(task, :ignore_exception => true)
 
     assert_includes task['tags'], 'pulp:action:unit_install'
   end
@@ -173,7 +173,7 @@ class GluePulpConsumerGroupRequiresBoundRepoTest < GluePulpConsumerGroupTestBase
   def test_uninstall_package_group
     job = @simple_group.uninstall_package_group(['mammals'])
     task = job.first
-    TaskSupport.wait_on_task(task)
+    TaskSupport.wait_on_tasks(task, :ignore_exception => true)
 
     assert_includes task['tags'], 'pulp:action:unit_uninstall'
   end
@@ -182,7 +182,7 @@ class GluePulpConsumerGroupRequiresBoundRepoTest < GluePulpConsumerGroupTestBase
     erratum_id = RepositorySupport.repo.errata.select{ |errata| errata.errata_id == 'RHEA-2010:0002' }.first.id
     job = @simple_group.install_consumer_errata([erratum_id])
     task = job.first
-    TaskSupport.wait_on_task(task)
+    TaskSupport.wait_on_tasks(task, :ignore_exception => true)
 
     assert_includes task['tags'], 'pulp:action:unit_install'
   end
