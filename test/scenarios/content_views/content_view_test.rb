@@ -34,7 +34,7 @@ class ContentViewScenarioTest < MiniTest::Rails::ActiveSupport::TestCase
               "Filter", "PackageRule", "ErratumRule", "Changeset", "PromotionChangeset"]
     disable_glue_layers([], models, true)
 
-    ContentView.redefine_method(:cp_environment_id) do |env|
+    ContentView.redefine_method(:generate_cp_environment_id) do |env|
       #Needed a way to make a consistent environment id in candlepin
       # for VCR cassettes.  Candlepin won't generate one for us
       Digest("MD5").new.update("#{self.organization.label}-#{env.label}-#{self.label}").to_s
@@ -234,7 +234,8 @@ class ContentViewScenarioTest < MiniTest::Rails::ActiveSupport::TestCase
         end
       ensure
         view.versions.each{|v| v.repositories.destroy_all}
-        view.destroy
+        view.delete(@@dev)
+        view.delete(@@org.library)
         @@dev.changeset_history.destroy_all
       end
     end
