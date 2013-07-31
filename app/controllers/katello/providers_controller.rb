@@ -12,8 +12,8 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 module Katello
-  class ProvidersController < ApplicationController
-    include AutoCompleteSearch
+  class ProvidersController < Katello::ApplicationController
+    #include AutoCompleteSearch
 
     before_filter :find_rh_provider, :only => [:redhat_provider]
 
