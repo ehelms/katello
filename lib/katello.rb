@@ -28,4 +28,12 @@ require "ui_alchemy-rails"
 require "headpin"
 
 module Katello
+
+  require "katello/engine"
+  require "katello/home_helper_patch"
+  require "katello/generators/db_generator"
+  require "katello/load_configuration"
+  require "katello/logging"
+  require "katello/actions/actions"
+
 end

@@ -11,10 +11,9 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-
 module Katello
   class PulpTaskStatus < TaskStatus
-    use_index_of TaskStatus if Katello.config.use_elasticsearch
+    use_index_of Katello::TaskStatus if Katello.config.use_elasticsearch
 
     def refresh
       PulpTaskStatus.refresh(self)
