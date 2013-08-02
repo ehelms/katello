@@ -108,14 +108,14 @@ module Katello
 
     if Katello.config.katello?
       TYPES = {
-          :organizations => {:model => Organization, :name => _("Organizations"), :global=>false},
-          :environments => {:model => KTEnvironment, :name => _("Environments"), :global=>false},
-          :activation_keys => { :model => ActivationKey, :name => _("Activation Keys"), :global=>false},
-          :system_groups => {:model => SystemGroup, :name=>_("System Groups"), :global=>false},
-          :providers => { :model => Provider, :name => _("Providers"), :global=>false},
-          :users => { :model => User, :name => _("Users"), :global=>true},
-          :roles => { :model => Role, :name => _("Roles"), :global=>true},
-          :content_view_definitions => { :model => ContentViewDefinition,
+          :organizations => {:model => ::Organization, :name => _("Organizations"), :global=>false},
+          :environments => {:model => Katello::KTEnvironment, :name => _("Environments"), :global=>false},
+          :activation_keys => { :model => Katello::ActivationKey, :name => _("Activation Keys"), :global=>false},
+          :system_groups => {:model => Katello::SystemGroup, :name=>_("System Groups"), :global=>false},
+          :providers => { :model => Katello::Provider, :name => _("Providers"), :global=>false},
+          :users => { :model => ::User, :name => _("Users"), :global=>true},
+          :roles => { :model => Katello::Role, :name => _("Roles"), :global=>true},
+          :content_view_definitions => { :model => Katello::ContentViewDefinition,
             :name => _("Content View Definitions"), :global => false},
           :content_views => { :model => ContentView, :name => _("Content View"), :global => false},
           :all => { :model => DefaultModel, :name => _("All"), :global => false}
