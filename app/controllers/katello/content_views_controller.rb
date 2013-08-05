@@ -37,7 +37,7 @@ module Katello
     end
 
     def refresh
-      initial_version = @view.version(current_organization.library).try(:version)
+      initial_version = @view.version(@view.content_view_definition.organization.library).try(:version)
 
       new_version = @view.refresh_view({:notify => true})
 
@@ -48,7 +48,7 @@ module Katello
              :locals => { :view_definition => @view.content_view_definition, :view => @view,
                           :task => new_version.task_status }
     rescue => e
-      current_version = @view.version(current_organization.library).try(:version)
+      current_version = @view.version(@view.content_view_definition.organization.library).try(:version)
 
       if (current_version == initial_version)
         notify.exception(_("Failed to generate a new version of content view '%{view_name}'.") %

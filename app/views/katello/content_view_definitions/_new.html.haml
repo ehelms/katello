@@ -1,7 +1,3 @@
-= javascript do
-  :plain
-    KT.content_view_definition.set_view_repos($.parseJSON('#{escape_javascript(view_repos(view_definitions).to_json)}'));
-
 = content_for :title do
   #{_("New View Definition")}
 
@@ -19,17 +15,16 @@
                          'data-url' => default_label_katello_content_view_definitions_path)
         = image_tag "icons/spinner.gif", :class => 'label_spinner hidden'
 
+      - if Organization.current
+        = form.select :organization_id, options_from_collection_for_select([Organization.current], :id, :name)
+      - else
+        -# TODO: ENGINIFY: list of orgs will need to be updated based on user perms (e.g. readable)
+        = form.select :organization_id, options_from_collection_for_select(Organization.all, :id, :name)
+
       = form.text_area :description, :size => "40x5", :label => _("Description"), :maxlength => default_description_limit
 
       = form.field :composite, :label => _("Composite?") do
         = check_box_tag 'katello_content_view_definition[composite]', "1", false, :tabindex => form.tabindex
-
-      #select_views.hidden
-        %label
-          = _('Choose Existing Views')
-        = render :partial => "view_definitions", :locals => {:form => form,
-                                                             :view_definitions => view_definitions,
-                                                             :views => nil}
 
       = form.submit _("Create"), :disable_with => _("Creating..."), :class => 'create_button'
 

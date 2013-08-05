@@ -6,8 +6,8 @@
   = render :partial => "katello/common/common_product_repo_selector",
            :locals => {:editable => editable,
                        :record => view_definition,
-                       :readable_products => Katello::Product.readable(current_organization),
-                       :editable_products => Katello::Product.editable(current_organization),
+                       :readable_products => Katello::Product.readable(view_definition.organization),
+                       :editable_products => Katello::Product.editable(view_definition.organization),
                        :save_url => update_content_katello_content_view_definition_path(view_definition.id)}
 
 = render :template => "katello/layouts/tupane_layout"

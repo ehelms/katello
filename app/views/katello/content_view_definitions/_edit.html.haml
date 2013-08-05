@@ -18,6 +18,12 @@
 
     %fieldset
       .grid_2.ra
+        %label #{_("Organization")}:
+      .grid_7.la
+        = view_definition.organization.name
+
+    %fieldset
+      .grid_2.ra
         %label #{_("Description")}:
       .grid_7.la{:style => "word-wrap: break-word;", 'name' => 'view_definition[description]', :class => ("editable edit_textarea" if editable), 'data-maxlength' => default_description_limit, 'data-url' => katello_content_view_definition_path(view_definition.id)}<> #{view_definition[:description]}
 

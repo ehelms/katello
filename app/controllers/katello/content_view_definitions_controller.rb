@@ -74,9 +74,10 @@ module Katello
     end
 
     def items
+      ids = ContentViewDefinition.pluck(:id)
       offset = params[:offset] || 0
       render_panel_direct(ContentViewDefinition, @panel_options, params[:search], offset, [:name_sort, 'asc'],
-          {:default_field => :name, :filter=>{:organization_id=>[current_organization.id]}})
+                          {:default_field => :name, :filter => [{:organization_id => ids}]})
     end
 
     def show
@@ -84,19 +85,11 @@ module Katello
     end
 
     def new
-      render :partial => "new",
-             :locals => {:view_definitions => ContentViewDefinition.readable(current_organization).non_composite}
+      render :partial => "new"
     end
 
     def create
-      @view_definition = ContentViewDefinition.create!(params[:katello_content_view_definition]) do |cv|
-        cv.organization = current_organization
-      end
-      if @view_definition.composite? && params[:content_views]
-        @views = ContentView.where(:id => params[:content_views].keys)
-        @view_definition.component_content_views += @views
-        @view_definition.save!
-      end
+      @view_definition = ContentViewDefinition.create!(params[:katello_content_view_definition])
 
       notify.success _("Content view definition '%s' was created.") % @view_definition['name']
 
@@ -213,7 +206,7 @@ module Katello
 
         render :partial => "composite_definition_content",
                :locals => {:view_definition => @view_definition,
-                           :view_definitions => ContentViewDefinition.readable(current_organization).non_composite,
+                           :view_definitions => ContentViewDefinition.readable(@view_definition.organization).non_composite,
                            :views => component_views,
                            :editable=>@view_definition.editable?,
                            :name=>controller_display_name}
@@ -226,14 +219,14 @@ module Katello
 
     def update_content
       if params.has_key?(:products)
-        products_ids = params[:products].blank? ? [] : Product.readable(current_organization).
+        products_ids = params[:products].blank? ? [] : Product.readable(@view_definition.organization).
             where(:id => params[:products]).pluck("katello_products.id")
 
         @view_definition.product_ids = products_ids
       end
 
       if params[:repos]
-        repo_ids = params[:repos].empty? ? [] : Repository.libraries_content_readable(current_organization).
+        repo_ids = params[:repos].empty? ? [] : Repository.libraries_content_readable(@view_definition.organization).
             where(:id => params[:repos].values.flatten).pluck("katello_repositories.id")
 
         @view_definition.repository_ids = repo_ids
