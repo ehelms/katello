@@ -6,7 +6,7 @@ class ActionDispatch::Routing::Mapper
   include Katello::Routing::MapperExtensions
 end
 
-Src::Application.routes.draw do
+Rails.application.routes.draw do
 
   namespace :api do
 

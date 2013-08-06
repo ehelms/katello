@@ -13,7 +13,7 @@
 
 module Katello
   class ContentViewDefinitionBase < ActiveRecord::Base
-    include Katello::Taxonomix
+    include Katello::Concerns::Taxonomix
 
     has_many :content_view_definition_products, :foreign_key => "content_view_definition_id", :dependent => :destroy
     has_many :products, :through => :content_view_definition_products, :after_remove => :remove_product

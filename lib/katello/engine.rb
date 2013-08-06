@@ -18,6 +18,10 @@ module Katello
       app.config.assets.paths << "#{::Katello::Engine.root}/vendor/assets/stylesheets/katello/font-awesome"
     end
 
+    initializer "katello.paths" do |app|
+      app.config.paths["config/routes"] += Dir[::Katello::Engine.root.join("config/routes/**/*.rb")]
+    end
+
     initializer "logging" do |app|
       if caller.last =~ /script\/delayed_job:\d+$/ ||
           ((caller[-10..-1] || []).any? {|l| l =~ /\/rake/} && ARGV.include?("jobs:work"))

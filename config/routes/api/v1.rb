@@ -1,11 +1,11 @@
-require 'api/constraints/activation_key_constraint'
-require 'api/constraints/api_version_constraint'
+require 'katello/api/constraints/activation_key_constraint'
+require 'katello/api/constraints/api_version_constraint'
 
-Src::Application.routes.draw do
+Rails.application.routes.draw do
 
   namespace :api do
 
-    scope :module => :v1, :constraints => ApiVersionConstraint.new(:version => 1, :default => true) do
+    scope :module => :v1, :constraints => Katello::ApiVersionConstraint.new(:version => 1, :default => true) do
 
       match '/' => 'root#resource_list'
 
@@ -55,7 +55,7 @@ Src::Application.routes.draw do
         resources :tasks, :only => [:index]
         resources :providers, :only => [:index], :constraints => { :organization_id => /[^\/]*/ }
 
-        scope :constraints => RegisterWithActivationKeyContraint.new do
+        scope :constraints => Katello::RegisterWithActivationKeyContraint.new do
           match '/systems' => 'systems#activate', :via => :post
         end
         resources :systems, :only => [:index, :create] do
@@ -251,7 +251,7 @@ Src::Application.routes.draw do
       end
 
       resources :environments, :only => [:show, :update, :destroy] do
-        scope :constraints => RegisterWithActivationKeyContraint.new do
+        scope :constraints => Katello::RegisterWithActivationKeyContraint.new do
           match '/systems' => 'systems#activate', :via => :post
         end
         resources :systems, :only => [:create, :index] do
@@ -306,7 +306,7 @@ Src::Application.routes.draw do
       match "/version" => "ping#version", :via => :get
 
       # subscription-manager support
-      scope :constraints => RegisterWithActivationKeyContraint.new do
+      scope :constraints => Katello::RegisterWithActivationKeyContraint.new do
         match '/consumers' => 'systems#activate', :via => :post
       end
       match '/hypervisors' => 'systems#hypervisors_update', :via => :post
