@@ -347,7 +347,7 @@ Rails.application.routes.draw do
         resources :products do
           get :default_label, :on => :collection
 
-          resources :repositories, :only => [:new, :create, :edit, :destroy] do
+          resources :repositories, :only => [:new, :create, :edit, :destroy, :update] do
             get :default_label, :on => :collection
             member do
               put :update_gpg_key, :as => :update_repo_gpg_key

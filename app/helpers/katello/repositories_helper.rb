@@ -32,6 +32,19 @@ module Katello
         GpgKey.all
       end
     end
+
+    def architectures
+      archs = {}
+
+      Architecture.all.each{ |arch|
+        archs[arch.id] = arch.name
+      }
+
+      archs[""] = "noarch"
+      archs["selected"] = @repository.architecture_id || ""
+      return archs.to_json
+    end
+
   end
 
 end

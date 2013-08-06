@@ -8,6 +8,7 @@ require 'katello/load_configuration'
 # With a pull request, send also link to our (or Fedora) koji with RPMs.
 source 'http://rubygems.org'
 
+gem 'pg'
 
 # Reports - TODO this is hack that needs to be removed once ruport is officially released
 if (`rpm -q rubygem-ruport` rescue "") =~ /^rubygem-ruport-1.7.0\S+/ && ! defined?(JRUBY_VERSION)

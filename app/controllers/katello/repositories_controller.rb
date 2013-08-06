@@ -17,10 +17,10 @@ module Katello
 
     respond_to :html, :js
 
-    before_filter :find_provider, :only => [:new, :create, :edit, :destroy, :update_gpg_key]
-    before_filter :find_product, :only => [:new, :create, :edit, :destroy, :update_gpg_key]
+    before_filter :find_provider, :only => [:new, :create, :edit, :update, :destroy, :update_gpg_key]
+    before_filter :find_product, :only => [:new, :create, :edit, :update, :destroy, :update_gpg_key]
     before_filter :authorize
-    before_filter :find_repository, :only => [:edit, :destroy, :enable_repo, :update_gpg_key]
+    before_filter :find_repository, :only => [:edit, :update, :destroy, :enable_repo, :update_gpg_key]
 
     def rules
       read_any_test = lambda{Provider.any_readable?(current_organization)}
@@ -32,6 +32,7 @@ module Katello
         :create => edit_test,
         :default_label => lambda{true},
         :edit => read_test,
+        :update => edit_test,
         :update_gpg_key => edit_test,
         :destroy => edit_test,
         :enable_repo => org_edit,
@@ -77,6 +78,18 @@ module Katello
       e.class == Glue::Pulp::PulpErrors::ServiceUnavailable ? notify.exception(e) : notify.error(e.to_s)
       execute_after_filters
       render :nothing => true, :status => :bad_request
+    end
+
+    def update
+      repo_params = params[:repo]
+      result = params[:repo].values.first
+
+      @repository.architecture_id = params[:repo][:architecture_id] unless params[:repo][:architecture_id].nil?
+      @repository.save!
+
+      notify.success _("Repository '%s' was updated.") % @repository.name
+
+      render :text => escape_html(result)
     end
 
     def update_gpg_key

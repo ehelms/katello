@@ -42,6 +42,8 @@ module Katello
       # Patch Models
       ::User.send :include, Katello::UserExtensions
       ::Organization.send :include, Katello::OrganizationExtensions
+
+      ::Redhat.send :include, Katello::Concerns::RedhatExtensions
     end
 
   end

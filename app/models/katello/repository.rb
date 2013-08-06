@@ -33,6 +33,7 @@ module Katello
     FILE_TYPE = 'file'
     TYPES = [YUM_TYPE, FILE_TYPE]
 
+    belongs_to :architecture
     belongs_to :environment, :inverse_of => :repositories, :class_name => "KTEnvironment"
     belongs_to :product, :inverse_of => :repositories
     belongs_to :gpg_key, :inverse_of => :repositories
