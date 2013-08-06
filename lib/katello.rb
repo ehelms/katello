@@ -29,7 +29,7 @@ require "deface"
 require "uuidtools"
 require "delayed_job"
 
-require "headpin"
+require "headpin/headpin"
 
 module Katello
 

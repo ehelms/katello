@@ -47,10 +47,16 @@
 
   %fieldset
     .grid_2.ra
-      %label #{_("Publish via http")}
+      %label #{_("Publish via http")}:
     .grid_5.la
       = @repository.unprotected ? _("Yes") : _("No")
-
+  
+  -if @repository.unprotected
+    %fieldset
+      .grid_2.ra
+        %label #{_("Repo Path")}:
+      .grid_5.la
+        = @repository.full_path
 
   %fieldset
     .grid_2.ra

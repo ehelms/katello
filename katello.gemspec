@@ -52,7 +52,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "acts_as_reportable", ">=1.1.1"
     
   # Pulp
-  gem.add_dependency "runcible", "0.4.11"
+  gem.add_dependency "runcible", "0.4.12"
   gem.add_dependency "anemone"
 
   # UI

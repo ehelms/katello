@@ -351,7 +351,7 @@ KT.common = (function() {
             }
         },
         spinner_path : function() {
-          return KT.common.rootURL() + "assets/icons/spinner.gif";
+          return "assets/" + KT.common.rootURL() + "icons/spinner.gif";
         },
         jscroll_init: function(element) {
             element.jScrollPane({ hideFocus: true });

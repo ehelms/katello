@@ -243,5 +243,11 @@ module Katello
       search = Repository.where("library_instance_id=%s or #{Repository.table_name}.id=%s"  % [repo.id, repo.id] )
       search.in_content_views([view])
     end
+
+    def full_path
+      pulp_uri = URI.parse(Katello.config.pulp.url)
+      scheme   = (self.unprotected ? 'http' : 'https')
+      "#{scheme}://#{pulp_uri.host.downcase}/pulp/repos/#{relative_path}"
+    end
   end
 end
