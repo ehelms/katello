@@ -44,6 +44,8 @@ module Katello
       ::Organization.send :include, Katello::OrganizationExtensions
 
       ::Redhat.send :include, Katello::Concerns::RedhatExtensions
+
+      ::Host.send :include, Katello::HostExtensions
     end
 
   end
