@@ -156,8 +156,12 @@ module Katello
     def publish
       # perform the publish
       if params.has_key?(:katello_content_view)
-        @view_definition.publish(params[:katello_content_view][:name], params[:katello_content_view][:description],
-                                 params[:katello_content_view][:label], {:notify => true})
+        @view_definition.publish(params[:katello_content_view][:name],
+                                 params[:katello_content_view][:description],
+                                 params[:katello_content_view][:label],
+                                 params[:katello_content_view][:operatingsystems],
+                                 {:notify => true})
+
         notify.success(_("Started publish of content view '%{view_name}' from definition '%{definition_name}'.") %
                            {:view_name => params[:katello_content_view][:name], :definition_name => @view_definition.name})
 

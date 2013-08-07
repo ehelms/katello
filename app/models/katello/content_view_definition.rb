@@ -35,14 +35,15 @@ module Katello
     scope :composite, where(:composite=>true)
     scope :non_composite, where(:composite=>false)
 
-    def publish(name, description, label=nil, options = { })
+    def publish(name, description, label=nil, operatingsystems=nil, options = { })
       options = { :async => true, :notify => false }.merge options
 
       view = ContentView.create!(:name => name,
                           :label=>label,
                           :description => description,
                           :content_view_definition => self,
-                          :organization => organization
+                          :organization => organization,
+                          :operatingsystem_ids => operatingsystems
                          )
 
       version = ContentViewVersion.new(:version=>1, :content_view=>view)

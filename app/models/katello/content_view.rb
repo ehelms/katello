@@ -10,8 +10,6 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-
-
 module Katello
   class ContentView < ActiveRecord::Base
     include Ext::LabelFromName
@@ -23,6 +21,9 @@ module Katello
     belongs_to :content_view_definition
     alias :definition :content_view_definition
     belongs_to :organization, :inverse_of => :content_views
+
+    has_many :content_view_operatingsystems, :dependent => :destroy, :uniq=>true
+    has_many :operatingsystems, :through => :content_view_operatingsystems, :class_name => "::Operatingsystem"
 
     has_many :content_view_environments, :dependent => :destroy
 
