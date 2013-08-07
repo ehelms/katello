@@ -28,12 +28,12 @@ module Katello
     end
 
     def rules
-      index_rule   = lambda { ContentViewDefinition.any_readable?(current_organization) }
+      index_rule   = lambda { current_organization && ContentViewDefinition.any_readable?(current_organization) }
       show_rule    = lambda { @view_definition.readable? }
       manage_rule  = lambda { @view_definition.editable? }
       delete_rule  = lambda { @view_definition.deletable? }
       publish_rule = lambda { @view_definition.publishable? }
-      create_rule  = lambda { ContentViewDefinition.creatable?(current_organization) }
+      create_rule  = lambda { current_organization && ContentViewDefinition.creatable?(current_organization) }
       clone_rule   = lambda do
         ContentViewDefinition.creatable?(current_organization) && @view_definition.readable?
       end

@@ -1,6 +1,7 @@
 - content_types ||= nil
 = render :partial => "katello/common/common_products",
-         :locals => {:record => record,
+         :locals => {:organization => organization,
+                     :record => record,
                      :content_types => content_types,
                      :readable_products => readable_products || nil,
                      :editable_products => editable_products || nil}

@@ -1,12 +1,14 @@
 - content_types ||= nil
 = javascript do
   :plain
-    KT.products = $.parseJSON('#{escape_javascript(get_products({:record => record,
+    KT.products = $.parseJSON('#{escape_javascript(get_products({:organization => organization,
+                                                                 :record => record,
                                                                  :content_types => content_types,
                                                                  :readable_products => readable_products,
                                                                  :editable_products => editable_products}).to_json)}');
 
-    KT.editable_products = $.parseJSON('#{escape_javascript(get_products({:record => record,
+    KT.editable_products = $.parseJSON('#{escape_javascript(get_products({:organization => organization,
+                                                                          :record => record,
                                                                           :content_types => content_types,
                                                                           :readable_products => readable_products,
                                                                           :editable_products => editable_products}).

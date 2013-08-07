@@ -61,7 +61,7 @@ module Katello
         @product_hash = {}
         options[:readable_products].sort_by(&:name).each do |prod|
           repos = []
-          prod.repos(current_organization.library).where(:content_type=>options[:content_types]).sort{|a,b| a.name <=> b.name}.each{|repo|
+          prod.repos(options[:organization].library).where(:content_type=>options[:content_types]).sort{|a,b| a.name <=> b.name}.each{|repo|
             repos << {:name=>repo.name, :id=>repo.id}
           }
           @product_hash[prod.id] = {:name=>prod.name, :repos=>repos, :id=>prod.id,
