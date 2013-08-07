@@ -3,7 +3,7 @@
     <%= fields_for @host do |f| %>
         <%=  f.label :content_view, _('Content View'), {:class => "control-label"} %>
         <div class="controls">
-          <%=  f.select :content_view_id, Katello::ContentView.non_default.collect{|cv| [cv.name, cv.id]} %>
+          <%=  f.select :content_view_id, Katello::ContentView.non_default.collect{|cv| [cv.name, cv.id]}, :include_blank => true %>
         </div>
     <% end %>
   </div>

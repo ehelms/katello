@@ -284,7 +284,7 @@ module Katello
 
       def distributions=attrs
         @repo_distributions = attrs.collect do |dist|
-            Distribution.new(dist)
+            Katello::Distribution.new(dist)
         end
         @repo_distributions
       end
