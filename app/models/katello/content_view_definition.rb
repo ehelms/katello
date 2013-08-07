@@ -114,6 +114,7 @@ module Katello
       PulpTaskStatus::wait_for_tasks(view.versions.first.generate_metadata)
 
       Concerns::MediumExtensions.create_medium({
+        content_view: view,
         repositories: view.versions.first.repositories,
         organization: view.organization,
         operatingsystems: view.operatingsystems

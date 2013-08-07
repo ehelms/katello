@@ -43,7 +43,10 @@ module Katello
       ::User.send :include, Katello::UserExtensions
       ::Organization.send :include, Katello::OrganizationExtensions
       ::Operatingsystem.send :include, Katello::Concerns::OperatingsystemExtensions
+      ::Medium.send :include, Katello::Concerns::MediumExtensions
       ::Host::Managed.send :include, Katello::HostExtensions
+
+      ::HostsAndHostgroupsHelper.send :include, Katello::Concerns::HostsAndHostgroupsHelperExtension
     end
 
   end

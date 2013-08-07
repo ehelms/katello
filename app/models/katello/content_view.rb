@@ -18,6 +18,8 @@ module Katello
 
     before_destroy :confirm_not_promoted # RAILS3458: this needs to come before associations
 
+    has_many :medium, :dependent => :destroy
+
     belongs_to :content_view_definition
     alias :definition :content_view_definition
     belongs_to :organization, :inverse_of => :content_views
