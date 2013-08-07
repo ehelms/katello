@@ -77,7 +77,7 @@ module Katello
       ids = ContentViewDefinition.pluck(:id)
       offset = params[:offset] || 0
       render_panel_direct(ContentViewDefinition, @panel_options, params[:search], offset, [:name_sort, 'asc'],
-                          {:default_field => :name, :filter => [{:organization_id => ids}]})
+                          {:default_field => :name, :filter => [{'id' => ids}]})
     end
 
     def show
