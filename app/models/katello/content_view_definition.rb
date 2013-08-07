@@ -113,7 +113,11 @@ module Katello
       view.update_cp_content(view.organization.library)
       PulpTaskStatus::wait_for_tasks(view.versions.first.generate_metadata)
 
-      Concerns::MediumExtensions.create_medium(view.versions.first.repositories, view.organization)
+      Concerns::MediumExtensions.create_medium({
+        repositories: view.versions.first.repositories,
+        organization: view.organization,
+        operatingsystems: view.operatingsystems
+      })
 
       if notify
         message = _("Successfully published content view '%{view_name}' from definition '%{definition_name}'.") %

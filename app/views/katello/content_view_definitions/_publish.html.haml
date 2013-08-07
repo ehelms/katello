@@ -16,7 +16,7 @@
     = form.text_area :description, :size => "40x5", :label => _('Description'), :maxlength => default_description_limit
 
     = form.field :operatingsystems, :label => _('Operating Systems') do
-      = select_tag 'katello_content_view[operatingsystems]', options_for_select(::Operatingsystem.all.collect{|os| [os.name, os.id]}), :multiple => true
+      = select_tag 'katello_content_view[operatingsystems]', options_for_select(::Operatingsystem.all.collect{|os| [os.fullname, os.id]}), :multiple => true
 
     = form.submit _('Publish'), :disable_with => _('Publishing...'), :class => 'publish_button subpanel_create'
 

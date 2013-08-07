@@ -3,7 +3,10 @@ module Katello
     module MediumExtensions
       extend ActiveSupport::Concern
 
-      def self.create_medium(repositories, organization)
+      def self.create_medium(args)
+        repositories = args.fetch(:repositories)
+        organization = args.fetch(:organization)
+        operatingsystems = args.fetch(:operatingsystems)
 
         repositories.each do |repository|
           repository.distributions.each do |distribution|
@@ -11,6 +14,7 @@ module Katello
               :name => distribution.id,
               :path => repository.full_path,
               :os_family => 'Redhat',
+              :operatingsystems => operatingsystems,
               :organization_ids => [organization.id]
             })
           end
@@ -25,6 +29,7 @@ module Katello
           :name => args.fetch(:name),
           :path => args.fetch(:path),
           :os_family => args.fetch(:os_family),
+          :operatingsystems => args.fetch(:operatingsystems),
           :organization_ids => args.fetch(:organization_ids)
         }
 
