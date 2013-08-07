@@ -8,28 +8,14 @@ module Katello
       end
 
       def medium_uri_with_content_uri(host, url = nil)
-        if url.nil? && (full_path = Repository.available_for_host(host).kickstart.first.try(:full_path))
+        if url.nil?
+          full_path = ContentViewVersion.where(:content_view_id => host.content_view_id).first.repositories.first.full_path
           URI.parse(full_path)
         else
           medium_uri_without_content_uri(host, url)
         end
       end
 
-      def repos(host)
-        host.attached_repositories.yum.map { |repo| format_repo(repo) }
-      end
-
-      private
-      # convert a repository to a format that kickstart script can consume
-      def format_repo(repo)
-        {
-          :baseurl     => repo.full_path,
-          :name        => repo.to_label,
-          :description => repo.product.description,
-          :enabled     => repo.enabled,
-          :gpgcheck    => !!repo.gpg_key
-        }
-      end
     end
   end
 end

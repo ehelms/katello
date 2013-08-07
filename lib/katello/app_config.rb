@@ -10,11 +10,15 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class AppConfigDeprecate
-  def method_missing(method, *args, &block)
-    warn "AppConfig is deprecated use Katello.config, called from: #{caller.first}"
-    Katello.config.__send__ method, *args, &block
+module Katello
+  class AppConfigDeprecate
+
+    def method_missing(method, *args, &block)
+      warn "AppConfig is deprecated use Katello.config, called from: #{caller.first}"
+      Katello.config.__send__ method, *args, &block
+    end
+
   end
 end
 
-AppConfig = AppConfigDeprecate.new
+AppConfig = Katello::AppConfigDeprecate.new

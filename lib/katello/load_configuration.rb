@@ -13,8 +13,8 @@
 path = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 $LOAD_PATH << path unless $LOAD_PATH.include? path
 require 'katello/configuration'
-require 'app_config'
-require 'util/password'
+require 'katello/app_config'
+require 'katello/util/password'
 
 module Katello
 

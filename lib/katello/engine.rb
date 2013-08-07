@@ -42,11 +42,9 @@ module Katello
       # Patch Models
       ::User.send :include, Katello::UserExtensions
       ::Organization.send :include, Katello::OrganizationExtensions
-
       ::Redhat.send :include, Katello::Concerns::RedhatExtensions
-
-      ::Host.send :include, Katello::HostExtensions
       ::Operatingsystem.send :include, Katello::Concerns::OperatingsystemExtensions
+      ::Host::Managed.send :include, Katello::HostExtensions
     end
 
   end

@@ -33,6 +33,7 @@ require "headpin/headpin"
 
 module Katello
 
+  require "katello/app_config"
   require "katello/engine"
   require "katello/home_helper_patch"
   require "katello/generators/db_generator"
