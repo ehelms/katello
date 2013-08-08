@@ -469,22 +469,26 @@ module Katello
     end
 
     def library_path_element(perms=nil)
-      environment_path_element(perms).call(current_organization.library)
+      if Organization.current
+        environment_path_element(perms).call(current_organization.library)
+      end
     end
 
     def environment_paths(library, environment_path_element_generator)
-      paths = current_organization.promotion_paths
-      to_ret = []
-      paths.each do |path|
-        path = path.collect{ |e| environment_path_element_generator.call(e) }
-        to_ret << [library] + path if path.any?{|e| e[:select]}
-      end
+      if Organization.current
+        paths = current_organization.promotion_paths
+        to_ret = []
+        paths.each do |path|
+          path = path.collect{ |e| environment_path_element_generator.call(e) }
+          to_ret << [library] + path if path.any?{|e| e[:select]}
+        end
 
-      if paths.empty?
-        to_ret << [library]
-      end
+        if paths.empty?
+          to_ret << [library]
+        end
 
-      to_ret
+        to_ret
+      end
     end
 
 

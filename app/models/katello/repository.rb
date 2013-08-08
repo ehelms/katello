@@ -87,7 +87,7 @@ module Katello
     end
 
     def self.in_content_views(views)
-      joins(:content_view_version).where("#{ContentViewVerion.table_name}.content_view_id" => views.map(&:id))
+      joins(:content_view_version).where("#{ContentViewVersion.table_name}.content_view_id" => views.map(&:id))
     end
 
     def in_default_view?

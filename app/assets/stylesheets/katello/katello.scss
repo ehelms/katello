@@ -416,6 +416,7 @@ table {
 label {
   text-align: right;
   color: $labelfg_color;
+  display: inline-block;
   &.required {
     font-weight: bold;
   }
@@ -1465,4 +1466,8 @@ pre {
 
 .instruction-page {
   padding: 10px 20px;
+}
+
+#search {
+  margin-bottom: 0;
 }

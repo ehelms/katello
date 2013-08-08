@@ -1,10 +1,10 @@
-= javascript :content_search
-= stylesheet :content_search, 'widgets/path_selector'
+= javascript 'katello/content_search'
+= stylesheet 'katello/content_search', 'katello/widgets/path_selector'
 
 = javascript do
   :plain
     KT.available_environments = $.parseJSON('#{escape_javascript(environments.to_json)}');
-    KT.permissions = { "current_organization" : { "editable" : #{current_organization.editable?}, "id" : "#{current_organization.name}" }}
+    KT.permissions = { "current_organization" : { "editable" : true, "id" : "#{current_organization.name if current_organization}" }}
     localize({
       description:'#{escape_javascript(_("Description"))}',
       severity:   '#{escape_javascript(_("Severity"))}',
@@ -25,7 +25,10 @@
       manage_environments: '#{escape_javascript(_("Manage Environments"))}'
     })
 
-.center
-  = render :partial => "browser_box"
+= content_for(:katello_content) do
+  .center
+    = render :partial => "browser_box"
 
-  = render :partial => "grid"
+    = render :partial => "grid"
+
+= render :file => 'katello/layouts/katello_base'

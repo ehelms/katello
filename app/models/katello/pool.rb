@@ -15,7 +15,8 @@ module Katello
     include Glue::Candlepin::Pool
     include Glue::ElasticSearch::Pool if Katello.config.use_elasticsearch
 
-    self.table_name = "pools"
+    self.table_name = "katello_pools"
+
     has_many :key_pools, :foreign_key => "pool_id", :dependent => :destroy
     has_many :activation_keys, :through => :key_pools
 
@@ -28,7 +29,7 @@ module Katello
     # prior to this call the pool was already fetched.
     def self.find_pool(cp_id, pool_json=nil)
       pool_json = Resources::Candlepin::Pool.find(cp_id) if !pool_json
-      ::Pool.new(pool_json) if not pool_json.nil?
+      Pool.new(pool_json) if not pool_json.nil?
     end
 
     # Some fields are are not native to the Candlepin object but are useful for searching
@@ -38,7 +39,6 @@ module Katello
     def provider_id= cp_id
       @cp_provider_id = cp_id
     end
-
 
   end
 end

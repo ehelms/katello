@@ -11,7 +11,7 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 module Katello
-  class ContentSearchController < ApplicationController
+  class ContentSearchController < Katello::ApplicationController
 
     include ContentSearchHelper
 
@@ -312,7 +312,8 @@ module Katello
     end
 
     def find_repo
-      @repo = Repository.readable_in_org(current_organization).find(params[:repo_id])
+      repo_id = params[:repoId] ? params[:repoId] : params[:repo_id]
+      @repo = Repository.readable_in_org(current_organization).find(repo_id)
     end
 
     def repo_hover_html repo
@@ -569,13 +570,13 @@ module Katello
     def process_repos(repo_ids, product_ids)
       # is this neccessary?
       unless product_ids.blank?
-        product_ids = Product.readable(current_organization).where(:id => product_ids).pluck("products.id")
+        product_ids = Product.readable(current_organization).where(:id => product_ids).pluck("katello_products.id")
       end
 
       # repos were searched by string
       unless repo_ids.is_a? Array
         search_string = repo_ids
-        repo_ids      = Repository.enabled.libraries_content_readable(current_organization).pluck("repositories.id")
+        repo_ids      = Repository.enabled.libraries_content_readable(current_organization).pluck("katello_repositories.id")
       end
 
       repo_search(search_string, repo_ids, product_ids)

@@ -241,7 +241,7 @@ module Katello
       end
 
       def no_other_assignment?
-        ::Product.where(["cp_id = ? AND id != ?", self.cp_id, self.id]).empty?
+        Product.where(["cp_id = ? AND id != ?", self.cp_id, self.id]).empty?
       end
 
       def update_content
@@ -285,7 +285,7 @@ module Katello
       def del_pools
         Rails.logger.debug "Deleting pools for product #{name} in candlepin"
         Resources::Candlepin::Product.pools(organization.label, self.cp_id).each do |pool|
-          ::Pool.find_all_by_cp_id(pool['id']).each(&:destroy)
+          Katello::Pool.find_all_by_cp_id(pool['id']).each(&:destroy)
           Resources::Candlepin::Pool.destroy(pool['id'])
         end
         true

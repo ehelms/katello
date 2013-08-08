@@ -18,12 +18,12 @@ module Katello
       attr_accessor :comparable
 
       def container_hover_html(container, env=nil, view=nil)
-        render_to_string :partial=>'content_search/container_hover',
+        render_to_string :partial=>'katello/content_search/container_hover',
           :locals=>{:container=>container, :env=>env, :view=>view}
       end
 
       def repo_hover_html(repo)
-        render_to_string :partial=>'content_search/repo_hover',
+        render_to_string :partial=>'katello/content_search/repo_hover',
                          :locals=>{:repo=>repo}
       end
 
@@ -32,7 +32,7 @@ module Katello
       end
 
       def readable_env_ids
-        KTEnvironment.content_readable(current_organization).pluck("environments.id")
+        KTEnvironment.content_readable(current_organization).pluck("katello_environments.id")
       end
 
       def search_envs
