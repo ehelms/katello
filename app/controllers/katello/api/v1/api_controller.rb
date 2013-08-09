@@ -76,7 +76,9 @@ module Katello
 
     def get_organization org_id
       # name/label is always unique
-      return Organization.without_deleting.having_name_or_label(org_id).first
+      # ENGINIFY: When Organization delete is put back
+      #return Organization.without_deleting.having_name_or_label(org_id).first
+      return Organization.having_name_or_label(org_id).first
     end
 
     def organization_id

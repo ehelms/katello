@@ -11,7 +11,7 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 module Katello
-  class Api::V1::ErrorsController < Api::V1::ApiController
+  class Api::V1::ErrorsController < Katello::Api::V1::ApiController
 
     skip_before_filter :require_user
     skip_before_filter :authorize

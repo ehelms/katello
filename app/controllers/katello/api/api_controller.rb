@@ -25,7 +25,8 @@ module Katello
     # override warden current_user (returns nil because there is no user in that scope)
     def current_user
       # get the logged user from the correct scope
-      user(:api) || user
+      #user(:api) || user
+      ::User.current
     end
 
     protected
@@ -43,11 +44,12 @@ module Katello
 
     def require_user
 
-      if !request.authorization && current_user
-        return true
+      if session[:user]
+        User.current = User.unscoped.find(session[:user])
       else
-        params[:auth_username], params[:auth_password] = user_name_and_password(request) if request.authorization
-        authenticate! :scope => :api
+        ::User.current = authenticate_or_request_with_http_basic do |u, p|
+          User.try_to_login(u, p)
+        end
         params.delete('auth_username')
         params.delete('auth_password')
       end

@@ -118,6 +118,7 @@ module Katello
         roles.find_own_role
       end
 
+=begin
       def self.authenticate!(username, password)
         u = User.where({ :username => username }).first
         # check if user exists
@@ -130,7 +131,7 @@ module Katello
         return nil unless Password.check(password, u.password)
         u
       end
-
+=end
       # if the user authenticates with LDAP, log them in
       def self.authenticate_using_ldap!(username, password)
         if Ldap.valid_ldap_authentication? username, password
