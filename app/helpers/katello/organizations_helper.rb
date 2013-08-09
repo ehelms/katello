@@ -10,25 +10,27 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module OrganizationsHelper
+module Katello
+  module OrganizationsHelper
 
-  def organization_servicelevel(org)
-    _("%{sla}") %
-      { :sla => ( (org.service_level.nil? || org.service_level.empty?) ? _("No Service Level Preference") : (_("Service Level %s") % org.service_level))}
+    def organization_servicelevel(org)
+      _("%{sla}") %
+        { :sla => ( (org.service_level.nil? || org.service_level.empty?) ? _("No Service Level Preference") : (_("Service Level %s") % org.service_level))}
+    end
+
+    def organization_servicelevel_edit(org)
+      levels = {}
+      org.service_levels.each { |level|
+        levels["#{level}"] = _("Service Level %s") % level
+        levels["#{level}"] = _("Service Level %s") % level
+      }
+
+      levels[''] = _("No Service Level Preference")
+
+      levels["selected"] = organization_servicelevel(org)
+
+      return levels.to_json
+    end
+
   end
-
-  def organization_servicelevel_edit(org)
-    levels = {}
-    org.service_levels.each { |level|
-      levels["#{level}"] = _("Service Level %s") % level
-      levels["#{level}"] = _("Service Level %s") % level
-    }
-
-    levels[''] = _("No Service Level Preference")
-
-    levels["selected"] = organization_servicelevel(org)
-
-    return levels.to_json
-  end
-
 end

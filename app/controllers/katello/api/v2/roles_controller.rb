@@ -11,8 +11,10 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class Api::V2::RolesController < Api::V1::RolesController
+module Katello
+  class Api::V2::RolesController < Api::V1::RolesController
 
-  include Api::V2::Rendering
+    include Api::V2::Rendering
 
+  end
 end

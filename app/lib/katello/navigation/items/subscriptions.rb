@@ -10,17 +10,19 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Navigation
-  module Items
-    class Subscriptions < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class Subscriptions < Navigation::Item
 
-      def initialize(organization)
-        @key           = :subscriptions
-        @display       = _("Red Hat Subscriptions")
-        @authorization = lambda{ organization && organization.redhat_provider.readable? }
-        @url           = subscriptions_path
+        def initialize(organization)
+          @key           = :subscriptions
+          @display       = _("Red Hat Subscriptions")
+          @authorization = lambda{ organization && organization.redhat_provider.readable? }
+          @url           = subscriptions_path
+        end
+
       end
-
     end
   end
 end

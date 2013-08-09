@@ -11,22 +11,24 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module Navigation
-  module Menus
-    class ChangesetManagement < Navigation::Menu
+module Katello
+  module Navigation
+    module Menus
+      class ChangesetManagement < Navigation::Menu
 
-      def initialize(organization)
-        @key           = :changeset_management
-        @display       = _("Changeset Management")
-        @authorization = lambda{ organization && KTEnvironment.any_viewable_for_promotions?(organization) }
-        @type          = 'flyout'
-        @items         = [
-          Navigation::Items::Changesets.new(organization),
-          Navigation::Items::ChangesetHistory.new(organization)
-        ]
-        super
+        def initialize(organization)
+          @key           = :changeset_management
+          @display       = _("Changeset Management")
+          @authorization = lambda{ organization && KTEnvironment.any_viewable_for_promotions?(organization) }
+          @type          = 'flyout'
+          @items         = [
+            Navigation::Items::Changesets.new(organization),
+            Navigation::Items::ChangesetHistory.new(organization)
+          ]
+          super
+        end
+
       end
-
     end
   end
 end

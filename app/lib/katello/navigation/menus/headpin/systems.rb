@@ -10,23 +10,25 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Navigation
-  module Menus
-    module Headpin
-      class Systems < Navigation::Menu
+module Katello
+  module Navigation
+    module Menus
+      module Headpin
+        class Systems < Navigation::Menu
 
-      def initialize(organization)
-        @key           = :systems_headpin
-        @display       = _("Systems")
-        @type          = 'dropdown'
-        @authorization = true
-        @items         = [
-          Navigation::Items::Systems.new(organization),
-          Navigation::Items::SystemGroups.new(organization)
-        ]
-        super
-      end
+        def initialize(organization)
+          @key           = :systems_headpin
+          @display       = _("Systems")
+          @type          = 'dropdown'
+          @authorization = true
+          @items         = [
+            Navigation::Items::Systems.new(organization),
+            Navigation::Items::SystemGroups.new(organization)
+          ]
+          super
+        end
 
+        end
       end
     end
   end

@@ -12,35 +12,37 @@
 
 # a container represents a product or content view
 
-module ContentSearch
-  class ContainerSearch < Search
-    attr_accessor :comparable
+module Katello
+  module ContentSearch
+    class ContainerSearch < Search
+      attr_accessor :comparable
 
-    def container_hover_html(container, env=nil, view=nil)
-      render_to_string :partial=>'content_search/container_hover',
-        :locals=>{:container=>container, :env=>env, :view=>view}
-    end
+      def container_hover_html(container, env=nil, view=nil)
+        render_to_string :partial=>'content_search/container_hover',
+          :locals=>{:container=>container, :env=>env, :view=>view}
+      end
 
-    def repo_hover_html(repo)
-      render_to_string :partial=>'content_search/repo_hover',
-                       :locals=>{:repo=>repo}
-    end
+      def repo_hover_html(repo)
+        render_to_string :partial=>'content_search/repo_hover',
+                         :locals=>{:repo=>repo}
+      end
 
-    def env_ids
-      SearchUtils.env_ids
-    end
+      def env_ids
+        SearchUtils.env_ids
+      end
 
-    def readable_env_ids
-      KTEnvironment.content_readable(current_organization).pluck("environments.id")
-    end
+      def readable_env_ids
+        KTEnvironment.content_readable(current_organization).pluck("environments.id")
+      end
 
-    def search_envs
-      SearchUtils.search_envs(mode)
-    end
+      def search_envs
+        SearchUtils.search_envs(mode)
+      end
 
-    #retrieve the list of rows but as values in a hash, with the object id as key
-    def row_object_hash
-      Hash[self.rows.collect { |r| [r.object_id, r] }]
+      #retrieve the list of rows but as values in a hash, with the object id as key
+      def row_object_hash
+        Hash[self.rows.collect { |r| [r.object_id, r] }]
+      end
     end
   end
 end

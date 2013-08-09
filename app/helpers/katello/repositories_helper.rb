@@ -10,21 +10,23 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module RepositoriesHelper
-  def gpg_keys_edit
-    keys = {}
+module Katello
+  module RepositoriesHelper
+    def gpg_keys_edit
+      keys = {}
 
-    GpgKey.readable(current_organization).each{ |key|
-      keys[key.id] = key.name
-    }
+      GpgKey.readable(current_organization).each{ |key|
+        keys[key.id] = key.name
+      }
 
-    keys[""] = ""
-    keys["selected"] = @repository.gpg_key_id || ""
-    return keys.to_json
+      keys[""] = ""
+      keys["selected"] = @repository.gpg_key_id || ""
+      return keys.to_json
+    end
+
+    def gpg_keys
+      GpgKey.readable(current_organization)
+    end
   end
 
-  def gpg_keys
-    GpgKey.readable(current_organization)
-  end
 end
-

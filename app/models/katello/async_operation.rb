@@ -95,3 +95,4 @@ AsyncOperation = Struct.new(:status_id, :username, :object, :method_name, :args)
       Time.now
   end
 end
+end

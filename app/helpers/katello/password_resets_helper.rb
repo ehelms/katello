@@ -10,10 +10,12 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module PasswordResetsHelper
-  def password_reset_expiration
-    time = Katello.config.password_reset_expiration
-    return time.to_i if time
-    return 120 # minutes
+module Katello
+  module PasswordResetsHelper
+    def password_reset_expiration
+      time = Katello.config.password_reset_expiration
+      return time.to_i if time
+      return 120 # minutes
+    end
   end
 end

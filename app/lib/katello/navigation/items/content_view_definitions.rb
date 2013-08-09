@@ -11,17 +11,19 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module Navigation
-  module Items
-    class ContentViewDefinitions < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class ContentViewDefinitions < Navigation::Item
 
-      def initialize(organization)
-        @key           = :content_view_definitions
-        @display       = _("Content View Definitions")
-        @authorization = lambda{ ContentViewDefinition.any_readable?(organization) }
-        @url           = content_view_definitions_path
+        def initialize(organization)
+          @key           = :content_view_definitions
+          @display       = _("Content View Definitions")
+          @authorization = lambda{ ContentViewDefinition.any_readable?(organization) }
+          @url           = content_view_definitions_path
+        end
+
       end
-
     end
   end
 end

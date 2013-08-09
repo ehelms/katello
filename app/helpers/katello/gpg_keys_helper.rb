@@ -10,10 +10,12 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module GpgKeysHelper
+module Katello
+  module GpgKeysHelper
 
-  def gpg_content_limit
-    GpgKey::MAX_CONTENT_LENGTH
+    def gpg_content_limit
+      GpgKey::MAX_CONTENT_LENGTH
+    end
+
   end
-
 end

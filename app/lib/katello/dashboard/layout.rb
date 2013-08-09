@@ -10,62 +10,64 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Dashboard
-  class Layout
+module Katello
+  module Dashboard
+    class Layout
 
-    AVAILABLE_WIDGETS = [
-      "subscriptions",
-      "notices",
-      "content_views",
-      "sync",
-      "promotions"
-    ]
+      AVAILABLE_WIDGETS = [
+        "subscriptions",
+        "notices",
+        "content_views",
+        "sync",
+        "promotions"
+      ]
 
-    attr_accessor :widgets, :columns
+      attr_accessor :widgets, :columns
 
-    def initialize(organization, current_user)
-      @widgets = []
-      @columns = []
-      @organization = organization
-      @current_user = current_user
+      def initialize(organization, current_user)
+        @widgets = []
+        @columns = []
+        @organization = organization
+        @current_user = current_user
 
-      AVAILABLE_WIDGETS.each do |widget_name|
-        widget = get_widget(widget_name, organization)
-        @widgets << widget if widget.accessible?
-      end
-      setup_layout
-    end
-
-    def setup_layout
-      if (user_layout = current_user.try(:preferences).try(:[], :dashboard).try(:[], :layout))
-        user_layout.each do |col|
-          @columns << col.map{ |name| get_widget(name, organization) }
+        AVAILABLE_WIDGETS.each do |widget_name|
+          widget = get_widget(widget_name, organization)
+          @widgets << widget if widget.accessible?
         end
-      else
-        setup_default_layout
+        setup_layout
       end
-    end
 
-    def setup_default_layout
-      @columns << Array.new
-      @widgets.each_with_index{ |w, i| @columns[0] << w if i.even? }
-      @columns << @widgets.select{ |w| !@columns[0].include?(w) }
-    end
+      def setup_layout
+        if (user_layout = current_user.try(:preferences).try(:[], :dashboard).try(:[], :layout))
+          user_layout.each do |col|
+            @columns << col.map{ |name| get_widget(name, organization) }
+          end
+        else
+          setup_default_layout
+        end
+      end
 
-    def to_hash
-      @columns.map { |col| col.map(&:name) }
-    end
+      def setup_default_layout
+        @columns << Array.new
+        @widgets.each_with_index{ |w, i| @columns[0] << w if i.even? }
+        @columns << @widgets.select{ |w| !@columns[0].include?(w) }
+      end
 
-    def get_widget(name, org)
-      "Dashboard::#{name.camelcase}Widget".constantize.new(org)
-    end
+      def to_hash
+        @columns.map { |col| col.map(&:name) }
+      end
 
-    def organization
-      @organization
-    end
+      def get_widget(name, org)
+        "Dashboard::#{name.camelcase}Widget".constantize.new(org)
+      end
 
-    def current_user
-      @current_user
+      def organization
+        @organization
+      end
+
+      def current_user
+        @current_user
+      end
     end
   end
 end

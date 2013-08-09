@@ -13,37 +13,39 @@
 # a span represents a collection of rows. usually these rows represent
 # a container like a product or content view
 
-module ContentSearch
+module Katello
+  module ContentSearch
 
-  class Search
-    include Element
-    display_attributes :rows, :name, :cols
+    class Search
+      include Element
+      display_attributes :rows, :name, :cols
 
-    def current_organization
-      SearchUtils.current_organization
+      def current_organization
+        SearchUtils.current_organization
+      end
+
+      def render_to_string(*args)
+        av =  ActionView::Base.new(ActionController::Base.view_paths, {})
+        av.render(*args)
+      end
+
+
+      def mode
+        @mode || :all
+      end
+
+      def mode=(mode)
+        @mode = mode
+      end
+
+      def offset
+        SearchUtils.offset
+      end
+
+      def page_size
+        SearchUtils.page_size
+      end
     end
 
-    def render_to_string(*args)
-      av =  ActionView::Base.new(ActionController::Base.view_paths, {})
-      av.render(*args)
-    end
-
-
-    def mode
-      @mode || :all
-    end
-
-    def mode=(mode)
-      @mode = mode
-    end
-
-    def offset
-      SearchUtils.offset
-    end
-
-    def page_size
-      SearchUtils.page_size
-    end
   end
-
 end

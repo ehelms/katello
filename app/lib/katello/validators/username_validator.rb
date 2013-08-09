@@ -10,12 +10,14 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class UsernameValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      if value
-        record.errors[attribute] << N_("cannot contain characters >, <, or /") if value =~ %r{<|>|/}
-        KatelloNameFormatValidator.validate_length(record, attribute, value, 128, 3)
+module Katello
+  module Validators
+    class UsernameValidator < ActiveModel::EachValidator
+      def validate_each(record, attribute, value)
+        if value
+          record.errors[attribute] << N_("cannot contain characters >, <, or /") if value =~ %r{<|>|/}
+          KatelloNameFormatValidator.validate_length(record, attribute, value, 128, 3)
+        end
       end
     end
   end

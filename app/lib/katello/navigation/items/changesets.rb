@@ -11,17 +11,19 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module Navigation
-  module Items
-    class Changesets < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class Changesets < Navigation::Item
 
-      def initialize(organization)
-        @key           = :changesets
-        @display       = _("Changesets")
-        @authorization = lambda{ organization && KTEnvironment.any_viewable_for_promotions?(organization) }
-        @url           = promotions_path
+        def initialize(organization)
+          @key           = :changesets
+          @display       = _("Changesets")
+          @authorization = lambda{ organization && KTEnvironment.any_viewable_for_promotions?(organization) }
+          @url           = promotions_path
+        end
+
       end
-
     end
   end
 end

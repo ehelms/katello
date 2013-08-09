@@ -10,17 +10,19 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Navigation
-  module Items
-    class ActivationKeys < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class ActivationKeys < Navigation::Item
 
-      def initialize(organization)
-        @key           = :activation_keys
-        @display       = _("Activation Keys")
-        @authorization = lambda{ organization && ActivationKey.readable?(organization) }
-        @url           = activation_keys_path
+        def initialize(organization)
+          @key           = :activation_keys
+          @display       = _("Activation Keys")
+          @authorization = lambda{ organization && ActivationKey.readable?(organization) }
+          @url           = activation_keys_path
+        end
+
       end
-
     end
   end
 end

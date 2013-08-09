@@ -10,14 +10,16 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class SerializedParamsValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      if value
-        diff = Util::Support.diff_hash_params(record.params_format, value)
-        unless diff.empty?
-          msg = _("The parameters are in an invalid format. Please check the following attribute '%s'") % diff.inspect
-          record.errors.add(attribute, msg)
+module Katello
+  module Validators
+    class SerializedParamsValidator < ActiveModel::EachValidator
+      def validate_each(record, attribute, value)
+        if value
+          diff = Util::Support.diff_hash_params(record.params_format, value)
+          unless diff.empty?
+            msg = _("The parameters are in an invalid format. Please check the following attribute '%s'") % diff.inspect
+            record.errors.add(attribute, msg)
+          end
         end
       end
     end

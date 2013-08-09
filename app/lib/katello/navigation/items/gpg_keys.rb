@@ -11,17 +11,19 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module Navigation
-  module Items
-    class GpgKeys < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class GpgKeys < Navigation::Item
 
-      def initialize(organization)
-        @key           = :gpg_keys
-        @display       = _("GPG Keys")
-        @authorization = lambda{ organization && GpgKey.any_readable?(organization) }
-        @url           = gpg_keys_path
+        def initialize(organization)
+          @key           = :gpg_keys
+          @display       = _("GPG Keys")
+          @authorization = lambda{ organization && GpgKey.any_readable?(organization) }
+          @url           = gpg_keys_path
+        end
+
       end
-
     end
   end
 end

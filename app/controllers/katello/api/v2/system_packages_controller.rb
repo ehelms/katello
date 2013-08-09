@@ -11,8 +11,10 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class Api::V2::SystemPackagesController < Api::V1::SystemPackagesController
+module Katello
+  class Api::V2::SystemPackagesController < Api::V1::SystemPackagesController
 
-  include Api::V2::Rendering
+    include Api::V2::Rendering
 
+  end
 end

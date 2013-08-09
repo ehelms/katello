@@ -10,22 +10,24 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class ContentSearch::RepoRow < ContentSearch::Row
-  attr_accessor :repo
+module Katello
+  class ContentSearch::RepoRow < ContentSearch::Row
+    attr_accessor :repo
 
-  def initialize(options)
-    super
-    build_row
-  end
+    def initialize(options)
+      super
+      build_row
+    end
 
-  def build_row
-    self.data_type ||= "repo"
-    self.cols ||= {}
-    self.id ||= build_id
-    self.name ||= @repo.name
-  end
+    def build_row
+      self.data_type ||= "repo"
+      self.cols ||= {}
+      self.id ||= build_id
+      self.name ||= @repo.name
+    end
 
-  def build_id
-    [parent_id, data_type, repo.id].select(&:present?).join("_")
+    def build_id
+      [parent_id, data_type, repo.id].select(&:present?).join("_")
+    end
   end
 end

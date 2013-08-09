@@ -11,7 +11,9 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-class KeyPool < ActiveRecord::Base
-  belongs_to :activation_key
-  belongs_to :pool, :class_name => "::Pool"
+module Katello
+  class KeyPool < ActiveRecord::Base
+    belongs_to :activation_key
+    belongs_to :pool, :class_name => "::Pool"
+  end
 end

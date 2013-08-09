@@ -11,15 +11,17 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module Navigation
-  module Utils
+module Katello
+  module Navigation
+    module Utils
 
-    include Rails.application.routes.url_helpers
+      include Rails.application.routes.url_helpers
 
-    def default_url_options
-      { :script_name => ActionController::Base.config.relative_url_root
-      }.merge(Rails.application.routes.default_url_options)
+      def default_url_options
+        { :script_name => ActionController::Base.config.relative_url_root
+        }.merge(Rails.application.routes.default_url_options)
+      end
+
     end
-
   end
 end

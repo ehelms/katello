@@ -10,10 +10,12 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class NotInLibraryValidator < ActiveModel::Validator
-    def validate(record)
-      record.errors[:environment] << _("The '%s' environment cannot contain a changeset!") % "Library" if record.environment.library?
+module Katello
+  module Validators
+    class NotInLibraryValidator < ActiveModel::Validator
+      def validate(record)
+        record.errors[:environment] << _("The '%s' environment cannot contain a changeset!") % "Library" if record.environment.library?
+      end
     end
   end
 end

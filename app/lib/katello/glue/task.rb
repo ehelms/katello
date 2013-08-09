@@ -10,44 +10,46 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Glue
-  class Task
-    attr_reader :name, :status, :priority, :action, :action_rollback, :timestamp
+module Katello
+  module Glue
+    class Task
+      attr_reader :name, :status, :priority, :action, :action_rollback, :timestamp
 
-    def initialize opts
-      @name            = opts[:name]
-      @status          = opts[:status]
-      @priority        = opts[:priority] || 0
-      @action          = opts[:action]
-      @action_rollback = opts[:action_rollback]
-      update_ts
-    end
-
-    def status= s
-      if Glue::Queue::STATUS.include?(s)
+      def initialize opts
+        @name            = opts[:name]
+        @status          = opts[:status]
+        @priority        = opts[:priority] || 0
+        @action          = opts[:action]
+        @action_rollback = opts[:action_rollback]
         update_ts
-        @status = s
-      else
-        raise "invalid STATE #{s}"
       end
-    end
 
-    def to_s
-      "#{name}\t #{priority}\t #{status}\t #{action}"
-    end
+      def status= s
+        if Glue::Queue::STATUS.include?(s)
+          update_ts
+          @status = s
+        else
+          raise "invalid STATE #{s}"
+        end
+      end
 
-    def to_log
-      "#{name}[#{status}]"
-    end
+      def to_s
+        "#{name}\t #{priority}\t #{status}\t #{action}"
+      end
 
-    private
-    def update_ts
-      @timestamp = Time.now
-    end
+      def to_log
+        "#{name}[#{status}]"
+      end
 
-    # sort based on priority
-    def <=> other
-      self.priority <=> other.priority
+      private
+      def update_ts
+        @timestamp = Time.now
+      end
+
+      # sort based on priority
+      def <=> other
+        self.priority <=> other.priority
+      end
     end
   end
 end

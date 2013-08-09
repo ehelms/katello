@@ -1,2 +1,5 @@
-module Ext
+
+module Katello
+  module Ext
+  end
 end

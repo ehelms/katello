@@ -10,19 +10,21 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class ContentViewEnvironmentValidator < ActiveModel::Validator
+module Katello
+  module Validators
+    class ContentViewEnvironmentValidator < ActiveModel::Validator
 
-    def validate(record)
-      if record.content_view_id && record.environment_id
-        view = ContentView.find(record.content_view_id)
-        env = KTEnvironment.find(record.environment_id)
-        if !view.in_environment?(env)
-          record.errors[:base] << _("Content view '%{view}' is not in environment '%{env}'") %
-                                    {:view => view.name, :env => env.name}
+      def validate(record)
+        if record.content_view_id && record.environment_id
+          view = ContentView.find(record.content_view_id)
+          env = KTEnvironment.find(record.environment_id)
+          if !view.in_environment?(env)
+            record.errors[:base] << _("Content view '%{view}' is not in environment '%{env}'") %
+                                      {:view => view.name, :env => env.name}
+          end
         end
       end
-    end
 
+    end
   end
 end

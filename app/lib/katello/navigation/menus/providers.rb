@@ -11,23 +11,25 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module Navigation
-  module Menus
-    class Providers < Navigation::Menu
+module Katello
+  module Navigation
+    module Menus
+      class Providers < Navigation::Menu
 
-      def initialize(organization)
-        @key           = :providers
-        @display       = _("Repositories")
-        @authorization = true
-        @type          = 'flyout'
-        @items         = [
-          Navigation::Items::RedhatProvider.new(organization),
-          Navigation::Items::Providers.new(organization),
-          Navigation::Items::GpgKeys.new(organization)
-        ]
-        super
+        def initialize(organization)
+          @key           = :providers
+          @display       = _("Repositories")
+          @authorization = true
+          @type          = 'flyout'
+          @items         = [
+            Navigation::Items::RedhatProvider.new(organization),
+            Navigation::Items::Providers.new(organization),
+            Navigation::Items::GpgKeys.new(organization)
+          ]
+          super
+        end
+
       end
-
     end
   end
 end

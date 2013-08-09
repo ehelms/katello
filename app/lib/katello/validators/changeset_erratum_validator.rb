@@ -10,15 +10,17 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class ChangesetErratumValidator < ActiveModel::Validator
-    def validate(record)
-      record.errors[:base] << _("Erratum '%s' doesn't belong to the specified product!") %
-          record.errata_id and return if record.repositories.empty?
+module Katello
+  module Validators
+    class ChangesetErratumValidator < ActiveModel::Validator
+      def validate(record)
+        record.errors[:base] << _("Erratum '%s' doesn't belong to the specified product!") %
+            record.errata_id and return if record.repositories.empty?
 
-      if record.changeset.action_type == Changeset::PROMOTION
-        record.errors[:base] << _("Repository of the erratum '%s' has not been promoted into the target environment!") %
-            record.errata_id and return if record.promotable_repositories.empty?
+        if record.changeset.action_type == Changeset::PROMOTION
+          record.errors[:base] << _("Repository of the erratum '%s' has not been promoted into the target environment!") %
+              record.errata_id and return if record.promotable_repositories.empty?
+        end
       end
     end
   end

@@ -10,12 +10,14 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class CpConsumerUser < User
+module Katello
+  class CpConsumerUser < User
 
-  attr_accessor :uuid
+    attr_accessor :uuid
 
-  def cp_oauth_header
-    { 'cp-consumer' => self.uuid }
+    def cp_oauth_header
+      { 'cp-consumer' => self.uuid }
+    end
+
   end
-
 end

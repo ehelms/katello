@@ -11,18 +11,20 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class Api::V2::GpgKeysController < Api::V1::GpgKeysController
+module Katello
+  class Api::V2::GpgKeysController < Api::V1::GpgKeysController
 
-  include Api::V2::Rendering
+    include Api::V2::Rendering
 
-  # apipie docs are defined in v1 controller - they remain the same
-  def index
-    respond :collection => @organization.gpg_keys.where(params.slice(:name))
+    # apipie docs are defined in v1 controller - they remain the same
+    def index
+      respond :collection => @organization.gpg_keys.where(params.slice(:name))
+    end
+
+    # apipie docs are defined in v1 controller - they remain the same
+    def show
+      respond :resource => @gpg_key
+    end
+
   end
-
-  # apipie docs are defined in v1 controller - they remain the same
-  def show
-    respond :resource => @gpg_key
-  end
-
 end

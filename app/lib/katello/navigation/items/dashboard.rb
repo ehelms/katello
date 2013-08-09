@@ -10,17 +10,19 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Navigation
-  module Items
-    class Dashboard < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class Dashboard < Navigation::Item
 
-      def initialize
-        @key           = :dashboard
-        @display       = _("Dashboard")
-        @authorization = true
-        @url           = dashboard_index_path
+        def initialize
+          @key           = :dashboard
+          @display       = _("Dashboard")
+          @authorization = true
+          @url           = dashboard_index_path
+        end
+
       end
-
     end
   end
 end

@@ -11,31 +11,33 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class Api::V2::OrganizationsController < Api::V1::OrganizationsController
+module Katello
+  class Api::V2::OrganizationsController < Api::V1::OrganizationsController
 
-  include Api::V2::Rendering
+    include Api::V2::Rendering
 
-  resource_description do
-    api_version "v2"
-  end
-
-  def_param_group :organization do
-    param :organization, Hash, :required => true, :action_aware => true do
-      param :name, String, :desc => "name for the organization", :required => true, :action_aware => true
-      param :description, String
+    resource_description do
+      api_version "v2"
     end
-  end
 
-  def param_rules
-    rules = super
-    rules[:create] = {:organization  => [:name, :description, :label]}
-  end
+    def_param_group :organization do
+      param :organization, Hash, :required => true, :action_aware => true do
+        param :name, String, :desc => "name for the organization", :required => true, :action_aware => true
+        param :description, String
+      end
+    end
 
-  api :POST, "/organizations", "Create an organization"
-  param_group :organization
-  def create
-    @organization = Organization.create!(params[:organization])
-    respond
-  end
+    def param_rules
+      rules = super
+      rules[:create] = {:organization  => [:name, :description, :label]}
+    end
 
+    api :POST, "/organizations", "Create an organization"
+    param_group :organization
+    def create
+      @organization = Organization.create!(params[:organization])
+      respond
+    end
+
+  end
 end

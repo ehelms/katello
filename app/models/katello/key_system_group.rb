@@ -11,7 +11,9 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-class KeySystemGroup < ActiveRecord::Base
-  belongs_to :activation_key
-  belongs_to :system_group
+module Katello
+  class KeySystemGroup < ActiveRecord::Base
+    belongs_to :activation_key
+    belongs_to :system_group
+  end
 end

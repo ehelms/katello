@@ -10,33 +10,35 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class Dashboard::Widget
-  include Rails.application.routes.url_helpers
+module Katello
+  class Dashboard::Widget
+    include Rails.application.routes.url_helpers
 
-  def initialize(organization)
-    @organization = organization
+    def initialize(organization)
+      @organization = organization
+    end
+
+    def accessible?
+      true
+    end
+
+    def name
+      self.class.name.demodulize.underscore[/(.*)_widget/, 1]
+    end
+
+    def title
+      "Widget"
+    end
+
+    def content_path
+      nil
+    end
+
+    private
+
+    def current_organization
+      @organization
+    end
+
   end
-
-  def accessible?
-    true
-  end
-
-  def name
-    self.class.name.demodulize.underscore[/(.*)_widget/, 1]
-  end
-
-  def title
-    "Widget"
-  end
-
-  def content_path
-    nil
-  end
-
-  private
-
-  def current_organization
-    @organization
-  end
-
 end

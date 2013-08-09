@@ -10,19 +10,21 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class OperationsController < ApplicationController
-  skip_before_filter :require_org
-  def rules
-    {
-      :index => lambda{ User.any_readable? or Role.any_readable?}
-    }
-  end
+module Katello
+  class OperationsController < ApplicationController
+    skip_before_filter :require_org
+    def rules
+      {
+        :index => lambda{ User.any_readable? or Role.any_readable?}
+      }
+    end
 
 
 
-  def index
-  end
-  def section_id
-    'operations'
+    def index
+    end
+    def section_id
+      'operations'
+    end
   end
 end

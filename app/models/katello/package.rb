@@ -11,8 +11,10 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class Package
-  include Glue::Pulp::Package if Katello.config.use_pulp
-  include Glue::ElasticSearch::Package if Katello.config.use_elasticsearch
-  CONTENT_TYPE = "rpm"
+module Katello
+  class Package
+    include Glue::Pulp::Package if Katello.config.use_pulp
+    include Glue::ElasticSearch::Package if Katello.config.use_elasticsearch
+    CONTENT_TYPE = "rpm"
+  end
 end

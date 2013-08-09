@@ -10,36 +10,38 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class ContentViewVersionsController < ApplicationController
+module Katello
+  class ContentViewVersionsController < ApplicationController
 
-  before_filter :find_environment
-  before_filter :find_content_view_version
-  before_filter :authorize
+    before_filter :find_environment
+    before_filter :find_content_view_version
+    before_filter :authorize
 
-  def rules
-    readable = lambda{ @view_version.content_view.readable? }
-    {
-      :show => readable,
-      :content => readable
-    }
-  end
+    def rules
+      readable = lambda{ @view_version.content_view.readable? }
+      {
+        :show => readable,
+        :content => readable
+      }
+    end
 
-  def show
-    render :partial=>"show"
-  end
+    def show
+      render :partial=>"show"
+    end
 
-  def content
-    render :partial=>"content",
-           :locals => {:view_repos => @view_version.repos_ordered_by_product(@environment)}
-  end
+    def content
+      render :partial=>"content",
+             :locals => {:view_repos => @view_version.repos_ordered_by_product(@environment)}
+    end
 
-  private
+    private
 
-  def find_environment
-    @environment = KTEnvironment.find(params[:environment_id])
-  end
+    def find_environment
+      @environment = KTEnvironment.find(params[:environment_id])
+    end
 
-  def find_content_view_version
-    @view_version = ContentViewVersion.find(params[:id])
+    def find_content_view_version
+      @view_version = ContentViewVersion.find(params[:id])
+    end
   end
 end

@@ -10,15 +10,17 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class NoTrailingSpaceValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      NoTrailingSpaceValidator.validate_trailing_space(record, attribute, value)
-    end
+module Katello
+  module Validators
+    class NoTrailingSpaceValidator < ActiveModel::EachValidator
+      def validate_each(record, attribute, value)
+        NoTrailingSpaceValidator.validate_trailing_space(record, attribute, value)
+      end
 
-    def self.validate_trailing_space(record, attribute, value)
-      if value
-        record.errors[attribute] << _("must not contain leading or trailing white spaces.") unless value.strip == value
+      def self.validate_trailing_space(record, attribute, value)
+        if value
+          record.errors[attribute] << _("must not contain leading or trailing white spaces.") unless value.strip == value
+        end
       end
     end
   end

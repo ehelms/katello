@@ -12,44 +12,46 @@
 
 
 
-module Authorization::GpgKey
-  extend ActiveSupport::Concern
+module Katello
+  module Authorization::GpgKey
+    extend ActiveSupport::Concern
 
-  module ClassMethods
-    def readable(org)
-       if org.readable? || org.gpg_keys_manageable? || ::Provider.any_readable?(org)
-          where(:organization_id => org.id)
-       else
-         where("0 = 1")
-       end
+    module ClassMethods
+      def readable(org)
+         if org.readable? || org.gpg_keys_manageable? || ::Provider.any_readable?(org)
+            where(:organization_id => org.id)
+         else
+           where("0 = 1")
+         end
+      end
+
+      def manageable(org)
+         if org.gpg_keys_manageable?
+            where(:organization_id => org.id)
+         else
+           where("0 = 1")
+         end
+      end
+
+      def createable?(organization)
+        organization.gpg_keys_manageable?
+      end
+
+      def any_readable?(organization)
+        organization.readable? || organization.gpg_keys_manageable? || ::Provider.any_readable?(organization)
+      end
     end
 
-    def manageable(org)
-       if org.gpg_keys_manageable?
-          where(:organization_id => org.id)
-       else
-         where("0 = 1")
-       end
+
+    included do
+      def readable?
+         GpgKey.any_readable?(organization)
+      end
+
+      def manageable?
+         organization.gpg_keys_manageable?
+      end
     end
 
-    def createable?(organization)
-      organization.gpg_keys_manageable?
-    end
-
-    def any_readable?(organization)
-      organization.readable? || organization.gpg_keys_manageable? || ::Provider.any_readable?(organization)
-    end
   end
-
-
-  included do
-    def readable?
-       GpgKey.any_readable?(organization)
-    end
-
-    def manageable?
-       organization.gpg_keys_manageable?
-    end
-  end
-
 end

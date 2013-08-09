@@ -10,17 +10,19 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class UserOwnRole < Role
+module Katello
+  class UserOwnRole < Role
 
-  def self_role_for_user
-    users.first
-  end
+    def self_role_for_user
+      users.first
+    end
 
-  def create_or_update_default_system_registration_permission(organization, default_environment)
-    unless permissions.find_default_system_registration_permission
-      permissions.create_default_system_registration_permission(organization, default_environment)
-    else
-      permissions.update_default_system_registration_permission(default_environment)
+    def create_or_update_default_system_registration_permission(organization, default_environment)
+      unless permissions.find_default_system_registration_permission
+        permissions.create_default_system_registration_permission(organization, default_environment)
+      else
+        permissions.update_default_system_registration_permission(default_environment)
+      end
     end
   end
 end

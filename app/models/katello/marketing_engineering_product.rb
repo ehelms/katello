@@ -10,7 +10,9 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class MarketingEngineeringProduct < ActiveRecord::Base
-  belongs_to :marketing_product, :class_name => "Product"
-  belongs_to :engineering_product, :class_name => "Product"
+module Katello
+  class MarketingEngineeringProduct < ActiveRecord::Base
+    belongs_to :marketing_product, :class_name => "Product"
+    belongs_to :engineering_product, :class_name => "Product"
+  end
 end

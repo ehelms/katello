@@ -12,5 +12,7 @@
 
 # column has all the same fields as a cell
 
-class ContentSearch::Column < ContentSearch::Cell
+module Katello
+  class ContentSearch::Column < ContentSearch::Cell
+  end
 end

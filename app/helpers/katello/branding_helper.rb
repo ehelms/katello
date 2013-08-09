@@ -11,29 +11,31 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module BrandingHelper
-  def project_name
-    if Katello.config.katello?
-      'Katello'
-    else
-      'Headpin'
+module Katello
+  module BrandingHelper
+    def project_name
+      if Katello.config.katello?
+        'Katello'
+      else
+        'Headpin'
+      end
     end
-  end
 
-  def default_title
-    if Katello.config.katello?
-      _("Open Source Systems Management")
-    else
-      _("Open Source Subscription Management")
+    def default_title
+      if Katello.config.katello?
+        _("Open Source Systems Management")
+      else
+        _("Open Source Subscription Management")
+      end
     end
-  end
 
-  def redhat_bugzilla_link
-    url = "https://bugzilla.redhat.com/enter_bug.cgi?product=Katello"
-    link_to (_("the %s Bugzilla") % release_name), url
-  end
+    def redhat_bugzilla_link
+      url = "https://bugzilla.redhat.com/enter_bug.cgi?product=Katello"
+      link_to (_("the %s Bugzilla") % release_name), url
+    end
 
-  def release_name
-    Katello.config.app_name
+    def release_name
+      Katello.config.app_name
+    end
   end
 end

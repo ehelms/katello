@@ -11,13 +11,15 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class Api::V2::ContentViewsController < Api::V1::ContentViewsController
+module Katello
+  class Api::V2::ContentViewsController < Api::V1::ContentViewsController
 
-  include Api::V2::Rendering
+    include Api::V2::Rendering
 
-  # apipie docs are defined in v1 controller - they remain the same
-  def show
-    respond :resource => @view
+    # apipie docs are defined in v1 controller - they remain the same
+    def show
+      respond :resource => @view
+    end
+
   end
-
 end

@@ -10,14 +10,16 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class Api::V2::ApiController < Api::ApiController
+module Katello
+  class Api::V2::ApiController < Api::ApiController
 
-  include Api::Version2
-  include Api::V2::Rendering
-  include Api::V1::ErrorHandling
+    include Api::Version2
+    include Api::V2::Rendering
+    include Api::V1::ErrorHandling
 
-  # support for session (thread-local) variables must be the last filter in this class
-  include Util::ThreadSession::Controller
-  include AuthorizationRules
+    # support for session (thread-local) variables must be the last filter in this class
+    include Util::ThreadSession::Controller
+    include AuthorizationRules
 
+  end
 end

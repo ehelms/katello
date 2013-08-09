@@ -10,45 +10,47 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class OrganizationDestroyer
+module Katello
+  class OrganizationDestroyer
 
-  def self.destroy(organization, options = { })
-    OrganizationDestroyer.new(organization, options).setup(organization)
-  end
+    def self.destroy(organization, options = { })
+      OrganizationDestroyer.new(organization, options).setup(organization)
+    end
 
-  include AsyncOrchestration
-  attr_reader :organization_id, :options
+    include AsyncOrchestration
+    attr_reader :organization_id, :options
 
-  def initialize(organization, options = { })
-    options.assert_valid_keys :user, :async, :notify
-    @options      = { :user => User.current, :async => true, :notify => false }.merge options
-    @organization_id = organization.id
-  end
+    def initialize(organization, options = { })
+      options.assert_valid_keys :user, :async, :notify
+      @options      = { :user => User.current, :async => true, :notify => false }.merge options
+      @organization_id = organization.id
+    end
 
-  def setup(organization)
-    raise NotImplementedError unless options[:async]
+    def setup(organization)
+      raise NotImplementedError unless options[:async]
 
-    task = self.async.run
-    organization.deletion_task_id = task.id
-    organization.save!
-    return task
-  end
+      task = self.async.run
+      organization.deletion_task_id = task.id
+      organization.save!
+      return task
+    end
 
-  def run
-    organization = Organization.find(organization_id)
-    organization.destroy
+    def run
+      organization = Organization.find(organization_id)
+      organization.destroy
 
-    Notify.success _("Successfully removed organization '%s'.") % organization.name,
-                   :request_type => "organization__delete", :user => options[:user] if options[:notify]
-  rescue => e
-    Rails.logger.error(e)
-    Rails.logger.error(e.backtrace.join("\n"))
-
-    Notify.exception _("Failed to delete organization '%s'. Check notices for more details. ") % organization.name, e,
+      Notify.success _("Successfully removed organization '%s'.") % organization.name,
                      :request_type => "organization__delete", :user => options[:user] if options[:notify]
-    raise
-  end
+    rescue => e
+      Rails.logger.error(e)
+      Rails.logger.error(e.backtrace.join("\n"))
 
+      Notify.exception _("Failed to delete organization '%s'. Check notices for more details. ") % organization.name, e,
+                       :request_type => "organization__delete", :user => options[:user] if options[:notify]
+      raise
+    end
+
+
+  end
 
 end
-

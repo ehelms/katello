@@ -10,32 +10,34 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module PackagesHelper
+module Katello
+  module PackagesHelper
 
-  def format_changelog_changes(changes)
-    (h(changes).gsub(/\n/, "<br>")).html_safe
-  end
-
-  def format_changelog_date(date)
-    format_time(DateTime.strptime(date.to_s, "%s").to_date, format: :long)
-  end
-
-  def changelog_changes(changes)
-    if (lines = changes.split(/\n/)).length > 10
-      previewed_changelog(lines)
-    else
-      format_changelog_changes(changes)
+    def format_changelog_changes(changes)
+      (h(changes).gsub(/\n/, "<br>")).html_safe
     end
-  end
 
-  def previewed_changelog(lines)
-    html = format_changelog_changes(lines[0,10].join("\n"))
-    html += content_tag "p" do
-      more_lines = number_with_delimiter(lines.length - 10)
-      link_to (_("Show %s more line(s)") % more_lines), "", class: "show-more-changelog"
+    def format_changelog_date(date)
+      format_time(DateTime.strptime(date.to_s, "%s").to_date, format: :long)
     end
-    html += content_tag "div", :class => "more-changelog" do
-      format_changelog_changes(lines[10..-1].join("\n"))
+
+    def changelog_changes(changes)
+      if (lines = changes.split(/\n/)).length > 10
+        previewed_changelog(lines)
+      else
+        format_changelog_changes(changes)
+      end
+    end
+
+    def previewed_changelog(lines)
+      html = format_changelog_changes(lines[0,10].join("\n"))
+      html += content_tag "p" do
+        more_lines = number_with_delimiter(lines.length - 10)
+        link_to (_("Show %s more line(s)") % more_lines), "", class: "show-more-changelog"
+      end
+      html += content_tag "div", :class => "more-changelog" do
+        format_changelog_changes(lines[10..-1].join("\n"))
+      end
     end
   end
 end

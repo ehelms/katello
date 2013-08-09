@@ -10,14 +10,16 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class KatelloUrlFormatValidator < ActiveModel::EachValidator
-    include KatelloUrlHelper
+module Katello
+  module Validators
+    class KatelloUrlFormatValidator < ActiveModel::EachValidator
+      include KatelloUrlHelper
 
-    def validate_each(record, attribute, value)
-      attribute_name = options[:field_name] || attribute
-      record.errors[attribute_name] << N_("is invalid") unless kurl_valid?(value)
+      def validate_each(record, attribute, value)
+        attribute_name = options[:field_name] || attribute
+        record.errors[attribute_name] << N_("is invalid") unless kurl_valid?(value)
+      end
+
     end
-
   end
 end

@@ -10,12 +10,14 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class KatelloDescriptionFormatValidator < ActiveModel::EachValidator
-    MAX_LENGTH = 1000
-    def validate_each(record, attribute, value)
-      if value
-        record.errors[attribute] << N_("cannot contain more than %s characters") % MAX_LENGTH unless value.length <= MAX_LENGTH
+module Katello
+  module Validators
+    class KatelloDescriptionFormatValidator < ActiveModel::EachValidator
+      MAX_LENGTH = 1000
+      def validate_each(record, attribute, value)
+        if value
+          record.errors[attribute] << N_("cannot contain more than %s characters") % MAX_LENGTH unless value.length <= MAX_LENGTH
+        end
       end
     end
   end

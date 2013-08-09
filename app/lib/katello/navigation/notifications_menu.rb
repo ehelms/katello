@@ -9,20 +9,22 @@
 # NON-INFRINGEMENT, or FITNESS FOR A PARTICULAR PURPOSE. You should
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-module Navigation
-  module NotificationsMenu
+module Katello
+  module Navigation
+    module NotificationsMenu
 
-    def notifications_menu_main
-      [ menu_notifications ]
+      def notifications_menu_main
+        [ menu_notifications ]
+      end
+
+      def menu_notifications
+        {:key => :notifications,
+         :name => _("Notifications"),
+          :url => notices_path,
+          :options => {:class=>'notices top_level', "data-menu"=>"notices"}
+        }
+      end
+
     end
-
-    def menu_notifications
-      {:key => :notifications,
-       :name => _("Notifications"),
-        :url => notices_path,
-        :options => {:class=>'notices top_level', "data-menu"=>"notices"}
-      }
-    end
-
   end
 end

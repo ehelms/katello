@@ -11,17 +11,19 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module Navigation
-  module Items
-    class Logout < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class Logout < Navigation::Item
 
-      def initialize
-        @key           = :logout
-        @display       = _("Sign Out")
-        @authorization = true
-        @url           = logout_path
+        def initialize
+          @key           = :logout
+          @display       = _("Sign Out")
+          @authorization = true
+          @url           = logout_path
+        end
+
       end
-
     end
   end
 end

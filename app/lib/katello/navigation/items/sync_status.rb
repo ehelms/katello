@@ -11,17 +11,19 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module Navigation
-  module Items
-    class SyncStatus < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class SyncStatus < Navigation::Item
 
-      def initialize
-        @key           = :sync_status
-        @display       = _("Sync Status")
-        @authorization = true
-        @url           = sync_management_index_path
+        def initialize
+          @key           = :sync_status
+          @display       = _("Sync Status")
+          @authorization = true
+          @url           = sync_management_index_path
+        end
+
       end
-
     end
   end
 end

@@ -10,12 +10,14 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class Api::V1::ErrorsController < Api::V1::ApiController
+module Katello
+  class Api::V1::ErrorsController < Api::V1::ApiController
 
-  skip_before_filter :require_user
-  skip_before_filter :authorize
+    skip_before_filter :require_user
+    skip_before_filter :authorize
 
-  def render_404
-    render :json => { :displayMessage => _("Resource not found on the server"), :errors => [_("Not found")] }, :status => 404
+    def render_404
+      render :json => { :displayMessage => _("Resource not found on the server"), :errors => [_("Not found")] }, :status => 404
+    end
   end
 end

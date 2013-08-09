@@ -11,7 +11,9 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-class EnvironmentSystemGroup < ActiveRecord::Base
-  belongs_to :environment, :class_name => 'KTEnvironment'
-  belongs_to :system_group
+module Katello
+  class EnvironmentSystemGroup < ActiveRecord::Base
+    belongs_to :environment, :class_name => 'KTEnvironment'
+    belongs_to :system_group
+  end
 end

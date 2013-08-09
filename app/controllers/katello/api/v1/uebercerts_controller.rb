@@ -10,20 +10,22 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class Api::V1::UebercertsController < Api::V1::ApiController
-  before_filter :find_organization, :only => [:show]
+module Katello
+  class Api::V1::UebercertsController < Api::V1::ApiController
+    before_filter :find_organization, :only => [:show]
 
-  before_filter :authorize
+    before_filter :authorize
 
-  def rules
-    read_test = lambda { @organization.readable? }
-    { :show => read_test }
-  end
+    def rules
+      read_test = lambda { @organization.readable? }
+      { :show => read_test }
+    end
 
-  api :GET, "/organizations/:organization_id/uebercert", "Show an ueber certificate for an organization"
-  param :regenerate, :bool, :desc => "When set to 'True' certificate will be re-issued"
-  def show
-    @organization.generate_debug_cert if (params[:regenerate]||'').downcase == 'true'
-    respond :resource => @organization.debug_cert
+    api :GET, "/organizations/:organization_id/uebercert", "Show an ueber certificate for an organization"
+    param :regenerate, :bool, :desc => "When set to 'True' certificate will be re-issued"
+    def show
+      @organization.generate_debug_cert if (params[:regenerate]||'').downcase == 'true'
+      respond :resource => @organization.debug_cert
+    end
   end
 end

@@ -12,16 +12,18 @@
 
 
 
-class ContentViewVersionEnvironment < ActiveRecord::Base
-  belongs_to :environment, :class_name=>'KTEnvironment'
-  belongs_to :content_view_version
+module Katello
+  class ContentViewVersionEnvironment < ActiveRecord::Base
+    belongs_to :environment, :class_name=>'KTEnvironment'
+    belongs_to :content_view_version
 
-  before_create :verify_not_exists
+    before_create :verify_not_exists
 
-  def verify_not_exists
-    if self.content_view_version.environments.include?(self.environment)
-      raise _("Content View %{view} is already in environment %{env}") % {:view=>self.content_view_version.content_view.name, :env=>self.environment.name}
+    def verify_not_exists
+      if self.content_view_version.environments.include?(self.environment)
+        raise _("Content View %{view} is already in environment %{env}") % {:view=>self.content_view_version.content_view.name, :env=>self.environment.name}
+      end
     end
-  end
 
+  end
 end

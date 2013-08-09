@@ -10,17 +10,19 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Navigation
-  module Items
-    class Systems < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class Systems < Navigation::Item
 
-      def initialize(organization)
-        @key           = :systems
-        @display       = _("All")
-        @authorization = lambda{ organization && System.any_readable?(organization) }
-        @url           = systems_path
+        def initialize(organization)
+          @key           = :systems
+          @display       = _("All")
+          @authorization = lambda{ organization && System.any_readable?(organization) }
+          @url           = systems_path
+        end
+
       end
-
     end
   end
 end

@@ -10,9 +10,11 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module ProxyAssociationOwner
-  def proxy_association_owner
-    /(\d+)\.(\d+)\.(\d+)/ =~ Rails.version
-    (($1.to_i >= 4 ) or ($1.to_i == 3 and $2.to_i >= 1)) ? proxy_association.owner : proxy_owner
+module Katello
+  module ProxyAssociationOwner
+    def proxy_association_owner
+      /(\d+)\.(\d+)\.(\d+)/ =~ Rails.version
+      (($1.to_i >= 4 ) or ($1.to_i == 3 and $2.to_i >= 1)) ? proxy_association.owner : proxy_owner
+    end
   end
 end

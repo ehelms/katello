@@ -10,11 +10,13 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Glue
-  module Pulp
-    module PulpErrors
-      class ServiceUnavailable < HttpErrors::ServiceUnavailable; end
+module Katello
+  module Glue
+    module Pulp
+      module PulpErrors
+        class ServiceUnavailable < HttpErrors::ServiceUnavailable; end
+      end
     end
   end
-end
 
+end

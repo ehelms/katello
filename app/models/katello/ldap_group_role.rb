@@ -10,10 +10,12 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class LdapGroupRole < ActiveRecord::Base
-  validates_uniqueness_of :ldap_group, :scope => :role_id
-  validates_with Validators::LdapGroupValidator, :attributes => :ldap_group
-  belongs_to :role
+module Katello
+  class LdapGroupRole < ActiveRecord::Base
+    validates_uniqueness_of :ldap_group, :scope => :role_id
+    validates_with Validators::LdapGroupValidator, :attributes => :ldap_group
+    belongs_to :role
 
 
+  end
 end

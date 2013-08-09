@@ -10,19 +10,21 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class Dashboard::PromotionsWidget < Dashboard::Widget
+module Katello
+  class Dashboard::PromotionsWidget < Dashboard::Widget
 
-  def accessible?
-    Katello.config.katello? && current_organization &&
-        KTEnvironment.any_viewable_for_promotions?(current_organization)
+    def accessible?
+      Katello.config.katello? && current_organization &&
+          KTEnvironment.any_viewable_for_promotions?(current_organization)
+    end
+
+    def title
+      _("Promotions Overview")
+    end
+
+    def content_path
+      promotions_dashboard_index_path
+    end
+
   end
-
-  def title
-    _("Promotions Overview")
-  end
-
-  def content_path
-    promotions_dashboard_index_path
-  end
-
 end

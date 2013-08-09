@@ -11,8 +11,10 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class Api::V2::UebercertsController < Api::V1::UebercertsController
+module Katello
+  class Api::V2::UebercertsController < Api::V1::UebercertsController
 
-  include Api::V2::Rendering
+    include Api::V2::Rendering
 
+  end
 end

@@ -10,43 +10,45 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module ContentSearch
+module Katello
+  module ContentSearch
 
-  class PackageRow < Row
-    include ContentSearchHelper
-    attr_accessor :package
+    class PackageRow < Row
+      include ContentSearchHelper
+      attr_accessor :package
 
-    def initialize(options)
-      super
-      build_row
-    end
+      def initialize(options)
+        super
+        build_row
+      end
 
-    def build_row
-      self.data_type ||= type
-      self.cols ||= {}
-      self.id ||= build_id
-      self.name ||= build_display
-      self.value ||= package.nvrea
-    end
+      def build_row
+        self.data_type ||= type
+        self.cols ||= {}
+        self.id ||= build_id
+        self.name ||= build_display
+        self.value ||= package.nvrea
+      end
 
-    def build_display
-      is_package? ? package_display(package) : errata_display(package)
-    end
+      def build_display
+        is_package? ? package_display(package) : errata_display(package)
+      end
 
-    def build_id
-      [self.parent_id, "package", package.id].select(&:present?).join("_")
-    end
+      def build_id
+        [self.parent_id, "package", package.id].select(&:present?).join("_")
+      end
 
-    def type
-      package.class.name.underscore
-    end
+      def type
+        package.class.name.underscore
+      end
 
-    def is_package?
-      type == "package"
-    end
+      def is_package?
+        type == "package"
+      end
 
-    def short_details_erratum_path(*args)
-      ActionController::Base.config.relative_url_root + Rails.application.routes.url_helpers.short_details_erratum_path(*args)
+      def short_details_erratum_path(*args)
+        ActionController::Base.config.relative_url_root + Rails.application.routes.url_helpers.short_details_erratum_path(*args)
+      end
     end
   end
 end

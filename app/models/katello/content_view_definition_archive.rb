@@ -11,7 +11,9 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class ContentViewDefinitionArchive < ContentViewDefinitionBase
-  belongs_to :source, :class_name => "ContentViewDefinition"
-  has_many :content_view_versions, :inverse_of => :definition_archive
+module Katello
+  class ContentViewDefinitionArchive < ContentViewDefinitionBase
+    belongs_to :source, :class_name => "ContentViewDefinition"
+    has_many :content_view_versions, :inverse_of => :definition_archive
+  end
 end

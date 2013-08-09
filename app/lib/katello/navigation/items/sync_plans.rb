@@ -11,17 +11,19 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-module Navigation
-  module Items
-    class SyncPlans < Navigation::Item
+module Katello
+  module Navigation
+    module Items
+      class SyncPlans < Navigation::Item
 
-      def initialize
-        @key           = :sync_plans
-        @display       = _("Sync Plans")
-        @authorization = true
-        @url           = sync_plans_path
+        def initialize
+          @key           = :sync_plans
+          @display       = _("Sync Plans")
+          @authorization = true
+          @url           = sync_plans_path
+        end
+
       end
-
     end
   end
 end

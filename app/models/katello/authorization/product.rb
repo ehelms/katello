@@ -12,51 +12,53 @@
 
 
 
-module Authorization::Product
-  extend ActiveSupport::Concern
+module Katello
+  module Authorization::Product
+    extend ActiveSupport::Concern
 
-  READ_PERM_VERBS = [:read, :create, :update, :delete]
+    READ_PERM_VERBS = [:read, :create, :update, :delete]
 
-  included do
-    scope :all_readable, lambda {|org| ::Provider.readable(org).joins(:provider)}
-    scope :readable, lambda{|org| all_readable(org).with_enabled_repos_only(org.library)}
-    scope :all_editable, lambda {|org| ::Provider.editable(org).joins(:provider)}
-    scope :editable, lambda {|org| all_editable(org).with_enabled_repos_only(org.library)}
-    scope :syncable, lambda {|org| sync_items(org).with_enabled_repos_only(org.library)}
+    included do
+      scope :all_readable, lambda {|org| ::Provider.readable(org).joins(:provider)}
+      scope :readable, lambda{|org| all_readable(org).with_enabled_repos_only(org.library)}
+      scope :all_editable, lambda {|org| ::Provider.editable(org).joins(:provider)}
+      scope :editable, lambda {|org| all_editable(org).with_enabled_repos_only(org.library)}
+      scope :syncable, lambda {|org| sync_items(org).with_enabled_repos_only(org.library)}
 
-    def readable?
-      Product.all_readable(self.organization).where(:id => id).count > 0
+      def readable?
+        Product.all_readable(self.organization).where(:id => id).count > 0
+      end
+
+      def syncable?
+        Product.syncable(self.organization).where(:id => id).count > 0
+      end
+
+      def editable?
+        Product.all_editable(self.organization).where(:id => id).count > 0
+      end
     end
 
-    def syncable?
-      Product.syncable(self.organization).where(:id => id).count > 0
+    module ClassMethods
+      def readable(org)
+        all_readable(org).with_enabled_repos_only(org.library)
+      end
+
+      def editable(org)
+        all_editable(org).with_enabled_repos_only(org.library)
+      end
+
+      def syncable(org)
+        sync_items(org).with_enabled_repos_only(org.library)
+      end
+
+      def any_readable?(org)
+        ::Provider.any_readable?(org)
+      end
+
+      def sync_items org
+        org.syncable? ? (joins(:provider).where('providers.organization_id' => org)) : where("0=1")
+      end
     end
 
-    def editable?
-      Product.all_editable(self.organization).where(:id => id).count > 0
-    end
   end
-
-  module ClassMethods
-    def readable(org)
-      all_readable(org).with_enabled_repos_only(org.library)
-    end
-
-    def editable(org)
-      all_editable(org).with_enabled_repos_only(org.library)
-    end
-
-    def syncable(org)
-      sync_items(org).with_enabled_repos_only(org.library)
-    end
-
-    def any_readable?(org)
-      ::Provider.any_readable?(org)
-    end
-
-    def sync_items org
-      org.syncable? ? (joins(:provider).where('providers.organization_id' => org)) : where("0=1")
-    end
-  end
-
 end

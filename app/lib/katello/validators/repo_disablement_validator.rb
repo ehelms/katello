@@ -10,11 +10,13 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class RepoDisablementValidator < ActiveModel::Validator
-    def validate(record)
-      if record.redhat? && record.enabled_changed? && (!record.enabled?) && record.promoted?
-        record.errors[:base] << N_("Repository cannot be disabled since it has already been promoted.")
+module Katello
+  module Validators
+    class RepoDisablementValidator < ActiveModel::Validator
+      def validate(record)
+        if record.redhat? && record.enabled_changed? && (!record.enabled?) && record.promoted?
+          record.errors[:base] << N_("Repository cannot be disabled since it has already been promoted.")
+        end
       end
     end
   end

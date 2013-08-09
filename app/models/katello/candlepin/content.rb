@@ -11,41 +11,41 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
+module Katello
+  class Candlepin::Content
+    attr_accessor :name, :id, :type, :label, :vendor, :contentUrl, :gpgUrl
 
-class Candlepin::Content
-  attr_accessor :name, :id, :type, :label, :vendor, :contentUrl, :gpgUrl
+    def initialize(params = {})
+      load_attributes(params)
+    end
 
-  def initialize(params = {})
-    load_attributes(params)
-  end
+    def self.find(id)
+      found = ::Resources::Candlepin::Content.get(id)
+      ::Candlepin::Content.new(found)
+    end
 
-  def self.find(id)
-    found = ::Resources::Candlepin::Content.get(id)
-    ::Candlepin::Content.new(found)
-  end
+    def create
+      created = Resources::Candlepin::Content.create self
+      load_attributes(created)
 
-  def create
-    created = Resources::Candlepin::Content.create self
-    load_attributes(created)
+      self
+    end
 
-    self
-  end
+    def destroy
+      Resources::Candlepin::Content.destroy(@id)
+    end
 
-  def destroy
-    Resources::Candlepin::Content.destroy(@id)
-  end
+    def update(params = {})
+      return self if params.empty?
 
-  def update(params = {})
-    return self if params.empty?
+      updated = Resources::Candlepin::Content.update(params.merge(:id => @id))
+      load_attributes(updated)
 
-    updated = Resources::Candlepin::Content.update(params.merge(:id => @id))
-    load_attributes(updated)
+      self
+    end
 
-    self
-  end
-
-  def load_attributes(params)
-    params.each_pair {|k,v| instance_variable_set("@#{k}", v) unless v.nil? }
+    def load_attributes(params)
+      params.each_pair {|k,v| instance_variable_set("@#{k}", v) unless v.nil? }
+    end
   end
 end
-

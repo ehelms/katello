@@ -10,31 +10,33 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Ext::PermissionTagCleanup
-  def self.included(base)
-    base.class_eval do
-      if base == Organization
-        after_destroy :delete_organization_associated_permission_tags
-      else
-        after_destroy :delete_associated_permission_tags
+module Katello
+  module Ext::PermissionTagCleanup
+    def self.included(base)
+      base.class_eval do
+        if base == Organization
+          after_destroy :delete_organization_associated_permission_tags
+        else
+          after_destroy :delete_associated_permission_tags
+        end
       end
     end
-  end
 
-  def delete_organization_associated_permission_tags
-    PermissionTag.where(
-        :permission_id =>
-            Permission.where(:resource_type_id => ResourceType.where(:name => 'organizations'))
-    ).where(:tag_id => id).delete_all
-  end
+    def delete_organization_associated_permission_tags
+      PermissionTag.where(
+          :permission_id =>
+              Permission.where(:resource_type_id => ResourceType.where(:name => 'organizations'))
+      ).where(:tag_id => id).delete_all
+    end
 
 
-  def delete_associated_permission_tags
-    PermissionTag.where(
-        :permission_id =>
-            Permission.where(:organization_id => organization.id).where(
-                :resource_type_id => ResourceType.where(:name => self.class.table_name)
-            )
-    ).where(:tag_id => id).delete_all
+    def delete_associated_permission_tags
+      PermissionTag.where(
+          :permission_id =>
+              Permission.where(:organization_id => organization.id).where(
+                  :resource_type_id => ResourceType.where(:name => self.class.table_name)
+              )
+      ).where(:tag_id => id).delete_all
+    end
   end
 end

@@ -10,12 +10,14 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class DefaultInfoNotBlankValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      value.each_key do |type|
-        value[type].each do |key|
-          record.errors[attribute] << _("cannot contain blank keynames") and return if key.blank?
+module Katello
+  module Validators
+    class DefaultInfoNotBlankValidator < ActiveModel::EachValidator
+      def validate_each(record, attribute, value)
+        value.each_key do |type|
+          value[type].each do |key|
+            record.errors[attribute] << _("cannot contain blank keynames") and return if key.blank?
+          end
         end
       end
     end

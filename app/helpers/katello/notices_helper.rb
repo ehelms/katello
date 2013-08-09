@@ -10,12 +10,14 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module NoticesHelper
+module Katello
+  module NoticesHelper
 
-  def sortable(column, title)
-    css_class = column == sort_column ? "active sortable #{sort_direction}" : nil
-    direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
-    link_to title, {:sort => column, :direction => direction}, {:class => css_class}
+    def sortable(column, title)
+      css_class = column == sort_column ? "active sortable #{sort_direction}" : nil
+      direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
+      link_to title, {:sort => column, :direction => direction}, {:class => css_class}
+    end
+
   end
-
 end

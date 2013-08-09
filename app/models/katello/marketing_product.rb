@@ -10,7 +10,9 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class MarketingProduct < Product
-  has_many :marketing_engineering_products, :dependent => :destroy
-  has_many :engineering_products, :through => :marketing_engineering_products
+module Katello
+  class MarketingProduct < Product
+    has_many :marketing_engineering_products, :dependent => :destroy
+    has_many :engineering_products, :through => :marketing_engineering_products
+  end
 end

@@ -10,47 +10,49 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module ContentSearch
+module Katello
+  module ContentSearch
 
-  class ProductSearch < ContainerSearch
-    attr_accessor :products, :views
+    class ProductSearch < ContainerSearch
+      attr_accessor :products, :views
 
-    def initialize(options)
-      super
-      self.rows = build_rows
-    end
+      def initialize(options)
+        super
+        self.rows = build_rows
+      end
 
-    def build_rows
-      rows = []
-      @views.each do |view|
-        filtered_products(view).each do |prod|
-          cols = {}
-          prod.environments_for_view(view).each do |env|
-            cols[env.id] = Cell.new(:hover => lambda{container_hover_html(prod, env, view)}) if readable_env_ids.include?(env.id)
+      def build_rows
+        rows = []
+        @views.each do |view|
+          filtered_products(view).each do |prod|
+            cols = {}
+            prod.environments_for_view(view).each do |env|
+              cols[env.id] = Cell.new(:hover => lambda{container_hover_html(prod, env, view)}) if readable_env_ids.include?(env.id)
+            end
+            rows << Row.new(:id => "view_#{view.id}_product_#{prod.id}",
+                                   :name => prod.name,
+                                   :cols => cols,
+                                   :data_type => "product",
+                                   :value => prod.name,
+                                   :parent_id=> "view_#{view.id}",
+                                   :object_id=>view.id
+                                  )
           end
-          rows << Row.new(:id => "view_#{view.id}_product_#{prod.id}",
-                                 :name => prod.name,
-                                 :cols => cols,
-                                 :data_type => "product",
-                                 :value => prod.name,
-                                 :parent_id=> "view_#{view.id}",
-                                 :object_id=>view.id
-                                )
         end
+
+        rows
       end
 
-      rows
-    end
-
-    def filtered_products(view)
-      filtered = products & view.all_version_products
-      envs = SearchUtils.search_envs(mode)
-      if mode == :shared
-        filtered = filtered.select{|p|  (envs - p.environments_for_view(view)).empty? }
-      elsif mode == :unique
-        filtered = filtered.select{|p|  !(envs - p.environments_for_view(view)).empty? }
+      def filtered_products(view)
+        filtered = products & view.all_version_products
+        envs = SearchUtils.search_envs(mode)
+        if mode == :shared
+          filtered = filtered.select{|p|  (envs - p.environments_for_view(view)).empty? }
+        elsif mode == :unique
+          filtered = filtered.select{|p|  !(envs - p.environments_for_view(view)).empty? }
+        end
+        filtered
       end
-      filtered
     end
   end
 end

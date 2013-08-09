@@ -10,9 +10,11 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class ChangesetUser < ActiveRecord::Base
+module Katello
+  class ChangesetUser < ActiveRecord::Base
 
-  belongs_to :changeset, :inverse_of => :users
-  belongs_to :user
+    belongs_to :changeset, :inverse_of => :users
+    belongs_to :user
 
+  end
 end

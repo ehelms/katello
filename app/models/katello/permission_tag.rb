@@ -11,11 +11,13 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class PermissionTag < ActiveRecord::Base
+module Katello
+  class PermissionTag < ActiveRecord::Base
 
-  belongs_to :permission, :inverse_of=>:tags
+    belongs_to :permission, :inverse_of=>:tags
 
-  def to_s
-    tag_id.to_s
+    def to_s
+      tag_id.to_s
+    end
   end
 end

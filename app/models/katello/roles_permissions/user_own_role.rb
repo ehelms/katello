@@ -10,30 +10,32 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module RolesPermissions::UserOwnRole
-  include  ::ProxyAssociationOwner
+module Katello
+  module RolesPermissions::UserOwnRole
+    include  ::ProxyAssociationOwner
 
-  def find_own_role
-    where(:type => 'UserOwnRole').first
-  end
+    def find_own_role
+      where(:type => 'UserOwnRole').first
+    end
 
-  def find_or_create_own_role(auser)
-    return (r = find_own_role) unless r.nil?
+    def find_or_create_own_role(auser)
+      return (r = find_own_role) unless r.nil?
 
-    begin
-      role_name = "#{auser.username}_#{Password.generate_random_string(20)}"
-    end while ::UserOwnRole.exists?(:name => role_name)
+      begin
+        role_name = "#{auser.username}_#{Password.generate_random_string(20)}"
+      end while ::UserOwnRole.exists?(:name => role_name)
 
-    proxy_association_owner.roles << (r = ::UserOwnRole.new(:name => role_name))
-    r
-  end
+      proxy_association_owner.roles << (r = ::UserOwnRole.new(:name => role_name))
+      r
+    end
 
-  def destroy_own_role
-    return unless (r = find_own_role)
-    r.destroy
+    def destroy_own_role
+      return unless (r = find_own_role)
+      r.destroy
 
-    unless r.destroyed?
-      Rails.logger.error error.to_s
+      unless r.destroyed?
+        Rails.logger.error error.to_s
+      end
     end
   end
 end

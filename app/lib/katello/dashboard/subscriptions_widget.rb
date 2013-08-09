@@ -10,14 +10,16 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class Dashboard::SubscriptionsWidget < Dashboard::Widget
+module Katello
+  class Dashboard::SubscriptionsWidget < Dashboard::Widget
 
-  def accessible?
-    current_organization && current_organization.readable?
+    def accessible?
+      current_organization && current_organization.readable?
+    end
+
+    def title
+      _("System Subscription Status")
+    end
+
   end
-
-  def title
-    _("System Subscription Status")
-  end
-
 end

@@ -10,14 +10,16 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class Glue::Pulp::SimplePackage
-  # {"epoch", "name", "arch", "version", "vendor", "release"}
-  attr_accessor :vendor, :arch, :epoch, :version, :release, :name
-  def initialize(params = {})
-    params.each_pair {|k,v| instance_variable_set("@#{k}", v) unless v.nil? }
-  end
+module Katello
+  class Glue::Pulp::SimplePackage
+    # {"epoch", "name", "arch", "version", "vendor", "release"}
+    attr_accessor :vendor, :arch, :epoch, :version, :release, :name
+    def initialize(params = {})
+      params.each_pair {|k,v| instance_variable_set("@#{k}", v) unless v.nil? }
+    end
 
-  def nvrea
-    "#{@name}-#{@version}-#{@release}.#{@arch}"
+    def nvrea
+      "#{@name}-#{@version}-#{@release}.#{@arch}"
+    end
   end
 end

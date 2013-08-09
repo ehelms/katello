@@ -10,30 +10,32 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class PackageRuleParamsValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      if value
-        unless value[:units].blank?
-          unless value[:units].is_a?(Array)
-            record.errors.add(attribute, _("Invalid package rule specified. Units must be an array."))
-          else
-            value[:units].each do |unit|
-              unless unit.has_key?(:name)
-                record.errors.add(attribute, _("Invalid package rule specified. Missing package 'name'."))
-                break
-              end
-              if unit.has_key?(:version) && (unit.has_key?(:min_version) || unit.has_key?(:max_version))
-                ver_msg = _("Invalid rule combination specified, 'version'" +
-                                  " and 'min_version' or 'max_version' cannot be specified in the same tuple")
+module Katello
+  module Validators
+    class PackageRuleParamsValidator < ActiveModel::EachValidator
+      def validate_each(record, attribute, value)
+        if value
+          unless value[:units].blank?
+            unless value[:units].is_a?(Array)
+              record.errors.add(attribute, _("Invalid package rule specified. Units must be an array."))
+            else
+              value[:units].each do |unit|
+                unless unit.has_key?(:name)
+                  record.errors.add(attribute, _("Invalid package rule specified. Missing package 'name'."))
+                  break
+                end
+                if unit.has_key?(:version) && (unit.has_key?(:min_version) || unit.has_key?(:max_version))
+                  ver_msg = _("Invalid rule combination specified, 'version'" +
+                                    " and 'min_version' or 'max_version' cannot be specified in the same tuple")
 
-                record.errors.add(attribute, ver_msg)
-              end
+                  record.errors.add(attribute, ver_msg)
+                end
 
+              end
             end
           end
-        end
-       end
+         end
+      end
     end
   end
 end

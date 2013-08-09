@@ -10,13 +10,15 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class Dashboard::NoticesWidget < Dashboard::Widget
+module Katello
+  class Dashboard::NoticesWidget < Dashboard::Widget
 
-  def title
-    _("Latest Notifications")
-  end
+    def title
+      _("Latest Notifications")
+    end
 
-  def content_path
-    notices_dashboard_index_path
+    def content_path
+      notices_dashboard_index_path
+    end
   end
 end

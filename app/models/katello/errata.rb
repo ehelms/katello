@@ -11,8 +11,10 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
 
-class Errata
-  include Glue::Pulp::Errata if Katello.config.use_pulp
-  include Glue::ElasticSearch::Errata if Katello.config.use_elasticsearch
-  CONTENT_TYPE = "erratum"
+module Katello
+  class Errata
+    include Glue::Pulp::Errata if Katello.config.use_pulp
+    include Glue::ElasticSearch::Errata if Katello.config.use_elasticsearch
+    CONTENT_TYPE = "erratum"
+  end
 end

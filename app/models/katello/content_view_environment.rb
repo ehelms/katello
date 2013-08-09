@@ -10,15 +10,17 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-class ContentViewEnvironment < ActiveRecord::Base
-  include Glue::Candlepin::Environment if Katello.config.use_cp
-  include Glue if Katello.config.use_cp
+module Katello
+  class ContentViewEnvironment < ActiveRecord::Base
+    include Glue::Candlepin::Environment if Katello.config.use_cp
+    include Glue if Katello.config.use_cp
 
-  belongs_to :content_view
-  belongs_to :environment, :class_name => "KTEnvironment"
+    belongs_to :content_view
+    belongs_to :environment, :class_name => "KTEnvironment"
 
-  # retrieve the owning environment for this content view environment.
-  def owner
-    self.environment
+    # retrieve the owning environment for this content view environment.
+    def owner
+      self.environment
+    end
   end
 end

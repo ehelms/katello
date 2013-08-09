@@ -10,10 +10,12 @@
 # have received a copy of GPLv2 along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-module Validators
-  class LibraryPresenceValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      record.errors[attribute] << N_("must contain '%s'") % "Library" if value.select {|e| e.library}.empty?
+module Katello
+  module Validators
+    class LibraryPresenceValidator < ActiveModel::EachValidator
+      def validate_each(record, attribute, value)
+        record.errors[attribute] << N_("must contain '%s'") % "Library" if value.select {|e| e.library}.empty?
+      end
     end
   end
 end
