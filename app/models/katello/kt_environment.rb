@@ -25,7 +25,7 @@ module Katello
       Katello::Actions::EnvironmentDestroy
     end
 
-    self.table_name = "environments"
+    self.table_name = "katello_environments"
     include Ext::LabelFromName
     include Ext::PermissionTagCleanup
     acts_as_reportable

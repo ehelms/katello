@@ -32,7 +32,7 @@ module Katello
     has_many :content_view_versions, :dependent => :destroy
     alias :versions :content_view_versions
 
-    belongs_to :environment_default, :class_name => "KTEnvironment", :inverse_of => :default_content_view,
+    belongs_to :environment_default, :class_name => "Katello::KTEnvironment", :inverse_of => :default_content_view,
                :foreign_key => :environment_default_id # TODO this relation seems to be broken
 
     has_many :component_content_views, :dependent => :destroy
@@ -57,11 +57,11 @@ module Katello
 
     def self.in_environment(env)
       joins(:content_view_versions => :content_view_version_environments).
-        where("content_view_version_environments.environment_id = ?", env.id)
+        where("katello_content_view_version_environments.environment_id = ?", env.id)
     end
 
     def self.composite(composite=true)
-      joins(:content_view_definition).where('content_view_definition_bases.composite = ?', composite)
+      joins(:content_view_definition).where('katello_content_view_definition_bases.composite = ?', composite)
     end
 
     def composite
@@ -75,9 +75,9 @@ module Katello
       if composite
         content_view_definition.component_content_views.select("distinct katello_content_views.*").
                 joins(:content_view_versions => :content_view_version_environments).
-                where(["content_view_version_environments.content_view_version_id "\
+                where(["katello_content_view_version_environments.content_view_version_id "\
                    "NOT IN (SELECT content_view_version_id FROM "\
-                   "content_view_version_environments WHERE environment_id = ?)", env])
+                   "katello_content_view_version_environments WHERE environment_id = ?)", env])
       end
     end
 
@@ -127,7 +127,7 @@ module Katello
     end
 
     def environments
-      KTEnvironment.joins(:content_view_versions).where('content_view_versions.content_view_id' => self.id)
+      KTEnvironment.joins(:content_view_versions).where('katello_content_view_versions.content_view_id' => self.id)
     end
 
     def in_environment?(env)
@@ -135,7 +135,7 @@ module Katello
     end
 
     def version(env)
-      self.versions.in_environment(env).order('content_view_versions.id ASC').scoped(:readonly=>false).last
+      self.versions.in_environment(env).order('katello_content_view_versions.id ASC').scoped(:readonly=>false).last
     end
 
     def version_environment(env)
@@ -158,7 +158,7 @@ module Katello
     end
 
     def all_version_repos
-      Repository.joins(:content_view_version).where("content_view_versions.content_view_id" => self.id)
+      Repository.joins(:content_view_version).where("katello_content_view_versions.content_view_id" => self.id)
     end
 
     def repos_in_product(env, product)
@@ -177,7 +177,7 @@ module Katello
 
     #list all products associated to this view across all versions
     def all_version_products
-      Product.joins(:repositories).where('repositories.id'=>self.all_version_repos).uniq
+      Product.joins(:repositories).where('katello_repositories.id'=>self.all_version_repos).uniq
     end
 
     #get the library instances of all repos within this view
@@ -189,7 +189,7 @@ module Katello
     def get_repo_clone(env, repo)
       lib_id = repo.library_instance_id || repo.id
       Repository.in_environment(env).where(:library_instance_id => lib_id).
-          joins(:content_view_version).where('content_view_versions.content_view_id' => self.id)
+          joins(:content_view_version).where('katello_content_view_versions.content_view_id' => self.id)
     end
 
     def promote_via_changeset(env, apply_options = {:async => true},

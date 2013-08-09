@@ -26,3 +26,4 @@ module Katello
       months[i]
     end
   end
+end

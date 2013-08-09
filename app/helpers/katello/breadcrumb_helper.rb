@@ -24,6 +24,7 @@ module Katello
       hash[id] = hash[id].merge(attributes)
     end
   end
+end
 
 module Katello
   module ChangesetBreadcrumbs

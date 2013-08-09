@@ -50,12 +50,12 @@ module Katello
 
     def help_tip(text, key=nil)
       key ||= params[:controller] + "-" + params[:action]
-      render :partial => "common/helptip", :locals=>{:key=>key, :text=>text}
+      render :partial => "katello/common/helptip", :locals=>{:key=>key, :text=>text}
     end
 
     def help_tip_button(key=nil)
       key ||= params[:controller] + "-" + params[:action]
-      render :partial => "common/helptip_button", :locals=>{:key=>key}
+      render :partial => "katello/common/helptip_button", :locals=>{:key=>key}
     end
 
     # Headpin inclusion
@@ -152,6 +152,7 @@ module Katello
       render :partial=>"katello/common/env_select", :locals => options
     end
 
+=begin
     def gravatar_image_tag(email)
       image_url = gravatar_url(email)
       return "<img src=\"#{image_url}\" class=\"gravatar\"><span class=\"gravatar-span\">"
@@ -160,7 +161,7 @@ module Katello
     def gravatar_url(email)
       "https:///secure.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}?d=mm&s=25"
     end
-
+=end
     def env_select_class curr_env, selected_env, curr_path, selected_path, accessible_envs, library_clickable
       classes = []
       if (library_clickable or !curr_env.library?) and accessible_envs.member?(curr_env)
