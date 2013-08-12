@@ -1,3 +1,3 @@
-collection @collection
+collection @collection, :root => :records, :object_root => false
 
-extends "api/v2/%s/show" % controller_name
+extends "katello/api/v2/%s/show" % controller_name
