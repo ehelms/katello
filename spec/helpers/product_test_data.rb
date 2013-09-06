@@ -31,7 +31,7 @@ module ProductTestData
     :id => ProductTestData::PRODUCT_ID,
     :cp_id => 1,
     :productContent => [],
-    :attributes => [],
+    :attrs => [],
     :multiplier => 1
   }.with_indifferent_access
 
@@ -41,7 +41,7 @@ module ProductTestData
     :id => ProductTestData::PRODUCT_ID,
     :multiplier => 1,
     :productContent => [],
-    :attributes => []
+    :attrs => []
   })
 
   PRODUCT_WITH_ATTRS = HashWithIndifferentAccess.new({
@@ -50,7 +50,7 @@ module ProductTestData
     :id => ProductTestData::PRODUCT_ID,
     :multiplier => 1,
     :productContent => [],
-    :attributes => [{
+    :attrs => [{
         "name" => "version",
         "value" => "1.0"
       },
@@ -95,7 +95,7 @@ module ProductTestData
           "physicalEntitlement" => 0
        )
     ],
-    :attributes => []
+    :attrs => []
   })
 
 
@@ -120,7 +120,7 @@ module ProductTestData
           "flexEntitlement" => 0,
           "physicalEntitlement" => 0}
     ],
-    :attributes => []
+    :attrs => []
   })
 
 

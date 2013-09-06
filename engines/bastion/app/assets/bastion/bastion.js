@@ -82,3 +82,6 @@
 
 //= require "bastion/repositories/repositories.module.js"
 //= require_tree "./repositories"
+
+//= require "bastion/gpg-keys/gpg-keys.module.js"
+//= require_tree "./gpg-keys"

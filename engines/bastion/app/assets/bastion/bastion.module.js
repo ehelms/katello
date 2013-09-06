@@ -32,7 +32,8 @@ var Katello = angular.module('Katello', [
     'Bastion.content-views',
     'Bastion.products',
     'Bastion.providers',
-    'Bastion.repositories'
+    'Bastion.repositories',
+    'Bastion.gpg-keys'
 ]);
 
 /**

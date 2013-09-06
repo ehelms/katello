@@ -58,6 +58,11 @@ class ProductAuthorizationAdminTest < AuthorizationTestBase
     assert @prod.editable?
   end
 
+  def test_deletable?
+    product = Product.find(products(:empty_product))
+    assert product.deletable?
+  end
+
 end
 
 
@@ -68,7 +73,6 @@ class ProductAuthorizationNoPermsTest < AuthorizationTestBase
     User.current = User.find(users('no_perms_user'))
     @prod = @fedora
     @org = @acme_corporation
-
   end
 
   def test_all_readable
@@ -105,6 +109,10 @@ class ProductAuthorizationNoPermsTest < AuthorizationTestBase
 
   def test_editable?
     refute @prod.editable?
+  end
+
+  def test_deletable?
+    refute @prod.deletable?
   end
 
 end

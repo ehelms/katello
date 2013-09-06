@@ -19,6 +19,15 @@ module Authorization::Repository
     scope :in_environment, lambda { |env|
       where(environment_id: env.id)
     }
+
+    def readable?
+      product.provider.readable? && environment.contents_readable?
+    end
+
+    def deletable?
+      product.editable? && !promoted?
+    end
+
   end
 
   module ClassMethods
