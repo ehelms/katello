@@ -282,7 +282,10 @@ Src::Application.routes.draw do
       end
 
       resources :gpg_keys, :only => [:show, :update, :destroy] do
-        get :content, :on => :member
+        member do
+          get :content
+          post :content
+        end
       end
 
       resources :activation_keys do

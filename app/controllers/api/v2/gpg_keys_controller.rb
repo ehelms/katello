@@ -12,14 +12,27 @@
 
 class Api::V2::GpgKeysController < Api::V2::ApiController
 
-  before_filter :find_organization, :only => [:index]
+  before_filter :find_organization, :only => [:index, :create]
+  before_filter :find_gpg_key, :only => [:show, :update, :destroy]
   before_filter :authorize
+
+  def_param_group :gpg_key do
+    param :name, :identifier, :required => true, :desc => "identifier of the gpg key"
+    param :content, String, :required => true, :desc => "public key block in DER encoding"
+  end
 
   def rules
     index_test  = lambda { GpgKey.any_readable?(@organization) }
+    create_test = lambda { GpgKey.createable?(@organization) }
+    read_test   = lambda { @gpg_key.readable? }
+    manage_test = lambda { @gpg_key.manageable? }
 
     {
-      :index   => index_test
+      :index => index_test,
+      :create => create_test,
+      :show => read_test,
+      :update  => manage_test,
+      :destroy => manage_test
     }
   end
 
@@ -48,9 +61,45 @@ class Api::V2::GpgKeysController < Api::V2::ApiController
     respond_for_index(:collection => collection)
   end
 
-  # apipie docs are defined in v1 controller - they remain the same
+  api :POST, "/gpg_keys", "Create a gpg key"
+  param :organization_id, :identifier, :desc => "organization identifier"
+  param_group :gpg_key
+  def create
+    gpg_key = @organization.gpg_keys.create!(params)
+    respond_for_show(:resource => gpg_key)
+  end
+
+  api :GET, "/gpg_keys/:id", "Show a gpg key"
+  param :id, :identifier, :desc => "gpg key numeric identifier"
   def show
-    respond :resource => @gpg_key
+    respond_for_show(:resource => @gpg_key)
+  end
+
+  api :PUT, "/gpg_keys/:id", "Update a repository"
+  param :id, :identifier, :required => true, :desc => "gpg key numeric identifier"
+  param_group :gpg_key
+  def update
+    @gpg_key.update_attributes!(gpg_key_params)
+    respond_for_show({:resource => @gpg_key})
+  end
+
+  api :DELETE, "/gpg_keys/:id", "Destroy a gpg key"
+  param :id, :number, :desc => "gpg key numeric identifier"
+  def destroy
+    @gpg_key.destroy
+    respond_for_destroy
+  end
+
+  protected
+
+  def find_gpg_key
+    @gpg_key = GpgKey.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    raise HttpErrors::NotFound, _("Couldn't find GPG key '%s'") % params[:id]
+  end
+
+  def gpg_key_params
+    params.slice(:name, :content)
   end
 
 end

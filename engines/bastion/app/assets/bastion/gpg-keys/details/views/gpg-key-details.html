@@ -1,0 +1,25 @@
+<section class="nutupane-details" ng-cloak alch-container-scroll>
+
+  <header class="details-header new-header">
+    <h2 class="fl" translate>
+      GPG Key {{ gpgKey.name }}
+    </h2>
+
+    <div class="details-actions fr">
+      <button class="btn btn-danger"
+              ng-click="removeGPGKey(gpgKey)"
+              ng-disabled="!gpgKey.permissions.deletable"
+              translate>
+        Remove GPGKey
+      </button>
+
+      <button class="btn" ng-click="table.closeItem()">
+        <i class="icon-remove"></i>
+        <span translate>Close</span>
+      </button>
+    </div>
+  </header>
+
+  <div ui-view></div>
+
+</section>

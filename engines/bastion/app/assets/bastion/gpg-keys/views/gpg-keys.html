@@ -1,0 +1,51 @@
+<section>
+
+  <div class="nutupane-titlebar">
+    <h1 class="nutupane-title" translate>GPG Keys</h1>
+  </div>
+
+  <div class="nutupane-actionbar">
+    <div class="form">
+      <input type="text"
+             class="input input-search"
+             placeholder="{{ 'Search...' | translate }}"
+             ng-model="table.searchTerm"
+             on-enter="table.search(table.searchTerm)">
+      <span class="result-count" translate>
+        Showing {{ table.rows.length }} of {{ table.resource.subtotal }} ({{ table.resource.total }} Total) GPG Keys
+      </span>
+    </div>
+
+    <div class="nutupane-actions fr">
+      <button class="btn btn-primary" ng-click="transitionToNewGPGKey()">
+        <i class="icon-plus"></i>
+        <span translate>New GPG Key</span>
+      </button>
+    </div>
+
+    <div class="fr select-action">
+      <span translate>{{ table.numSelected }} Selected</span>
+      <span>|</span>
+      <a class="deselect-action"
+         ng-class="{ 'disabled-link' : table.numSelected == 0 }"
+         ng-click="table.selectAll(false)"
+         translate>
+        Deselect All
+      </a>
+    </div>
+  </div>
+
+  <div nutupane-table ng-class="{'table-reduced': $root.$state.current.collapsed}">
+    <div class="loading-mask icon-3x" ng-show="table.working" ng-class="{ 'loading-mask-collapsed icon-2x': $root.$state.current.collapsed }">
+      <i class="icon-spinner icon-spin"></i>
+      <span ng-hide="$root.$state.current.collapsed" translate>Loading...</span>
+    </div>
+
+    <div alch-container-scroll control-width="table" alch-infinite-scroll="table.nextPage()">
+      <div ui-view="table"></div>
+    </div>
+  </div>
+
+  <span class="action-panel" ui-view="action-panel"></span>
+
+</section>

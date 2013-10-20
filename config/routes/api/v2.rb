@@ -250,7 +250,7 @@ Src::Application.routes.draw do
         end
       end
 
-      api_resources :gpg_keys, :only => [:index, :show, :update, :destroy] do
+      api_resources :gpg_keys, :only => [:index, :create, :show, :update, :destroy] do
         get :content, :on => :member
       end
 

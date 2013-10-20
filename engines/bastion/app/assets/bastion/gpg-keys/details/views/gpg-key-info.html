@@ -1,0 +1,63 @@
+<div class="details fl">
+  <div class="detail">
+    <span class="info-label" translate>Name</span>
+    <span class="info-value"
+          alch-edit-text="gpgKey.name"
+          on-save="save(gpgKey)"
+          readonly="gpgKey.readonly">
+    </span>
+  </div>
+
+  <div class="detail">
+    <span class="info-label" translate>Content</span>
+    <span class="info-value"
+          alch-edit-textarea="gpgKey.content"
+          readonly="gpgKey.readonly"
+          on-save="save(gpgKey)">
+    </span>
+  </div>
+</div>
+
+<div class="details fl">
+  <section class="well">
+    <h5 translate>Upload GPG Key</h5>
+
+    <div class="flash_hud" ng-show="uploadStatus">
+      <a class="control" title="Close" ng-click="uploadStatus = null"></a>
+      <ul class="flash_messages success" ng-show="uploadStatus == 'success'">
+        <li translate>GPG Key successfully uploaded.</li>
+      </ul>
+      <ul class="flash_messages error" ng-show="uploadStatus == 'error'">
+        <li>
+          {{ "There was an error during GPG Key upload:" | translate }}
+          <ul>
+            <li>{{ errorMessage }}</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <form class="form labels_top"
+          action="/katello/api/gpg_keys/{{ gpgKey.id }}/content"
+          ng-upload
+          upload-options-enable-controls>
+
+      <div class="control-group">
+        <div class="input">
+          <input type="file" name="content">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="control-button">
+          <button class="primary" upload-submit="uploadContent(content, completed)" ng-click="uploading = true">
+            <i class="icon-spinner icon-spin" ng-show="uploading"></i>
+            <span ng-show="uploading" translate>Uploading...</span>
+            <span ng-hide="uploading" translate>Upload</span>
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </section>
+</div>

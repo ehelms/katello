@@ -3,7 +3,9 @@ object @resource
 extends 'api/v2/common/identifier'
 extends 'api/v2/common/org_reference'
 extends 'api/v2/common/timestamps'
+extends 'api/v2/common/readonly'
 
+attributes :name
 attributes :content
 
 child :products do
@@ -15,3 +17,8 @@ child :repositories do
   attributes :id, :name
 end
 
+node :permissions do |gpg_key|
+  {
+    :deletable => gpg_key.manageable?
+  }
+end

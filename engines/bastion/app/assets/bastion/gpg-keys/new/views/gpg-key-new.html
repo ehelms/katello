@@ -1,0 +1,61 @@
+<section class="nutupane-details" ng-cloak alch-container-scroll>
+
+  <header class="new-header details-header">
+    <h2 class="fl" translate>New GPG Key</h2>
+
+    <div class="details-actions fr">
+      <button class="btn" ng-click="table.closeItem()">
+        <i class="icon-remove"></i>
+        <span translate>Close</span>
+      </button>
+    </div>
+  </header>
+
+  <section>
+
+    <form name="gpgKeyForm" class="form">
+
+      <div class="control-group required" ng-class="{ 'error' : gpgKeyForm.name.$invalid }">
+        <div class="label">
+          <label class="required" for="name" translate>Name</label>
+        </div>
+        <div class="input">
+          <input ng-model="gpgKey.name"
+                 name="name"
+                 type="text"
+                 tabindex=1
+                 required>
+          <span class="note error" ng-show="gpgKeyForm.name.$invalid">
+            <ul><li ng-repeat="message in gpgKeyForm.name.$error.messages">{{ message }}</li></ul>
+          </span>
+        </div>
+      </div>
+
+      <div class="control-group required" ng-class="{ 'error' : gpgKeyForm.content.$invalid }">
+        <div class="label">
+          <label class="required" for="content" translate>Paste GPG Key</label>
+        </div>
+        <div class="input">
+          <textarea ng-model="gpgKey.content"
+                    class="xxlarge-textarea"
+                    name="content"
+                    type="text"
+                    tabindex=1
+                    placeholder="{{ 'Paste contents...' | translate }}">
+          </textarea>
+          <span class="note error" ng-show="gpgKeyForm.content.$invalid">
+            <ul><li ng-repeat="message in gpgKeyForm.content.$error.messages">{{ message }}</li></ul>
+          </span>
+        </div>
+      </div>
+
+      <div alch-save-control
+           on-cancel="table.closeItem()"
+           on-save="save(gpgKey)"
+           invalid="gpgKeyForm.$invalid">
+      </div>
+
+    </form>
+  </section>
+
+</section>

@@ -89,7 +89,7 @@
 
 //= require "bastion/tasks/tasks.module.js"
 //= require_tree "./tasks"
-//
+
 //= require "bastion/gpg-keys/gpg-keys.module.js"
 //= require_tree "./gpg-keys"
 

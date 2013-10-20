@@ -61,6 +61,14 @@ class GpgKeysController < ApplicationController
                        )
   end
 
+  def index
+    if current_user.legacy_mode
+      render "index"
+    else
+      render 'bastion/layouts/application', :layout => false
+    end
+  end
+
   def show
     render :partial => "common/list_update", :locals => {:item => @gpg_key, :accessor => "id", :columns => ['name']}
   end

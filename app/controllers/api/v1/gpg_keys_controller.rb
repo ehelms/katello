@@ -94,6 +94,21 @@ might not always be 100% bullet proof, and its more important that yum can fetch
     @gpg_key.content.present? ? render(:text => @gpg_key.content, :layout => false) : head(404)
   end
 
+  api :POST, "/gpg_keys/:id/content"
+  param :id, :number, :desc => "gpg key numeric identifier"
+  param :content, File, :required => true, :desc => "file contents"
+  def content
+    filepath = params.try(:[], :content).try(:path)
+
+    if filepath
+      content = File.open(filepath, "rb") { |file| file.read }
+      @gpg_key.update_attributes!(:content => content)
+      render :json => {:status => "success"}
+    else
+      fail HttpErrors::BadRequest, _("No file uploaded")
+    end
+  end
+
   private
 
   def find_gpg_key
