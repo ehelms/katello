@@ -6,10 +6,12 @@
 
   <div class="details-action-group fr">
     <button class="btn details-action"
+            ng-show="syncable"
             ng-click="syncRepository(repository); working = true"
             ng-disabled="syncInProgress(repository.sync_state)">
       <i class="icon-refresh"></i>
-      <span translate>Sync Now</span>
+      <span ng-hide="syncInProgress(repository.sync_state)" translate>Sync Now</span>
+      <span ng-show="syncInProgress(repository.sync_state)" translate>Syncing...</span>
     </button>
     <button class="btn btn-danger details-action"
             ng-click="showConfirm = true"
@@ -82,13 +84,17 @@
 
     <div class="detail">
       <span class="info-label" translate>Last Sync</span>
-      <span class="info-value">{{ repository.last_sync | date:'short' }}</span>
+      <span class="info-value">
+        <span ng-show="syncable">{{ repository.last_sync | date:'short' }}</span>
+        <span ng-hide="syncable" translate>N/A</span>
+      </span>
     </div>
 
     <div class="detail">
       <span class="info-label" translate>Sync State</span>
       <span class="info-value">
-        <a href="sync_management/index">{{ repository.sync_state }}</a>
+        <a ng-show="syncable" href="sync_management/index">{{ repository.sync_state }}</a>
+        <span ng-hide="syncable" translate>N/A</span>
       </span>
     </div>
   </section>

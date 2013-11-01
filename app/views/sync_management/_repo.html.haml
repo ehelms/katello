@@ -4,7 +4,8 @@
     -if syncable?(repo.product)
       =check_box_tag "repoids[]", repo.id, false, :id=>"input_repo_#{repo.id}", :class=>"fl"
     %label.fl{:for=>"input_repo_#{repo.id}"}
-      #{repo.name}
+      %a{ "href" => "#{products_path}#/products/#{repo.product.cp_id}/repositories/#{repo.id}" }
+        #{repo.name}
   %td.start_time
     #{@repo_status[repo.id][:start_time]}
   %td.duration

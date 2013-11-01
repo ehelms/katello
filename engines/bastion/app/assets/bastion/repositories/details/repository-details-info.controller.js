@@ -32,6 +32,8 @@ angular.module('Bastion.repositories').controller('RepositoryDetailsInfoControll
         $scope.repository = Repository.get({
             'product_id': $scope.$stateParams.productId,
             'id': $scope.$stateParams.repositoryId
+        }, function(){
+            $scope.syncable = $scope.repository.feed ? true : false;
         });
 
         $scope.gpgKeys = function() {
@@ -53,6 +55,7 @@ angular.module('Bastion.repositories').controller('RepositoryDetailsInfoControll
             repository.$update(function(response) {
                 deferred.resolve(response);
                 $scope.saveSuccess = true;
+                $scope.syncable = response.feed ? true : false;
             }, function(response) {
                 deferred.reject(response);
                 $scope.saveError = true;
