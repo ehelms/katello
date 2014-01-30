@@ -56,9 +56,9 @@ task 'assets:precompile:katello' do
     images = find_assets(:type => 'images')
 
     precompile = [
-      'katello/katello.css',
+      #'katello/katello.css',
       'bastion/less/bastion.css',
-      'bastion/scss/bastion.css',
+      #'bastion/scss/bastion.css',
       'bastion/bastion.js',
     ]
     precompile.concat(javascripts)

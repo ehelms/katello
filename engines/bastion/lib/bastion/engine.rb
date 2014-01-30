@@ -12,5 +12,24 @@ module Bastion
 
       app.middleware.use ::ActionDispatch::Static, "#{Bastion::Engine.root}/app/assets/javascripts/bastion"
     end
+
+    initializer 'bastion.assets', :group => :all do |app|
+      require 'uglifier'
+
+      precompile = [
+        'bastion/scss/bastion.css',
+        'bastion/less/bastion.css',
+        'bastion/bastion.js',
+        /bastion.*(svg|eot|woff|ttf)$/
+      ]
+
+      SETTINGS[:bastion] = {
+        :assets => {
+          :precompile => precompile,
+          :js_compressor => Uglifier.new(:mangle => false)
+        }
+      }
+    end
+
   end
 end

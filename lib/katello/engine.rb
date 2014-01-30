@@ -4,6 +4,35 @@ module Katello
 
     isolate_namespace Katello
 
+    initializer 'foreman.register_plugin', :group => :all do |app|
+      def find_assets(args = {})
+        type = args.fetch(:type, nil)
+        asset_dir = "#{Katello::Engine.root}/app/assets/#{type}/"
+
+        asset_paths = Dir[File.join(asset_dir, '**', '*') ].reject { |file| File.directory?(file) }
+        asset_paths.each { |file| file.slice!(asset_dir) }
+
+        asset_paths
+      end
+
+      javascripts = find_assets(:type => 'javascripts')
+      images = find_assets(:type => 'images')
+
+      precompile = [
+        'katello/katello.css',
+        'alchemy/icons/action-icons.png',
+        'alchemy/icons/spinner.gif'
+      ]
+      precompile.concat(javascripts)
+      precompile.concat(images)
+
+      SETTINGS[:katello] = {
+        :assets => {
+          :precompile => precompile
+        }
+      }
+    end
+
     initializer 'katello.mount_engine', :after => :build_middleware_stack do |app|
       app.routes_reloader.paths << "#{Katello::Engine.root}/config/routes/mount_engine.rb"
     end
@@ -54,16 +83,6 @@ module Katello
 
       app.config.logger = ::Logging.logger['app']
       app.config.active_record.logger = ::Logging.logger['sql']
-    end
-
-    initializer :register_assets do |app|
-      if Rails.env.production?
-        assets = YAML.load_file("#{Katello::Engine.root}/public/assets/katello/manifest.yml")
-
-        assets.each_pair do |file, digest|
-          app.config.assets.digests[file] = digest
-        end
-      end
     end
 
     config.to_prepare do
