@@ -176,6 +176,7 @@ BuildRequires: %{?scl_prefix}rubygem-deface
 BuildRequires: %{?scl_prefix}rubygem(uglifier) >= 1.0.3
 BuildRequires: %{?scl_prefix}rubygem-strong_parameters
 BuildRequires: %{?scl_prefix}rubygems
+BuildRequires: foreman
 BuildArch: noarch
 Provides: rubygem(katello) = %{version}
 
@@ -198,6 +199,27 @@ gem install --local --install-dir .%{gem_dir} --force %{SOURCE0}
 %{?scl:"}
 
 %build
+mkdir ./usr/share
+cp -r %{foreman_dir} ./usr/share
+pushd ./usr/share/foreman
+
+ls -la
+touch %{foreman_bundlerd_dir}/%{gem_name}.rb
+echo "group :katello do" >> %{foreman_bundlerd_dir}/%{gem_name}.rb
+echo "gem '%{gem_name}'" >> %{foreman_bundlerd_dir}/%{gem_name}.rb
+echo "gem 'sass-rails'" >> %{foreman_bundlerd_dir}/%{gem_name}.rb
+echo "end"  >> %{foreman_bundlerd_dir}/%{gem_name}.rb
+
+ls -la bundler.d
+
+export BUNDLER_EXT_NOSTRICT=1
+export BUNDLER_EXT_GROUPS="default assets katello"
+%{scl_rake} -T
+%{scl_rake} assets:precompile:katello RAILS_ENV=production --trace
+
+popd
+
+rm -rf ./usr
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
