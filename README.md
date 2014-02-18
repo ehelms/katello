@@ -76,6 +76,18 @@ cd ..
 bundle update
 ```
 
+If you have an existing `katello.yml` file located at `/etc/katello/katello.yml` or `katello_checkout/config/katello.yml` you'll need to either copy or symlink it to the proper Foreman location. First, ensure that `foreman/config/settings.plugins.d` exists.
+
+To copy:
+```bash
+cp /etc/katello/katello.yml <foreman_checkout>/config/settings.plugins.d/katello.yaml
+```
+
+To symlink:
+```ruby
+ln -s /etc/katello/katello.yml <foreman_checkout>/config/settings.plugins.d/katello.yaml
+```
+
 Now migrate the database and load initial seed data:
 
 ```bash
@@ -87,8 +99,6 @@ If you have set ```RAILS_RELATIVE_URL_ROOT``` in the past then you need to be su
 ```bash
 unset RAILS_RELATIVE_URL_ROOT
 ```
-
-Make sure that `use_ssl: false` is set in `config/katello.yml`. (**debatable**)
 
 ### Test Run
 

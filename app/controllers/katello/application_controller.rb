@@ -18,7 +18,6 @@ class ApplicationController < ::ApplicationController
   include Katello::Menu
   include Notifications::ControllerHelper
   include Profiling
-  include KTLocale
   include ::HomeHelper
 
   layout 'katello/layouts/katello'
@@ -43,71 +42,8 @@ class ApplicationController < ::ApplicationController
   skip_around_filter :clear_thread
   after_filter :clear_katello_thread
 
-  #custom 404 (render_404) and 500 (render_error) pages
-  # this is always in the top
-  # order of these are important.
-  rescue_from Exception do |exception|
-    paranoia = Katello.config.exception_paranoia
-    hide     = Katello.config.hide_exceptions
-
-    to_do = case exception
-            when StandardError
-              hide ? :handle : :raise
-            when ScriptError
-              paranoia ? :handle : :raise
-            when SignalException, SystemExit, NoMemoryError
-              :raise
-            else
-              Rails.logger.error 'Unknown child of Exception instead of StandardError detected: ' +
-                "#{exception.message} (#{exception.class})"
-              paranoia ? :handle : :raise
-            end
-
-    case to_do
-    when :handle
-      execute_rescue(exception) { |ex| render_error(ex) }
-    when :raise
-      fail exception
-    end
-  end
-
-  rescue_from ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved  do |e|
-    notify.exception e
-    log_exception e, :info
-
-    respond_to do |f|
-      f.html { render :text => e.to_s, :layout => !request.xhr?, :status => :unprocessable_entity}
-      f.json { render :json => e.record.errors, :status => :unprocessable_entity}
-    end
-    execute_after_filters
-  end
-
-  rescue_from ActiveRecord::RecordNotFound do |e|
-    notify.error e.message
-    render :nothing => true, :status => :not_found
-    execute_after_filters
-  end
-
-  if Katello.config.hide_exceptions
-    rescue_from ActionController::RoutingError,
-                ActionController::UnknownController,
-                AbstractController::ActionNotFound do |exception|
-      execute_rescue(exception) { |ex| render_404 }
-    end
-  end
-
-  rescue_from Errors::SecurityViolation do |exception|
-    execute_rescue(exception) { |ex| render_403 }
-  end
-
-  rescue_from HttpErrors::UnprocessableEntity do |exception|
-    execute_rescue(exception) { |ex| render_bad_parameters(ex) }
-  end
-
   include AuthorizationRules
   include Menu
-
-  before_filter :verify_ldap
 
   def section_id
     'generic'
@@ -273,15 +209,11 @@ class ApplicationController < ::ApplicationController
 
   private # why bother? methods below are not testable/tested
 
-  def verify_ldap
-    u = current_user
-    u.verify_ldap_roles if Katello.config.ldap_roles && !u.nil?
-  end
-
   def require_org
     unless session && current_organization
       execute_after_filters
-      fail Errors::SecurityViolation, _("User does not belong to an organization.")
+      redirect_to dashboard_index_url
+      #fail Errors::SecurityViolation, _("User does not belong to an organization.")
     end
   end
 
@@ -677,23 +609,6 @@ class ApplicationController < ::ApplicationController
       end
     end
     nil
-  end
-
-  def execute_rescue(exception, &renderer)
-    log_exception exception
-    if session[:user]
-      User.current = User.find(session[:user])
-      renderer.call(exception)
-      User.current = nil
-      execute_after_filters
-      return false
-    else
-      notify.warning _("You must be logged in to access that page.")
-      execute_after_filters
-      if redirect_to main_app.login_users_path
-        return false
-      end
-    end
   end
 
   def org_not_found_error

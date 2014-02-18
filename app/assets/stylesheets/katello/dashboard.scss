@@ -1,15 +1,17 @@
 @import "katello/katello_base";
 
 $col_width: (($static_width) * 0.5);
+
 .column {
   float: left;
   margin: 0 10px;
   margin-left: 20px;
-  width: $col_width - 50;
+  width: $col_width - 20;
   min-height: 650px;
 
   &.right {
-    margin-left: 10px;
+    float: right;
+    margin-right: 20px;
   }
   &.highlight {
     background: #FFFF36;
@@ -17,12 +19,9 @@ $col_width: (($static_width) * 0.5);
 }
 
 .dashboard-container {
-  .helptip-open {
-    width: ($col_width * 2) - 72;
-    margin: -20px 4px 15px 22px;
-  }
-  .helptip-close {
-    margin: -20px 4px 10px 8px;
+  .alert {
+    margin-left: 20px;
+    margin-right: 20px;
   }
 }
 

@@ -13,7 +13,6 @@
 module Katello
 class Api::ApiController < ::Api::BaseController
   include Profiling
-  include KTLocale
 
   respond_to :json
   before_filter :require_user

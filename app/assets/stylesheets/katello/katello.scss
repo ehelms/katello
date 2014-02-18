@@ -1097,12 +1097,6 @@ fieldset {
 
 /* begin helptip */
 .helptip, .helptip-open {
-  background-color: $helptip-background_color;
-  display: block;
-  padding: 12px;
-  border: 1px solid $helptip-border_color;
-  margin: 10px auto 5px auto;
-  @extend .clearfix;
 
   .helptip-close-button {
     position: relative;

@@ -36,9 +36,6 @@ describe Ping do
 
         stub_headpin_mode
 
-        # thumbslug - without authentication
-        stub_request(:get, "#{Katello.config.thumbslug_url}/ping").to_raise(OpenSSL::SSL::SSLError)
-
         subject.must_be_instance_of(String)
       end
     end

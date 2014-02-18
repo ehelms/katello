@@ -92,6 +92,10 @@ module Katello
       require 'katello/plugin'
     end
 
+    initializer 'katello.set_prefix', :after => :add_routing_paths do
+      Katello.config[:url_prefix] = Katello::Engine.routes._generate_prefix({})
+    end
+
     rake_tasks do
       Rake::Task['db:seed'].enhance do
         Katello::Engine.load_seed

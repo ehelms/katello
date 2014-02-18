@@ -63,20 +63,12 @@ module Katello
         belongs_to :default_environment, :class_name => "Katello::KTEnvironment", :inverse_of => :users
         serialize :preferences, Hash
 
-        validates :default_locale, :inclusion => {:in => Katello.config.available_locales, :allow_nil => true, :message => _("must be one of %s") % Katello.config.available_locales.join(', ')}
         validates_with Validators::OwnRolePresenceValidator, :attributes => :katello_roles
 
         before_validation :create_own_role
         after_validation :setup_remote_id
-        before_save   :hash_password, :setup_preferences
+        before_save :setup_preferences
         after_save :create_or_update_default_system_registration_permission
-
-        # hash the password before creating or updateing the record
-        def hash_password
-          if Katello.config.warden != 'ldap'
-            self.password = Password.update(self.password) if self.password && self.password.length != 192
-          end
-        end
 
         def setup_preferences
           self.preferences = Hash.new unless self.preferences

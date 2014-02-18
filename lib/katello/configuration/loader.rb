@@ -64,22 +64,6 @@ module Katello
         @early_config ||= load
       end
 
-      # @return [Hash{String => Hash}] database configurations
-      def database_configs
-        @database_configs ||= begin
-          %w(production development test).inject({}) do |hash, environment|
-            common = config_data.common.database.to_hash
-            if config_data.present?(environment.to_sym, :database)
-              hash.update(
-                  environment =>
-                      common.merge(config_data[environment.to_sym].database.to_hash).stringify_keys)
-            else
-              hash
-            end
-          end
-        end
-      end
-
       private
 
       def load(environment = nil)
@@ -111,7 +95,7 @@ module Katello
       end
 
       def load_config_file(config, environment = nil)
-        config.deep_merge! config_data[:common]
+        config.deep_merge! config_data[:katello]
         config.deep_merge! config_data[environment] if environment
       end
 

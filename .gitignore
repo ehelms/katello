@@ -21,7 +21,7 @@ hudson
 yard
 tmp
 *~
-config/katello.yml
+config/katello.yaml
 *.iml
 locale/*/LC_MESSAGES
 locale/.cache/*

@@ -17,7 +17,7 @@ module Katello
     class << self
 
       OK_RETURN_CODE = 'ok'
-      PACKAGES = %w(katello candlepin pulp thumbslug qpid ldap_fluff elasticsearch)
+      PACKAGES = %w(katello candlepin pulp qpid ldap_fluff elasticsearch)
 
       #
       # Calls "status" services in all backend engines.
@@ -41,8 +41,7 @@ module Katello
             :candlepin => {},
             :elasticsearch => {},
             :candlepin_auth => {},
-            :katello_jobs => {},
-            :thumbslug => {}
+            :katello_jobs => {}
           }}
         end
 
@@ -63,20 +62,6 @@ module Katello
         url = Katello.config.elastic_url
         exception_watch(result[:services][:elasticsearch]) do
           RestClient.get "#{url}/_status"
-        end
-
-        # thumbslug - ping without authentication
-        unless Katello.config.katello?
-          url = Katello.config.thumbslug_url
-          exception_watch(result[:services][:thumbslug]) do
-            begin
-              RestClient.get "#{url}/ping"
-            # rubocop:disable HandleExceptions
-            rescue OpenSSL::SSL::SSLError
-              # We want to see this error, because it means that Thumbslug
-              # is running and refused our (non-existent) ssl cert.
-            end
-          end
         end
 
         # pulp - ping with oauth

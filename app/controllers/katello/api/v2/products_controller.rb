@@ -51,6 +51,7 @@ module Katello
     param :subscription_id, :number, :desc => "Filter products by subscription identifier"
     param_group :search, Api::V2::ApiController
     def index
+      debugger
       filters = [filter_terms(product_ids_filter)]
       filters << enabled_filter unless  params[:enabled] == 'false'
       options = sort_params.merge(:filters => filters, :load_records? => true)
