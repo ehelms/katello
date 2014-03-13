@@ -17,7 +17,6 @@ class Api::ApiController < ::Api::BaseController
   include ForemanTasks::Triggers
 
   respond_to :json
-  before_filter :require_user
   before_filter :verify_ldap
   before_filter :add_candlepin_version_header
   before_filter :turn_off_strong_params
@@ -38,6 +37,11 @@ class Api::ApiController < ::Api::BaseController
 
   protected
 
+  # Override Foreman authorized method to call the Katello authorize check
+  def authorized
+    authorize_katello
+  end
+
   def add_candlepin_version_header
     response.headers["X-CANDLEPIN-VERSION"] = "katello/#{Katello.config.katello_version}"
   end
@@ -46,20 +50,6 @@ class Api::ApiController < ::Api::BaseController
     if !request.authorization.blank?
       u = current_user
       u.verify_ldap_roles if (Katello.config.ldap_roles && !u.nil?)
-    end
-  end
-
-  def require_user
-    if authenticate && session[:user]
-      User.current = User.find(session[:user])
-    elsif (ssl_client_cert = client_cert_from_request).present?
-      consumer_cert = OpenSSL::X509::Certificate.new(ssl_client_cert)
-      uuid = uuid(consumer_cert)
-      User.current = CpConsumerUser.new(:uuid => uuid, :login => uuid, :remote_id => uuid)
-    elsif authenticate
-      User.current
-    else
-      deny_access
     end
   end
 

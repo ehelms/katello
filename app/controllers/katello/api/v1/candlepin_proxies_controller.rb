@@ -13,6 +13,7 @@
 module Katello
   class Api::V1::CandlepinProxiesController < Api::V1::ApiController
 
+    before_filter :require_user
     before_filter :proxy_request_path, :proxy_request_body
     before_filter :find_organization, :only => [:rhsm_index]
     before_filter :find_default_organization_and_or_environment, :only => [:consumer_create, :index, :consumer_activate]
@@ -26,6 +27,18 @@ module Katello
                                           :upload_package_profile, :regenerate_identity_certificates, :facts]
     before_filter :find_user_by_login, :only => [:list_owners]
     before_filter :authorize, :except => [:consumer_activate, :upload_package_profile]
+
+    def require_user
+      if (ssl_client_cert = client_cert_from_request).present?
+        consumer_cert = OpenSSL::X509::Certificate.new(ssl_client_cert)
+        uuid = uuid(consumer_cert)
+        User.current = CpConsumerUser.new(:uuid => uuid, :login => uuid, :remote_id => uuid)
+      elsif authenticate
+        User.current
+      else
+        deny_access
+      end
+    end
 
     # TODO: break up method
     # rubocop:disable MethodLength
