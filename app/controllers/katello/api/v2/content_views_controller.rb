@@ -12,8 +12,9 @@
 
 module Katello
   class Api::V2::ContentViewsController < Api::V2::ApiController
+
     before_filter :find_content_view, :except => [:index, :create]
-    before_filter :find_organization, :only => [:index, :create]
+    before_filter :find_organization, :only => [:create]
     before_filter :find_environment, :only => [:index, :remove_from_environment]
     before_filter :load_search_service, :only => [:index, :history, :available_puppet_modules,
                                                   :available_puppet_module_names]
@@ -43,7 +44,7 @@ module Katello
       ids = readable_cvs.pluck(:id)
 
       options[:filters] = [{:terms => {:id => ids}}]
-
+      options[:filters] << {:term => {:organization_id => params[:organization_id]}}
       options[:filters] << {:term => {:default => false}} if params[:nondefault]
 
       respond(:collection => item_search(ContentView, params, options))

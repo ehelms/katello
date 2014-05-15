@@ -32,7 +32,7 @@ module Katello
     param :name, String, :desc => N_("activation key name to filter by")
     param_group :search, Api::V2::ApiController
     def index
-      filters = [{:term => {:organization_id => @organization.id} }]
+      filters = [{:term => {:organization_id => @organization.id}}]
 
       if params[:environment_id]
         filters << {:terms => {:environment_id => [params[:environment_id]] }}

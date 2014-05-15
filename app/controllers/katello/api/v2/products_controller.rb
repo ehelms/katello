@@ -13,7 +13,7 @@
 module Katello
   class Api::V2::ProductsController < Api::V2::ApiController
 
-    before_filter :find_organization, :only => [:create]
+    before_filter :find_organization, :only => [:index, :create]
     before_filter :find_product, :only => [:update, :destroy, :show, :sync]
 
     resource_description do
@@ -40,7 +40,7 @@ module Katello
         :load_records? => true
       }
 
-      ids = Product.readable.pluck(:id)
+      ids = Product.where(:organization_id => @organization.id).readable.pluck(:id)
       ids = filter_by_subscription(ids, params[:subscription_id]) if params[:subscription_id]
 
       options[:filters] << {:terms => {:id => ids}}

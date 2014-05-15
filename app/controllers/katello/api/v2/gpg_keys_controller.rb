@@ -13,8 +13,7 @@
 module Katello
   class Api::V2::GpgKeysController < Api::V2::ApiController
 
-    before_filter :authorize
-    before_filter :find_organization, :only => [:create]
+    before_filter :find_organization, :only => [:index, :create]
     before_filter :find_gpg_key, :only => [:show, :update, :destroy, :content]
 
     def_param_group :gpg_key do
@@ -37,7 +36,7 @@ module Katello
       options = sort_params
       options[:load_records?] = true
 
-      ids = GpgKey.readable.pluck(:id)
+      ids = GpgKey.where(:organization_id => @organization.id).readable.pluck(:id)
 
       options[:filters] = [
         {:terms => {:id => ids}}
