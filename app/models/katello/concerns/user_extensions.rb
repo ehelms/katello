@@ -434,7 +434,7 @@ module Katello
         def setup_remote_id
           #if validation failed, don't setup
           return false unless self.errors.empty?
-          if  self.remote_id.nil?
+          if self.remote_id.nil?
             self.remote_id = generate_remote_id
           end
           return true
