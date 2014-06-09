@@ -71,7 +71,7 @@ class Api::ApiController < ::Api::BaseController
       'katello/api/v2/system_packages',
       'katello/api/v2/system_errata',
       'katello/api/v2/systems_bulk_actions',
-      'katello/api/v1/candlepin_proxies',
+      'katello/api/rhsm/candlepin_proxies',
       'katello/api/v2/packages',
       'katello/api/v2/distributions',
       'katello/api/v2/package_groups',
