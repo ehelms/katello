@@ -1,8 +1,4 @@
 <section>
-  <div data-block="pane-loading" class="loading-mask loading-mask-panel" ng-show="detailsTable.working">
-    <i class="icon-spinner icon-spin"></i>
-    {{ "Loading..." | translate }}
-  </div>
   <div data-block="messages" alch-alert success-messages="successMessages" error-messages="errorMessages"></div>
 
   <h4>
@@ -51,13 +47,24 @@
   </div>
 
   <div class="nutupane" alch-table="detailsTable" nutupane-table>
-    <div class="loading-mask" ng-show="detailsTable.refreshing">
-      <i class="icon-spinner icon-spin"></i>
-    </div>
 
     <div alch-container-scroll control-width="detailsTable" alch-infinite-scroll="detailsTable.nextPage()" 
-           data="detailsTable.rows" skip-initial-load="!detailsTable.initialLoad">
-      <div data-block="table" ui-view="table"></div>
+         data="detailsTable.rows" skip-initial-load="!detailsTable.initialLoad">
+      <div class="loading-mask" ng-show="detailsTable.working">
+        <i class="icon-spinner icon-spin"></i>
+      </div>
+
+      <div class="nutupane-select-all" ng-show="detailsTable.selectAllResultsEnabled && detailsTable.allSelected() && !detailsTable.allResultsSelected">
+        <span translate>All {{ detailsTable.rows.length }} items on this page are selected.</span>
+        <a ng-click="detailsTable.selectAllResults(true)" translate>Select all {{ detailsTable.resource.subtotal }}.</a>
+      </div>
+
+      <div class="nutupane-select-all-selected" ng-show="detailsTable.selectAllResultsEnabled && detailsTable.allResultsSelected">
+        <span translate>{{ detailsTable.allResultsSelectCount() }} results are selected.</span>
+        <a ng-click="detailsTable.selectAllResults(false)" translate>Deselect all</a>
+      </div>
+
+      <div data-block="table"></div>
     </div>
   </div>
 

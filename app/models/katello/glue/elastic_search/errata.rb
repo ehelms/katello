@@ -238,6 +238,16 @@ module Glue::ElasticSearch::Errata
         search.results
       end
 
+      def self.filters(params)
+        search_filters = []
+        search_filters << {:terms => {:repoids => params[:repo_ids]}} if params[:repo_ids]
+        search_filters << {:terms => {:type => params[:types]}} if params[:types]
+        search_filters << {:terms => {:type => params['types[]']}} if params['types[]']
+        search_filters << {:range => {:issued => {'gte' => params[:start_date]}}} if params[:start_date]
+        search_filters << {:range => {:issued => {'lte' => params[:end_date]}}} if params[:end_date]
+        search_filters
+      end
+
     end
   end
 end
