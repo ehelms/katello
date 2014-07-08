@@ -57,6 +57,7 @@ module Katello
 
     initializer "katello.paths" do |app|
       app.routes_reloader.paths << "#{Katello::Engine.root}/config/routes/api/v2.rb"
+      app.routes_reloader.paths << "#{Katello::Engine.root}/config/routes/api/rhsm.rb"
     end
 
     initializer "katello.helpers" do |app|
@@ -99,7 +100,7 @@ module Katello
 
       # Model extensions
       ::Environment.send :include, Katello::Concerns::EnvironmentExtensions
-      ::Host.send :include, Katello::Concerns::HostBaseExtensions
+      ::Host::Managed.send :include, Katello::Concerns::HostManagedExtensions
       ::Hostgroup.send :include, Katello::Concerns::HostgroupExtensions
       ::Location.send :include, Katello::Concerns::LocationExtensions
       ::Medium.send :include, Katello::Concerns::MediumExtensions

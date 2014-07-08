@@ -84,12 +84,12 @@ class Api::V2::ContentViewFiltersController < Api::V2::ApiController
       N_("Get errata that are available to be added to the filter")
   param :content_view_id, :identifier, :desc => N_("content view identifier")
   param :id, :identifier, :desc => N_("filter identifier"), :required => true
-  param :types, Array, :desc => N_("Errata types array ['security', 'bugfix', 'enhancement']")
+  param :types, Array, :desc => N_("Errata types array \\['security', 'bugfix', 'enhancement'\\]")
   param :start_date, DateTime, :desc => N_("Start date that Errata was issued on to filter by")
   param :end_date, DateTime, :desc => N_("End date that Errata was issued on to filter by")
   def available_errata
     current_errata_ids = @filter.erratum_rules.map(&:errata_id)
-    repo_ids = @filter.applicable_repos.pluck(:pulp_id)
+    repo_ids = @filter.applicable_repos.select([:pulp_id, "#{Katello::Repository.table_name}.name"])
 
     search_filters = [
       { :not => { :terms => { :errata_id_exact => current_errata_ids }}}

@@ -8,8 +8,8 @@ require 'util/password'
 
 # Can be specified via the command line using:
 # rake db:seed SEED_INITIAL_ORGANIZATION=MyOrg SEED_INITIAL_LOCATION=MyDefault
-first_org_name = ENV['SEED_INITIAL_ORGANIZATION'] || 'ACME_Corporation'
-first_location_name = ENV['SEED_INITIAL_LOCATION'] || 'Default'
+first_org_name = ENV['SEED_INITIAL_ORGANIZATION'] || 'Default_Organization'
+first_location_name = ENV['SEED_INITIAL_LOCATION'] || 'Default_Location'
 
 def format_errors(model = nil)
   return '(nil found)' if model.nil?
@@ -25,7 +25,7 @@ fail "Unable to create reader role: #{format_errors reader_role}" if reader_role
 reader_role.update_attributes(:locked => true)
 
 # update the Foreman 'admin' to be Katello super admin
-::User.current = user_admin = ::User.admin
+::User.current = user_admin = ::User.anonymous_api_admin
 fail "Foreman admin does not exist" unless user_admin
 # create a self role for user_admin, this is normally created during admin creation;
 # however, for the initial migrate/seed, it needs to be done manually
@@ -35,7 +35,7 @@ user_admin.save!
 fail "Unable to update admin user: #{format_errors(user_admin)}" if user_admin.errors.size > 0
 
 unless hidden_user = ::User.hidden.first
-  ::User.current = ::User.admin
+  ::User.current = ::User.anonymous_api_admin
   login = "hidden-#{Password.generate_random_string(6)}".downcase
   hidden_user = ::User.new(:auth_source_id => AuthSourceInternal.first.id,
                            :login => login,

@@ -69,6 +69,7 @@ class ContentView < Katello::Model
   scope :default, where(:default => true)
   scope :non_default, where(:default => false)
   scope :composite, where(:composite => true)
+  scope :non_composite, where(:composite => nil)
 
   scoped_search :on => :name, :complete_value => true
   scoped_search :on => :organization_id, :complete_value => true
@@ -80,6 +81,42 @@ class ContentView < Katello::Model
 
   def to_s
     name
+  end
+
+  def copy(new_name)
+    new_view = ContentView.new
+    new_view.name = new_name
+    new_view.attributes = self.attributes.slice("description", "organization_id", "default", "composite")
+    new_view.repositories = self.repositories
+    new_view.components = self.components
+    new_view.save!
+
+    self.content_view_puppet_modules.each do |puppet_module|
+      new_view.content_view_puppet_modules << puppet_module.dup
+    end
+
+    self.filters.each do |filter|
+      new_filter = filter.dup
+      new_filter.repositories = filter.repositories
+      new_view.filters << new_filter
+
+      case filter.type
+      when ContentViewPackageFilter.name
+        filter.package_rules.each do |rule|
+          new_filter.package_rules << rule.dup
+        end
+      when ContentViewPackageGroupFilter.name
+        filter.package_group_rules.each do |rule|
+          new_filter.package_group_rules << rule.dup
+        end
+      when ContentViewErratumFilter.name
+        filter.erratum_rules.each do |rule|
+          new_filter.erratum_rules << rule.dup
+        end
+      end
+    end
+    new_view.save!
+    new_view
   end
 
   def promoted?
@@ -629,6 +666,8 @@ class ContentView < Katello::Model
     distributions = Distribution.search do
       filter :terms, {:repoids => repo_ids}
     end
+    distributions = distributions.select{ |dist| Katello::Distribution.new(dist.as_json).bootable? }
+
     release_arches = {}
     distributions.each do |dist|
       key = [dist.version, dist.arch]
@@ -645,6 +684,7 @@ class ContentView < Katello::Model
     distributions = Distribution.search do
       filter :terms, {:repoids => repo_ids}
     end
+    distributions = distributions.select{ |dist| Katello::Distribution.new(dist.as_json).bootable? }
     distributions.find_all{|dist| (dist.repoids & repo_ids).length > 1}
   end
 

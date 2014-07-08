@@ -28,6 +28,7 @@ angular.module('Bastion.content-views').factory('ContentView',
         return BastionResource('/api/v2/content_views/:id/:action',
             {id: '@id', 'organization_id': CurrentOrganization},
             {
+                copy: {method: 'POST', params: {action: 'copy'}},
                 update: {method: 'PUT'},
                 publish: {method: 'POST', params: {action: 'publish'}},
                 history: {method: 'GET', params: {action: 'history'}},
@@ -36,13 +37,6 @@ angular.module('Bastion.content-views').factory('ContentView',
                 components: {method: 'GET', transformResponse: function (data) {
                     var contentView = angular.fromJson(data);
                     return {results: contentView.components};
-                }},
-                compositeEligible: {method: 'GET', transformResponse: function (data) {
-                    var contentViews = angular.fromJson(data).results;
-                    contentViews = _.filter(contentViews, function (contentView) {
-                        return !contentView.composite && contentView.versions.length > 0;
-                    });
-                    return {results: contentViews};
                 }},
                 availablePuppetModules: {method: 'GET', params: {action: 'available_puppet_modules'},
                     transformResponse: function (data) {

@@ -14,7 +14,7 @@
 require "katello_test_helper"
 
 module Katello
-  describe Api::V1::CandlepinProxiesController do
+  describe Api::Rhsm::CandlepinProxiesController do
 
     before do
       models = ["Organization", "KTEnvironment", "User", "ContentViewFilter",
@@ -58,17 +58,7 @@ module Katello
              :activation_keys => 'some_valid_keys',
              :facts => { 'network.hostname' => foreman_host.name })
       end
-
-      it "should fail when usage limit exceeded" do
-        activation_key = ActivationKey.create!(:name => 'zero key', :organization => @organization,
-                                               :usage_limit => 0)
-        response = post(:consumer_activate, :owner => @organization.label,
-                        :activation_keys => 'zero key')
-        assert_equal JSON.parse(response.body)['displayMessage'],
-                     "Usage limit (0) exhausted for activation key 'zero key'"
-        assert_response 409
-      end
-    end
+    end	
 
     describe "register with a lifecycle environment" do
       it "should associate the foreman host with the content host" do
@@ -168,7 +158,6 @@ module Katello
     end
 
     describe "list owners" do
-
       it 'should return organizations admin user is assigned to' do
         User.current = User.find(users(:admin))
         get :list_owners, :login => User.current.login
@@ -260,5 +249,23 @@ module Katello
       end
     end
 
+    describe "consumer show" do
+      before do
+        Resources::Candlepin::Consumer.stubs(:get).returns(Resources::Candlepin::Consumer.new({:id => 1, :uuid => 2 }))
+      end
+
+       it "can be accessed by user" do
+         User.current = setup_user_with_permissions(:create_content_hosts, User.find(users(:restricted).id))
+         get :consumer_show, :id => @system.uuid
+         assert_response 200
+       end
+
+      it "can be accessed by client" do
+        uuid = @system.uuid
+        User.stubs(:current).returns(CpConsumerUser.new(:uuid => uuid, :login => uuid, :remote_id => uuid))
+        get :consumer_show, :id => @system.uuid
+        assert_response 200
+      end
+    end
   end
 end

@@ -115,6 +115,21 @@ class ContentViewTest < ActiveSupport::TestCase
     assert_equal count-1, ContentView.count
   end
 
+  def test_copy
+    count = ContentView.count
+    new_view = @library_dev_view.copy("new view name")
+
+    assert_equal count + 1, ContentView.count
+    assert_equal new_view.name, "new view name"
+    assert_equal new_view.description, @library_dev_view.description
+    assert_equal new_view.organization_id, @library_dev_view.organization_id
+    assert_equal new_view.default, @library_dev_view.default
+    assert_equal new_view.composite, @library_dev_view.composite
+    assert_equal new_view.components, @library_dev_view.components
+    assert_equal new_view.repositories, @library_dev_view.repositories
+    assert_equal new_view.filters, @library_dev_view.filters
+  end
+
   def test_delete
     skip "TODO: Fix content views"
     view = @library_dev_view
@@ -302,11 +317,16 @@ class ContentViewTest < ActiveSupport::TestCase
     view.repositories << Repository.find(katello_repositories(:rhel_6_x86_64))
     view.save!
 
-    distro1 = Distribution.new()
+    distro1 = Distribution.new
     distro1.repoids = view.repositories.pluck(:pulp_id)
-    distro2 = Distribution.new()
+    distro1.files = [{'relativepath' => 'vmlinuz'}]
+
+    distro2 = Distribution.new
     distro2.repoids = []
+    distro2.files = [{'relativepath' => 'vmlinuz'}]
+
     Distribution.stubs(:search).returns([distro1, distro2])
+
     assert_raises(RuntimeError) do
       view.check_distribution_conflicts!
     end
@@ -317,12 +337,12 @@ class ContentViewTest < ActiveSupport::TestCase
     view.repositories << Repository.find(katello_repositories(:rhel_6_x86_64))
     view.save!
 
-    distro1 = Distribution.new()
+    distro1 = Distribution.new
     distro1.repoids = []
+    distro1.files = [{'relativepath' => 'vmlinuz'}]
 
     Distribution.stubs(:search).returns([distro1])
     assert_nil view.check_distribution_conflicts!
-
   end
 
   def test_duplicate_distributions
@@ -330,12 +350,15 @@ class ContentViewTest < ActiveSupport::TestCase
     view.repositories << Repository.find(katello_repositories(:rhel_6_x86_64))
     view.save!
 
-    distro1 = Distribution.new()
+    distro1 = Distribution.new
     distro1.repoids = view.repositories.pluck(:pulp_id)
-    distro2 = Distribution.new()
-    distro2.repoids = []
-    Distribution.stubs(:search).returns([distro1, distro2])
+    distro1.files = [{'relativepath' => 'vmlinuz'}]
 
+    distro2 = Distribution.new
+    distro2.repoids = []
+    distro2.files = [{'relativepath' => 'vmlinuz'}]
+
+    Distribution.stubs(:search).returns([distro1, distro2])
     assert_equal [distro1], view.duplicate_distributions
   end
 
@@ -346,10 +369,15 @@ class ContentViewTest < ActiveSupport::TestCase
 
     distro1 = Distribution.new(:version => '6.4', :arch => 'x86_64')
     distro1.repoids = [view.repositories[0].pulp_id]
+    distro1.files = [{'relativepath' => 'vmlinuz'}]
+
     distro2 = Distribution.new(:version => '6.4', :arch => 'x86_64')
     distro2.repoids = [view.repositories[1].pulp_id]
+    distro2.files = [{'relativepath' => 'vmlinuz'}]
+
     distro3 = Distribution.new(:version => '6.5', :arch => 'x86_64')
     distro3.repoids = []
+    distro3.files = [{'relativepath' => 'vmlinuz'}]
 
     Distribution.stubs(:search).returns([distro1, distro2, distro3])
 
