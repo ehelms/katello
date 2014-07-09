@@ -24,7 +24,8 @@ module Katello
         has_many :capsule_lifecycle_environments,
                  :class_name  => "Katello::CapsuleLifecycleEnvironment",
                  :foreign_key => :capsule_id,
-                 :dependent   => :destroy
+                 :dependent   => :destroy,
+                 :inverse_of => :capsule
 
         has_many :lifecycle_environments,
                  :class_name => "Katello::KTEnvironment",
@@ -60,4 +61,8 @@ module Katello
       end
     end
   end
+end
+
+class ::SmartProxy::Jail < Safemode::Jail
+  allow :hostname
 end
