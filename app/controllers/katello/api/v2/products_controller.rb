@@ -13,11 +13,11 @@
 module Katello
   class Api::V2::ProductsController < Api::V2::ApiController
 
+    before_filter :find_resource, :only => %w{show update destroy sync}
+
     before_filter :find_activation_key, :only => [:index]
     before_filter :find_system, :only => [:index]
     before_filter :find_organization, :only => [:create, :index]
-    before_filter :find_product, :only => [:update, :destroy, :show, :sync]
-    before_filter :find_organization_from_product, :only => [:update]
     before_filter :authorize_gpg_key, :only => [:update, :create]
 
     resource_description do
@@ -108,10 +108,6 @@ module Katello
 
     protected
 
-    def find_product
-      @product = Product.find_by_id(params[:id]) if params[:id]
-    end
-
     def find_activation_key
       if params[:activation_key_id]
         @activation_key = ActivationKey.find_by_id(params[:activation_key_id])
@@ -135,10 +131,6 @@ module Katello
 
     def filter_by_activation_key(ids = [], activation_key)
       ids & activation_key.products.map { |product| product.id }
-    end
-
-    def find_organization_from_product
-      @organization = @product.organization
     end
 
     def authorize_gpg_key

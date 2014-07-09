@@ -135,10 +135,6 @@ class Api::ApiController < ::Api::BaseController
     controller_name
   end
 
-  def resource_name
-    controller_name.singularize
-  end
-
   def respond(options = {})
     method_name = ('respond_for_' + params[:action].to_s).to_sym
     fail "automatic response method '%s' not defined" % method_name unless respond_to?(method_name, true)

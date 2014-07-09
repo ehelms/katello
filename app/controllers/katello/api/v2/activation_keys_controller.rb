@@ -13,13 +13,12 @@
 module Katello
   class Api::V2::ActivationKeysController < Api::V2::ApiController
 
+    before_filter :find_resource, :only => %w{show update destroy available_releases available_host_collections
+                                              add_host_collections remove_host_collections content_override}
+
     before_filter :verify_presence_of_organization_or_environment, :only => [:index]
     before_filter :find_environment, :only => [:index, :create, :update]
     before_filter :find_optional_organization, :only => [:index, :create]
-    before_filter :find_activation_key, :only => [:show, :update, :destroy, :available_releases,
-                                                  :available_host_collections, :add_host_collections, :remove_host_collections,
-                                                  :content_override]
-    before_filter :authorize
     before_filter :load_search_service, :only => [:index, :available_host_collections]
 
     wrap_parameters :include => (ActivationKey.attribute_names + %w(host_collection_ids service_level content_view_environment))
@@ -148,19 +147,30 @@ module Katello
 
     private
 
+    def action_permission
+      case params[:action]
+        when 'available_releases', 'available_host_collections'
+          :view
+        when 'add_host_collections', 'remove_host_collections', 'content_override'
+          :edit
+        else
+          super
+      end
+    end
+
     def find_environment
       environment_id = params[:environment_id]
       environment_id = params[:environment][:id] if !environment_id && params[:environment]
       return if !environment_id
 
-      @environment = KTEnvironment.find(environment_id)
+      @environment = KTEnvironment.readable.find(environment_id)
       fail HttpErrors::NotFound, _("Couldn't find environment '%s'") % params[:environment_id] if @environment.nil?
       @organization = @environment.organization
       @environment
     end
 
     def find_activation_key
-      @activation_key = ActivationKey.find(params[:id])
+      @activation_key = ActivationKey.readable.find(params[:id])
       fail HttpErrors::NotFound, _("Couldn't find activation key '%s'") % params[:id] if @activation_key.nil?
       @activation_key
     end

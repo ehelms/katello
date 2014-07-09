@@ -12,7 +12,8 @@
 
 module Katello
 class Api::V2::ContentUploadsController < Api::V2::ApiController
-  before_filter :find_repository
+
+  before_filter :find_resource
 
   api :POST, "/repositories/:repository_id/content_uploads", N_("Create an upload request")
   param :repository_id, :identifier, :required => true, :desc => N_("repository id")
@@ -40,12 +41,12 @@ class Api::V2::ContentUploadsController < Api::V2::ApiController
 
   private
 
-  def pulp_content
-    Katello.pulp_server.resources.content
+  def resouce_class
+    "Katello::Product"
   end
 
-  def find_repository
-    @repository = Repository.find(params[:repository_id])
+  def pulp_content
+    Katello.pulp_server.resources.content
   end
 
 end

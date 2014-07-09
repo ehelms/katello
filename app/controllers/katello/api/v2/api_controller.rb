@@ -98,6 +98,10 @@ module Katello
       }
     end
 
+    def resource_class
+      @resource_class ||= "Katello::#{resource_name.classify}".constantize
+    end
+
     protected
 
     def is_database_id?(num)
