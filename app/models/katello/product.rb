@@ -32,7 +32,7 @@ class Product < Katello::Model
            :foreign_key => :engineering_product_id, :dependent => :destroy
   has_many :marketing_products, :through => :marketing_engineering_products
 
-  belongs_to :organization
+  belongs_to :organization, :inverse_of => :products
   belongs_to :provider, :inverse_of => :products
   belongs_to :sync_plan, :inverse_of => :products, :class_name => 'Katello::SyncPlan'
   belongs_to :gpg_key, :inverse_of => :products
@@ -152,6 +152,11 @@ class Product < Katello::Model
     provider.custom_provider?
   end
 
+  def published_content_views
+    Katello::ContentView.non_default.joins(:content_view_versions => :repositories).
+        where("#{Katello::Repository.table_name}.product_id" => self.id)
+  end
+
   def anonymous?
     provider.anonymouns_provider?
   end
@@ -160,7 +165,7 @@ class Product < Katello::Model
     if name.blank?
       self.gpg_key = nil
     else
-      self.gpg_key = GpgKey.readable(organization).find_by_name!(name)
+      self.gpg_key = GpgKey.readable.find_by_name!(name)
     end
   end
 

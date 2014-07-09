@@ -52,12 +52,6 @@ class UserCreateTest < UserTestBase
     assert @user.save
   end
 
-  def test_before_create_self_role
-    @user.save
-
-    refute_nil @user.own_role
-  end
-
 end
 
 class UserCreateFailNoEmailTest < UserTestBase
@@ -89,41 +83,12 @@ class UserTest < UserTestBase
     @admin_role  = Role.find(katello_roles(:administrator))
   end
 
-  def test_own_role
-    refute_nil @admin.own_role
-  end
-
   def test_destroy
     # Add helptip which could prevent destruction
     assert @no_perms_user.disable_helptip('repositories-index')
     @no_perms_user.destroy
 
     assert @no_perms_user.destroyed?
-  end
-
-  def test_destroy_own_role
-    role = @no_perms_user.own_role
-    @no_perms_user.destroy
-
-    assert_raises ActiveRecord::RecordNotFound do
-      Role.find(role.id)
-    end
-  end
-
-  def test_is_last_super_user?
-    assert !@admin.destroy
-  end
-
-  def test_defined_roles
-    assert_equal [@admin_role], @admin.defined_roles
-  end
-
-  def test_defined_role_ids
-    assert_equal [@admin_role.id], @admin.defined_role_ids
-  end
-
-  def test_has_superadmin_role?
-    assert @admin.has_superadmin_role?
   end
 
   def test_pop_notices
@@ -156,15 +121,6 @@ class UserTest < UserTestBase
     @admin.default_environment = @dev
 
     assert @admin.has_default_environment?
-  end
-
-  # TODO: should be moved into permission test
-  def test_create_or_update_default_system_registration_permission
-    permission = @admin.own_role.create_or_update_default_system_registration_permission(@acme_corporation, @dev)
-
-    assert_instance_of Permission, permission
-    assert_equal       "environments", permission.resource_type.name
-    assert_equal       "default systems reg permission", permission.name
   end
 
   def test_default_environment
@@ -239,10 +195,6 @@ class UserProtectedMethodTest < UserTestBase
     refute @admin.send(:can_be_deleted?)
   end
 
-  def test_own_role_included_in_roles_without_own_role
-    @admin.katello_roles.delete(@admin.own_role)
-    refute @admin.valid?
-  end
 end
 
 class UserInstancePrivateMethodTest < UserTestBase

@@ -17,7 +17,6 @@ module Katello
 describe Product, :katello => true do
 
   include OrchestrationHelper
-  include AuthorizationHelperMethods
   include ProductHelperMethods
   include OrganizationHelperMethods
 
@@ -110,7 +109,7 @@ describe Product, :katello => true do
     specify { Product.new(:label=> "shoo", :name => 'contains space', :provider => @provider).must_be :valid? }
     specify { Product.new(:label => "bar foo", :name=> "foo", :provider => @provider).wont_be :valid?}
     it "should not be successful when creating a product with a duplicate name in one organization" do
-      @p = Product.create!(ProductTestData::SIMPLE_PRODUCT)
+      @p = Product.create!(ProductTestData::SIMPLE_PRODUCT.merge(:organization_id => @organization.id))
 
       Product.new({:name=>@p.name, :label=> @p.name,
         :id => @p.cp_id,
@@ -130,7 +129,7 @@ describe Product, :katello => true do
     describe "repo id" do
       before do
         Resources::Candlepin::Product.stubs(:create).returns({:id => ProductTestData::PRODUCT_ID})
-        @p = Product.create!(ProductTestData::SIMPLE_PRODUCT)
+        @p = Product.create!(ProductTestData::SIMPLE_PRODUCT.merge(:organization_id => @organization.id))
       end
 
       specify "format" do
@@ -251,7 +250,7 @@ describe Product, :katello => true do
   describe "#environments" do
     it "should contain a unique list of environments" do
       disable_repo_orchestration
-      product = Product.create!(ProductTestData::SIMPLE_PRODUCT)
+      product = Product.create!(ProductTestData::SIMPLE_PRODUCT.merge(:organization_id => @organization.id) )
       2.times do
         create(:katello_repository, product: product, environment: @organization.library,
                content_view_version: @organization.library.default_content_view_version,

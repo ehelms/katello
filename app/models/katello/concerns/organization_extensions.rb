@@ -36,12 +36,11 @@ module Katello
 
         has_many :activation_keys, :class_name => "Katello::ActivationKey", :dependent => :destroy
         has_many :providers, :class_name => "Katello::Provider", :dependent => :destroy
-        has_many :products, :class_name => "Katello::Product", :through => :providers
+        has_many :products, :class_name => "Katello::Product", :dependent => :destroy, :inverse_of => :organization
         # has_many :environments is already defined in Foreman taxonomy.rb
         has_many :kt_environments, :class_name => "Katello::KTEnvironment", :dependent => :destroy, :inverse_of => :organization
         has_one :library, :class_name => "Katello::KTEnvironment", :conditions => {:library => true}, :dependent => :destroy
         has_many :gpg_keys, :class_name => "Katello::GpgKey", :dependent => :destroy, :inverse_of => :organization
-        has_many :permissions, :class_name => "Katello::Permission", :dependent => :destroy, :inverse_of => :organization
         has_many :sync_plans, :class_name => "Katello::SyncPlan", :dependent => :destroy, :inverse_of => :organization
         has_many :host_collections, :class_name => "Katello::HostCollection", :dependent => :destroy, :inverse_of => :organization
         has_many :content_views, :class_name => "Katello::ContentView", :dependent => :destroy, :inverse_of => :organization
