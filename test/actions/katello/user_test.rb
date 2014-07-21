@@ -18,23 +18,24 @@ module ::Actions::Katello::User
     include Dynflow::Testing
     include Support::Actions::Fixtures
 
-    actions = [Create, Update, Destroy]
+    actions = [Create, Destroy]
 
     actions.each do |action_class|
       describe action_class.to_s.demodulize do
         let(:action_class) { action_class }
 
         it 'plans' do
-          user   = stub('cp',
-                        remote_id:             'stubbed_user',
-                        disable_auto_reindex!: true)
+          user = users(:one)
+          user.stubs('cp').returns(remote_id: 'stubbed_user')
+
           action = create_action action_class
-          action.stubs(:action_subject).with(user)
+          action.expects(:action_subject).with(user)
+
           plan_action(action, user)
-          assert_action_planed_with action, ::Actions::ElasticSearch::Reindex, user
 
           case action_class
           when Create
+            user.expects(:save!)
             assert_action_planed_with(action,
                                       ::Actions::Pulp::User::Create,
                                       remote_id: 'stubbed_user')
@@ -42,6 +43,7 @@ module ::Actions::Katello::User
                                       ::Actions::Pulp::Superuser::Add,
                                       remote_id: 'stubbed_user')
           when Destroy
+            user.expects(:destroy)
             assert_action_planed_with(action,
                                       ::Actions::Pulp::User::Destroy,
                                       remote_id: 'stubbed_user')

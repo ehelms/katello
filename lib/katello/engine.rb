@@ -114,8 +114,9 @@ module Katello
         Rails.logger.info('Database was not initialized yet: skipping smart proxy katello extension')
       end
 
-      # Organization controller extensions
+      # Controller extensions
       ::OrganizationsController.send :include, Katello::Concerns::OrganizationsControllerExtensions
+      ::UsersController.send :include, Katello::Concerns::UsersControllerExtensions
 
       # Service extensions
       require "#{Katello::Engine.root}/app/services/katello/puppet_class_importer_extensions"
@@ -127,6 +128,10 @@ module Katello
       require_dependency "#{Katello::Engine.root}/app/controllers/katello/api/v1/api_controller"
       require_dependency "#{Katello::Engine.root}/app/controllers/katello/api/v2/api_controller"
       ::PuppetClassImporter.send :include, Katello::Services::PuppetClassImporterExtensions
+    end
+
+    initializer "katello.override.routes", :after => :add_routing_paths do |app|
+      app.routes_reloader.paths.unshift("#{Katello::Engine.root}/config/routes/override.rb")
     end
 
     initializer 'katello.register_plugin', :after => :disable_dependency_loading do

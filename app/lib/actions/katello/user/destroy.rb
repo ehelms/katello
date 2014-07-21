@@ -16,7 +16,6 @@ module Actions
       class Destroy < Actions::EntryAction
 
         def plan(user)
-          user.disable_auto_reindex!
           action_subject user
 
           sequence do
@@ -24,7 +23,7 @@ module Actions
             plan_action(Pulp::User::Destroy, remote_id: user.remote_id)
           end
 
-          plan_action(ElasticSearch::Reindex, user)
+          user.destroy
         end
 
       end

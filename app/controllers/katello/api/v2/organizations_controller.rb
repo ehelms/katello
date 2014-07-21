@@ -39,6 +39,7 @@ module Katello
 
     api :GET, '/organizations/:id', N_('Show organization')
     def show
+      debugger
       @render_template = 'katello/api/v2/organizations/show'
       super
     end
