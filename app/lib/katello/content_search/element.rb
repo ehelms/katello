@@ -46,7 +46,7 @@ module ContentSearch::Element
 
   module ClassMethods
 
-    def display_attributes(*attrs)
+    def display_attributes=(*attrs)
       @display_attributes = attrs
       attr_accessor(*attrs)
     end
