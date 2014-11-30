@@ -127,8 +127,6 @@ Requires: %{?scl_prefix}rubygem-maruku
 Requires: %{?scl_prefix}rubygem-runcible >= 1.3.0
 Requires: %{?scl_prefix}rubygem-anemone
 Requires: %{?scl_prefix}rubygem-less-rails
-Requires: %{?scl_prefix}rubygem-compass-rails
-Requires: %{?scl_prefix}rubygem-compass-960-plugin
 Requires: %{?scl_prefix}rubygem-haml-rails
 Requires: %{?scl_prefix}rubygem-jquery-ui-rails
 Requires: %{?scl_prefix}rubygem-ui_alchemy-rails = 1.0.12
@@ -155,8 +153,6 @@ BuildRequires: %{?scl_prefix}rubygem-maruku
 BuildRequires: %{?scl_prefix}rubygem-runcible >= 1.3.0
 BuildRequires: %{?scl_prefix}rubygem-anemone
 BuildRequires: %{?scl_prefix}rubygem-less-rails
-BuildRequires: %{?scl_prefix}rubygem-compass-rails
-BuildRequires: %{?scl_prefix}rubygem-compass-960-plugin
 BuildRequires: %{?scl_prefix}rubygem-haml-rails
 BuildRequires: %{?scl_prefix}rubygem-jquery-ui-rails
 BuildRequires: %{?scl_prefix}rubygem-ui_alchemy-rails = 1.0.12
@@ -194,35 +190,15 @@ mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
-mkdir -p ./usr/share
-cp -r %{foreman_dir} ./usr/share || echo 0
-
-pushd ./usr/share/foreman
-export GEM_PATH=%{gem_dir}:%{buildroot}%{gem_dir}
-
 cat <<GEMFILE > ./bundler.d/%{gem_name}.rb
 group :katello do
   gem '%{gem_name}'
+  gem 'sass-rails'
 end
 GEMFILE
 
-unlink tmp
-cp %{buildroot}%{gem_instdir}/config/katello_defaults.yml %{buildroot}%{gem_instdir}/config/katello.yml
-
-export BUNDLER_EXT_NOSTRICT=1
-export BUNDLER_EXT_GROUPS="default assets katello"
-%{scl_rake} assets:precompile:katello RAILS_ENV=production --trace
-
-popd
-rm -rf ./usr
-rm %{buildroot}%{gem_instdir}/config/katello.yml
-
-mkdir -p %{buildroot}%{foreman_bundlerd_dir}
-cat <<GEMFILE > %{buildroot}%{foreman_bundlerd_dir}/%{gem_name}.rb
-group :katello do
-  gem '%{gem_name}'
-end
-GEMFILE
+%foreman_precompile_plugin -r assets:precompile:katello
+%foreman_bundlerd_file
 
 mkdir -p %{buildroot}%{foreman_dir}/public/assets
 ln -s %{gem_instdir}/public/assets/katello %{buildroot}%{foreman_dir}/public/assets/katello
