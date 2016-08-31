@@ -1,0 +1,19 @@
+language: node_js
+before_install:
+  - git clone https://github.com/theforeman/foreman --branch develop
+install:
+  - cd engines/bastion_katello
+  - npm cache clean
+  - npm install -g bower phantomjs grunt-cli
+  - bastion_install=$(bundle show bastion)
+  - cp -rf $bastion_install .
+  - bastion_version=(${bastion_install//bastion-/ })
+  - npm install bastion-${bastion_version[1]} grunt
+  - rvm install 2.2.4
+script:
+  - grunt ci
+  - cd foreman
+  - echo "gemspec :path => '../', :development_group => :katello_dev" >> bundler.d/Gemfile.local.rb
+  - bundle install --without libvirt
+  - bundle exec rake plugin:assets:precompile[bastion] --trace
+  - bundle exec rake test:katello
