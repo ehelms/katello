@@ -5,7 +5,7 @@ module Katello
         uri = URI.parse(url)
 
         runcible_params = {
-          :url => "#{uri.scheme}://#{uri.host.downcase}",
+          :url => "#{uri.scheme}://@#{uri.host.downcase}:#{uri.port}",
           :api_path => uri.path,
           :user => user_remote_id,
           :timeout => SETTINGS[:katello][:rest_client_timeout],
@@ -27,6 +27,9 @@ module Katello
             :oauth_secret => SETTINGS[:katello][:pulp][:oauth_secret],
             :oauth_key => SETTINGS[:katello][:pulp][:oauth_key]
           }
+        elsif SETTINGS[:katello][:pulp].key?(:basic_auth)
+          runcible_params[:user] = SETTINGS[:katello][:pulp][:basic_auth][:user]
+          runcible_params[:http_auth] = {:password => SETTINGS[:katello][:pulp][:basic_auth][:password]}
         else
           runcible_params[:cert_auth] = {
             :ssl_client_cert => ::Cert::Certs.ssl_client_cert,

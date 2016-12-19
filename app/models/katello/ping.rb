@@ -49,6 +49,7 @@ module Katello
       def ping_pulp_with_auth(service_result, pulp_without_auth_status)
         exception_watch(service_result) do
           if pulp_without_auth_status == OK_RETURN_CODE
+            Rails.logger.warn("CHECKING PULP WITH AUTH")
             Katello.pulp_server.resources.user.retrieve_all
           else
             fail _("Skipped pulp_auth check after failed pulp check")
@@ -86,6 +87,8 @@ module Katello
         result[:status] = OK_RETURN_CODE
         result[:duration_ms] = ((Time.new - start) * 1000).round.to_s
       rescue => e
+            Rails.logger.warn("RESCUE EXCEPTION WATCH")
+        puts e.message
         Rails.logger.warn(e.backtrace ? [e.message, e.backtrace].join("\n") : e.message)
         result[:status] = FAIL_RETURN_CODE
         result[:message] = e.message
