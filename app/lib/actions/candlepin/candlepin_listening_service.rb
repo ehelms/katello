@@ -60,8 +60,12 @@ module Actions
         else
           suspended_action.notify_not_connected("Not Connected")
         end
-      rescue ::TransportFailure => e
-        suspended_action.notify_not_connected(e.message)
+      rescue => e
+        if e.class.name.include? "TransportFailure"
+          suspended_action.notify_not_connected(e.message)
+        else
+          raise e
+        end
       end
 
       def fetch_message
