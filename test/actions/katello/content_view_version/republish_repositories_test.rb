@@ -20,7 +20,16 @@ module Katello::Host
 
         plan_action(action, @version)
 
-        assert_action_planned_with(action, ::Actions::Katello::Repository::BulkMetadataGenerate, @version.repositories)
+        assert_action_planned_with(action, ::Actions::Katello::Repository::BulkMetadataGenerate) do |plan_input|
+          actual_ids = plan_input.first.ids.sort
+          expected_ids = @version.repositories
+                                 .joins(:root)
+                                 .where.not(root: { mirroring_policy: ::Katello::RootRepository::MIRRORING_POLICY_COMPLETE })
+                                 .ids
+                                 .sort
+
+          assert_equal expected_ids, actual_ids
+        end
       end
     end
   end
